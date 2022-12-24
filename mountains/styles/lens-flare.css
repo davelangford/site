@@ -4,13 +4,6 @@ html {
   height: 100%;
 }
 
-body {
-  height: 100%;
-  background-color: #000;
-  margin: 0;
-  padding: 0;
-}
-
 .lensflare {
   position: absolute;
   overflow: hidden;
@@ -37,13 +30,13 @@ body {
 }
 
 .source {
-  position: absolute;
-  background: radial-gradient( rgba(255,255,255,1) 0%, rgba(243,206,205,.4) 35%, rgb(228 212 182 / 30%) 60%, rgba(0,0,0,0) 70%);
-  border-radius: 50%;
-  width: 800px;
-  height: 800px;
-  margin: -400px 0 0 -400px;
-  z-index: 2;
+    position: absolute;
+    background: radial-gradient( rgba(255,255,255,1) 0%, rgba(243,206,205,.4) 17%, rgb(228 212 182 / 30%) 25%, rgba(0,0,0,0) 53%);
+    border-radius: 50%;
+    width: 800px;
+    height: 800px;
+    margin: -400px 0 0 -400px;
+    z-index: 2;
 }
 
 .source-beam {

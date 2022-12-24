@@ -9,7 +9,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#toolboxRemoveFronMountain').on('click', function () {
+    $('#toolboxToggleLensFlare').on('click', function () {
         $('.lensflare').toggle();
     });
 

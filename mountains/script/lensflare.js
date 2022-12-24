@@ -9,6 +9,9 @@ function PositionLensFlare(){
     var pointX = $('#toolboxLensFlareX').val();
     var pointY = parseInt($('#toolboxLensFlareY').val()) + parseInt($('#toolboxSliderMountainPositions').val() / 150);
 
+    console.log(`pointX: ${pointX}, pointY ${pointY}`);
+    $('.sky').css('background', 'radial-gradient(at ' + pointX + 'vw ' + pointY + 'vh ' + ', rgba(226,241,230,1) 0%, rgba(238,211,156,1) 14%, rgba(232,148,78,1) 28%, rgba(195,112,76,1) 45%, rgba(166,60,42,1) 63%, rgba(109,51,41,1) 79%');
+    $('.ground').css('top', (pointY - 25) + 'vh');
     $('.source').css('left', pointX + 'vw').css('top', pointY + 'vh');
     $('.source-beam').css('left', pointX + 'vw').css('top', pointY + 'vh');
     $('.c1').css('left', pointX + 'vw').css('top', pointY + 'vh');
