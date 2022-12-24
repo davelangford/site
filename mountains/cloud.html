@@ -1,6 +1,7 @@
+<!-- From https://css-tricks.com/drawing-realistic-clouds-with-svg-and-css/-->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,66 +10,65 @@
     <link rel="stylesheet" href="style.css"> -->
     <title>Clouds</title>
     <style>
-    
-    body {
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(165deg, #527785 0%, #527785 100%);
-/*   background: linear-gradient(165deg, #527785 0%, #527785 100%); */
-  padding: 1%;
-  overflow: hidden;
-}
 
-.cloud {
-  width: 500px;
-  height: 275px;
-  border-radius: 50%;
-  position: absolute;
-  top: -35vh;
-  left: -25vw;
-}
+        body {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(165deg, #527785 0%, #527785 100%);
+            /*   background: linear-gradient(165deg, #527785 0%, #527785 100%); */
+            padding: 1%;
+            overflow: hidden;
+        }
 
-#cloud-back {
-  filter: url(#filter-back);
-  box-shadow: 300px 300px 30px -20px #fff;
-}
+        .cloud {
+            width: 500px;
+            height: 275px;
+            border-radius: 50%;
+            position: absolute;
+            top: -35vh;
+            left: -25vw;
+        }
 
-#cloud-mid {
-  filter: url(#filter-mid);
-  box-shadow: 300px 340px 70px -60px rgba(158, 168, 179, 0.5);
-    left: -25vw;
-}
+        #cloud-back {
+            filter: url(#filter-back);
+            box-shadow: 300px 300px 30px -20px #fff;
+        }
 
-#cloud-front {
-  filter: url(#filter-front);
-  box-shadow: 300px 370px 60px -100px rgba(0, 0, 0, 0.3);
-    left: -25vw;
-}
-    
+        #cloud-mid {
+            filter: url(#filter-mid);
+            box-shadow: 300px 340px 70px -60px rgba(158, 168, 179, 0.5);
+            left: -25vw;
+        }
+
+        #cloud-front {
+            filter: url(#filter-front);
+            box-shadow: 300px 370px 60px -100px rgba(0, 0, 0, 0.3);
+            left: -25vw;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="cloud" id="cloud-back"></div>
     <div class="cloud" id="cloud-mid"></div>
-    <div class="cloud" id="cloud-front"></div>    
-<!--   77, 327,109, 841, 2319, 5032, 1094, 892, 6739, 512, 84 -->
-<svg width="0" height="0"> 
-  <!--Top Layer-->
-    <filter id="filter-back">
-      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" 
-seed="10" />     
-      <feDisplacementMap  in="SourceGraphic" scale="170" />
-    </filter>
-       <filter id="filter-mid">
-        <feTurbulence type="fractalNoise"  baseFrequency="0.012" numOctaves="2" 
-seed="10"/>
-      <feDisplacementMap  in="SourceGraphic" scale="150" />
-    </filter>
-    <filter id="filter-front">
-        <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" 
-seed="10"/>
-      <feDisplacementMap  in="SourceGraphic" scale="100" />
-    </filter>
-</svg>
-  </body>
+    <div class="cloud" id="cloud-front"></div>
+    <!--   77, 327,109, 841, 2319, 5032, 1094, 892, 6739, 512, 84 -->
+    <svg width="0" height="0">
+        <!--Top Layer-->
+        <filter id="filter-back">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4"
+                          seed="10" />
+            <feDisplacementMap in="SourceGraphic" scale="170" />
+        </filter>
+        <filter id="filter-mid">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2"
+                          seed="10" />
+            <feDisplacementMap in="SourceGraphic" scale="150" />
+        </filter>
+        <filter id="filter-front">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2"
+                          seed="10" />
+            <feDisplacementMap in="SourceGraphic" scale="100" />
+        </filter>
+    </svg>
+</body>
 </html>
