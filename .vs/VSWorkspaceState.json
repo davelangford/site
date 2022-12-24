@@ -1,7 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\images",
+    "\\mountains",
+    "\\mountains\\images",
+    "\\mountains\\script",
+    "\\mountains\\styles"
   ],
-  "SelectedNode": "\\C:\\Users\\davel\\Source\\Repos\\site",
+  "SelectedNode": "\\mountains\\styles\\toolbox.css",
   "PreviewInSolutionExplorer": false
 }
