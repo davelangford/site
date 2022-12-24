@@ -1,0 +1,12 @@
+.mountainPreview {
+    border: solid 1px;
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    width: 31vw;
+    height: 23vw; /* display: none; */
+    background-image: url(../images/example.jpg);
+    background-size: contain;
+    z-index: 9999;
+
+}
