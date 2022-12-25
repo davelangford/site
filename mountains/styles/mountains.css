@@ -18,9 +18,8 @@ body {
 }
 
 .mountainReflection {
-    
     transform: scaleY(-1);
-    background: linear-gradient(180deg, rgba(2, 0, 36, 1) 0%, hsl(240deg 86% 25%) 35%, var(--colorGround) 100%);
+    background: linear-gradient(180deg, hsl(243deg 100% 7% / 0%) 0%, hsl(0deg 0% 52% / 14%) 35%, rgb(148 188 193) 100%);
     width: 100vw;
     height: 20vh;
     position: fixed;

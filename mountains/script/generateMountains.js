@@ -99,10 +99,10 @@ function CreateReflections() {
         var mountain = $(this);
         var newReflection = mountain.clone();
 
+        newReflection.removeClass();
         newReflection.addClass('mountainReflection');
-        newReflection.removeClass('mountain');
-        newReflection.css('top', mountain.css('bottom'));
-
+        newReflection.css('top', (mountain.position().top + mountain.height()) + 'px')
+        newReflection.css('height', (mountain.height() * 0.4) + 'px');
         newReflection.appendTo($('body'));
     });
 }

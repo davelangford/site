@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Landscape</title>
+    <style>
+        /* Define the styles for the landscape elements */
+        .sky {
+            background-color: skyblue;
+            height: 50%;
+        }
+
+        .grass {
+            background-color: green;
+            height: 50%;
+        }
+
+        .sun {
+            background-color: yellow;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+        }
+
+        .tree {
+            background-color: brown;
+            width: 100px;
+            height: 200px;
+        }
+
+        .cloud {
+            width: 200px;
+            height: 120px;
+            background: linear-gradient(#fff, #fff) padding-box, radial-gradient(circle at 20% 20%, #ddd, #fff);
+            border-radius: 200px;
+            box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.1), 0px -5px 20px rgba(255, 255, 255, 0.5);
+            transform: rotate(5deg);
+        }
+
+        .wave {
+            position: relative;
+            height: 100px;
+            width: 100%;
+            background: #fff;
+            overflow: hidden;
+        }
+
+            .wave::before,
+            .wave::after {
+                content: "";
+                position: absolute;
+                background: #fff;
+                width: 200%;
+                height: 100%;
+                transform: rotate(180deg);
+                top: -100%;
+            }
+
+            .wave::before {
+                left: -50%;
+                animation: move-wave 3s linear infinite;
+            }
+
+            .wave::after {
+                left: 50%;
+                animation: move-wave 10s linear infinite;
+            }
+
+        @keyframes move-wave {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-25%);
+            }
+        }
+        body{
+            background-color: cadetblue;
+        }
+    </style>
+</head>
+<body>
+    <!-- Use HTML elements to create the landscape -->
+    <div class="sky">
+        <div class="sun"></div>
+    </div>
+    <div class="grass">
+        <div class="tree"></div>
+    </div>
+
+    <div class="cloud"></div>
+    <div class="wave"></div>
+</body>
+</html>
