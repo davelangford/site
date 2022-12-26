@@ -5,8 +5,8 @@
     "\\mountains",
     "\\mountains\\images",
     "\\mountains\\script",
-    "\\mountains\\styles"
+    "\\mountains\\styles",
+    "\\test"
   ],
-  "SelectedNode": "\\mountains\\script\\generateMountains.js",
   "PreviewInSolutionExplorer": false
 }

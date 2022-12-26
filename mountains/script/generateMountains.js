@@ -90,6 +90,7 @@ function RandomiseMountains() {
         mountain.css('left', finishPoint + 'vw');
     });
     $('.mountain7').css('left', '0vw');
+    CreateReflections();
 }
 
 function CreateReflections() {
