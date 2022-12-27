@@ -9,7 +9,42 @@
     </style>
 </head>
 <body>
-    <!-- your content goes here -->
-    <div class="bg" style="display:block; width: 100vw; height: 100vh;"></div>
+    <canvas id="myCanvas" style="filter: blur(5px); mix-blend-mode: darken; "></canvas>
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        canvas.width = 500;
+        canvas.height = 500;
+        const ctx = canvas.getContext('2d');
+
+        function randomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function createGradient(x, y, radius) {
+            const gradient = ctx.createRadialGradient(x, y, radius/1.5, x, y, radius);
+            gradient.addColorStop(0, 'white');
+            gradient.addColorStop(1, 'gainsboro');
+            return gradient;
+        }
+
+        function drawCircle(x, y, radius) {
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = createGradient(x, y - (radius / 2), radius);
+            ctx.fill();
+        }
+
+        function drawRandomCircle() {
+            let x = randomNumber(0, canvas.width);
+            let y = randomNumber(0, canvas.height);
+            let radius = randomNumber(50, 100);
+            radius = radius * (1 - (y / canvas.height));
+            drawCircle(x, y, radius);
+        }
+        for (let i = 0; i < 1000; i++) {
+            drawRandomCircle();
+        }   
+        drawRandomCircle();
+    </script>
 </body>
 </html>

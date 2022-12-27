@@ -1,0 +1,9 @@
+#clouds {
+    filter: blur(5px);
+    mix-blend-mode: overlay;
+    position: absolute;
+    top: 0px;
+    opacity: 0.4;
+    width: 100vw;
+    height: 32vh;
+}

@@ -68,8 +68,8 @@ function RandomiseMountains() {
 
         for (var i = 0; i <= totalPoints; i++) {
             currentPointPercentLocation = i / totalPoints * 100;
-            if (currentPointPercentLocation < 50 && currentPointHeight > 25) {
-                currentPointHeight += Math.random() > 0.5 ? 0 : -(1 + Math.random());
+            if (currentPointPercentLocation < 50 && currentPointHeight > 65) {
+                currentPointHeight += Math.random() > 0.8 ? 1 + Math.random() : -(1 + Math.random());
             } else {
             currentPointHeight += Math.random() > 0.5 ? 1 + Math.random() : -(1 + Math.random());
             }
