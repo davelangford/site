@@ -1,0 +1,9 @@
+#waves {
+    filter: blur(2px);
+     mix-blend-mode: color-burn;   
+    position: absolute;
+    top: 40vh;
+    opacity: 1;
+    width: 249vw;
+    height: 60vh;
+}
