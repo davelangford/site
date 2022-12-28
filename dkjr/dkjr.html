@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<meta name="viewport" content="width=device-width, initial-scale=0.47, maximum-scale=0.47, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="script/script.js"></script>
+  <script src="script/jr.js"></script>
+  <script src="script/snapjaws.js"></script>
+  <script src="script/nitpickers.js"></script>
+  <script src="script/fruit.js"></script>
+  <script src="script/key.js"></script>
+  <link rel="stylesheet" href="css/squishy.css" />
+  <link rel="stylesheet" href="css/preload.css" />
+  <title>Donkey Kong Jr Game and Watch</title>
+
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+  position: fixed;
+    }
+
+    #device {
+      width: 1411px;
+      height: 787px;
+      background-color: black;
+      background-image: url(images/background.jpg);
+      background-repeat: no-repeat;
+    }
+
+    #gamebackground {
+      background-image: url(images/gamebackground.png);
+      width: 668px;
+      height: 430px;
+      background-repeat: no-repeat;
+      top: 174px;
+      left: 372px;
+      position: relative;
+
+    }
+
+   .spritecanvas {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
+
+    .directionButton, .jumpButton {
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="device">
+    <label id="status" style="font-size: xx-large; position: absolute"></label>
+    <label id="cagesleft" style="font-size: xx-large; position: absolute; left:0px"></label>
+    <div id="game">
+      <div id="gamebackground">
+        <div id="jr" class="spritecanvas"></div>
+        <div id="fruit" class="spritecanvas fruit"></div>
+        <div id="key" class="spritecanvas key"></div>
+      </div>
+    </div>
+    <div class="buttons">
+      <div id="btnUp" class="directionButton" style="top: 453px;left: 109px;height: 97px;width: 75px;"></div>
+      <div id="btnLeft" class="directionButton" style="top: 547px;left: 11px;height: 73px;width: 96px;"></div>
+      <div id="btnRight" class="directionButton" style="top: 551px;left: 182px;height: 70px;width: 90px;"></div>
+      <div id="btnDown" class="directionButton" style="top: 621px;left: 101px;height: 98px;width: 80px;"></div>
+      <div id="btnJump" class="jumpButton" style="top: 526px;left: 1187px;height: 127px;width: 147px;"></div>
+    </div>
+
+
+</body>
+
+</html>

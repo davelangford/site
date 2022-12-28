@@ -1,0 +1,29 @@
+.preload-images {
+    display: none; 
+    width: 0;
+    height: 0;
+    background: url(images/jr/jr101.jpg),
+                url(images/jr/jr102.jpg),
+                url(images/jr/jr103.jpg),
+                url(images/jr/jr104.jpg),
+                url(images/jr/jr105.jpg),
+                url(images/jr/jr106.jpg),
+                url(images/jr/jr107.jpg),
+                url(images/jr/jr201.jpg),
+                url(images/jr/jr202.jpg),
+                url(images/jr/jr203.jpg),
+                url(images/jr/jr204.jpg),
+                url(images/jr/jr205.jpg),
+                url(images/jr/jr206.jpg),
+                url(images/jr/jr207.jpg),
+                url(images/jr/jr304.jpg),
+                url(images/jr/jr305.jpg),
+                url(images/jr/jr306.jpg),
+                url(images/jr/jr307.jpg),
+                url(images/jr/jr402.jpg),
+                url(images/jr/jr403.jpg),
+                url(images/jr/jr404.jpg),
+                url(images/jr/jr405.jpg),
+                url(images/jr/jr406.jpg),
+                url(images/jr/jr502.jpg);
+  }
