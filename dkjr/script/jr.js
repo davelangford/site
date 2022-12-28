@@ -48,6 +48,8 @@ function TryMove(direction) {
     if (GameplayPaused()) {
         return;
     }
+    window.TapticEngine.impact({ style: 'medium' });
+}
     if ('vibrate' in navigator) {
         // Vibrate supported, use it
         navigator.vibrate(500);
