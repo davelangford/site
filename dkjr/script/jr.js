@@ -48,6 +48,14 @@ function TryMove(direction) {
     if (GameplayPaused()) {
         return;
     }
+    if ('vibrate' in navigator) {
+        // Vibrate supported, use it
+        navigator.vibrate(500);
+    } else {
+        // Vibrate not supported, do something else
+        console.log('Vibration not supported on this device');
+    }
+    
     switch (direction) {
         case move.RIGHT:
             if (canMoveRight.includes(jrposition)) {
