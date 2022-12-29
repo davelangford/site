@@ -1,13 +1,14 @@
 {
   "ExpandedNodes": [
     "",
-    "\\images",
+    "\\blank",
+    "\\lines1",
     "\\mountains",
-    "\\mountains\\images",
     "\\mountains\\script",
-    "\\mountains\\styles",
+    "\\noise",
+    "\\sketchtype",
     "\\test"
   ],
-  "SelectedNode": "\\mountains\\script\\waves.js",
+  "SelectedNode": "\\sketchtype\\sketchtype.js",
   "PreviewInSolutionExplorer": false
 }

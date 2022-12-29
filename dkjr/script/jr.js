@@ -36,27 +36,38 @@ $(document).ready(function () {
         TryMove(move.JUMP);
     });
 
+    $(document).keyup(function (e) {
+        if (e.keyCode == 37) {
+            TryMove(move.LEFT);
+        }
+        if (e.keyCode == 38) {
+            TryMove(move.UP);
+        }
+        if (e.keyCode == 39) {
+            TryMove(move.RIGHT);
+        }
+        if (e.keyCode == 40) {
+            TryMove(move.DOWN);
+        }
+        if (e.keyCode == 32) {
+            TryMove(move.JUMP);
+        }
+    });
+
     DrawJunior();
 });
 
 function PreLoadImages() {
-    for (var i = 101; i < 600; i++) {
-        $("<img />").attr("src", "images/jr/jr.png");
-    }
+    //for (var i = 101; i < 600; i++) {
+    //    $("<img />").attr("src", `images/jr/jr${i}.png`);
+    //}
 }
 function TryMove(direction) {
     if (GameplayPaused()) {
         return;
     }
-}
-    if ('vibrate' in navigator) {
-        // Vibrate supported, use it
-        navigator.vibrate(500);
-    } else {
-        // Vibrate not supported, do something else
-        console.log('Vibration not supported on this device');
-    }
-    
+
+
     switch (direction) {
         case move.RIGHT:
             if (canMoveRight.includes(jrposition)) {
@@ -116,6 +127,7 @@ function Reset() {
 
     missCount += 1;
     DrawJunior();
+    killingJunior = false;
     // if (missCount == 3) {
     //     alert("Game Over");
     // }
@@ -151,5 +163,13 @@ function FallCheck() {
 }
 
 function KillJunior() {
-    //Reset();
+    killingJunior = true;
+    $('#jr').hide(500).show(500).hide(500).show(500).hide(500).show(500);
+
+    setTimeout(function () {
+        Reset();
+    }, 3000);
+
+    // sleep 500 ms
+
 }

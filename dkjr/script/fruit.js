@@ -1,5 +1,6 @@
 var fruitStart = 405;
 var fruitIsDropping = false;
+var killingJunior = false;
 var fruitPosition = fruitStart;
 
 $(document).ready(function () {
@@ -12,14 +13,22 @@ $(document).ready(function () {
 
 function DropFruit() {
     if (jrposition == fruitStart || fruitIsDropping == true) {
+        
         fruitIsDropping = true;
         switch (fruitPosition) {
             case 405:
+                MoveFruit();
+                break;
             case 305:
+                KillSnapJaw(305);
+                MoveFruit();
+                break;
             case 205:
+                KillNitPicker(205);
                 MoveFruit();
                 break;
             case 105:
+                KillSnapJaw(104);
                 ResetFruit();
                 break;
         }
@@ -38,18 +47,8 @@ function ResetFruit() {
 
 function MoveFruit() {
     fruitPosition -= 100;
-    if (fruitPosition == 105) {
-        if (snapjaws.includes(104)) {
-            KillSnapJaw(104);
-            return;
-        } else {
-            if (snapjaws.includes(fruitPosition)) {
-                KillSnapJaw(fruitPosition);
-                return;
-            }
-        }
-    }
 }
-    function DrawFruit() {
-        $("#fruit").css("background-image", "url(images/fruit/fruit" + fruitPosition + ".png)");
-    }
+
+function DrawFruit() {
+    $("#fruit").css("background-image", "url(images/fruit/fruit" + fruitPosition + ".png)");
+}

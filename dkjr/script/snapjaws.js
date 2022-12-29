@@ -62,15 +62,19 @@ function MoveSnapJaw(snapjawindex) {
 
 function DrawSnapJaws() {
     $('.snapjaw').remove();
+    
+    //console.clear();
     for (i = 0; i < snapjaws.length; i++) {
         if (snapjaws[i] != 0) {
             var $div = $("#gamebackground").append("<div id='sj" + snapjaws[i] +
                 "' class=\"spritecanvas snapjaw\" style='background-image: url(\"images\/sj\/sj" + snapjaws[i] + ".png\")'></div>");
         }
+        //console.log(snapjaws[i]);
     }
 }
 function KillSnapJaw(snapJawPosition) {
-    var killIndex = snapjaws.indexOf(snapJawPosition);
-    snapjaws.splice(killIndex, killIndex + 1);
+    if (snapjaws.includes(snapJawPosition)) {
+        snapjaws.splice(snapjaws.indexOf(snapJawPosition), 1);
+    }
     DrawSnapJaws();
 }

@@ -1,0 +1,77 @@
+body {
+    padding: 0;
+    margin: 0;
+    position: fixed;
+}
+
+#device {
+    width: 1505px;
+    height: 833px;
+    background-image: url(../images/background.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    z-index: 1;
+}
+
+#gamebackground {
+    background-image: url(../images/gamebackground.png);
+    width: 732px;
+    height: 500px;
+    background-repeat: no-repeat;
+    top: 174px;
+    left: 389px;
+    position: relative;
+}
+
+.spritecanvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.directionButton {
+    position: absolute;
+    z-index: 2;
+    /*border: solid 1px;*/
+}
+
+#btnUp {
+    top: 489px;
+    left: 118px;
+    height: 97px;
+    width: 75px;
+}
+
+#btnDown {
+    top: 660px;
+    left: 115px;
+    height: 98px;
+    width: 80px;
+}
+
+#btnLeft {
+    top: 588px;
+    left: 29px;
+    height: 73px;
+    width: 96px;
+}
+
+#btnRight {
+    top: 588px;
+    left: 182px;
+    height: 70px;
+    width: 90px;
+}
+
+#btnJump {
+    height: 144px;
+    width: 147px;
+    top: 556px;
+    left: 1271px;
+}
+
+
+
+
+
+

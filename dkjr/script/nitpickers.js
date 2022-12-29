@@ -20,16 +20,10 @@ function AddNitPicker() {
 
 function MoveNitPickers() {
     if (GameplayPaused()) return;
-    $('.nitpicker').remove();
     for (i = 0; i < nitpickers.length; i++) {
         MoveNitPicker(i);
     }
-    for (i = 0; i < nitpickers.length; i++) {
-        if (nitpickers[i] != 0) {
-            var $div = $("#gamebackground").append("<div id='sj" + nitpickers[i] +
-                "' class=\"spritecanvas nitpicker\" style='background-image: url(\"images\/np\/np" + nitpickers[i] + ".png\")'></div>");
-        }
-    }
+    DrawNitPickers();
 }
 
 function MoveNitPicker(nitpickerindex) {
@@ -43,4 +37,25 @@ function MoveNitPicker(nitpickerindex) {
         default:
             nitpickers[nitpickerindex]++;
     }
+}
+
+function DrawNitPickers() {
+    $('.nitpicker').remove();
+
+    console.clear();
+    for (i = 0; i < nitpickers.length; i++) {
+        if (nitpickers[i] != 0) {
+            var $div = $("#gamebackground").append("<div id='sj" + nitpickers[i] +
+                "' class=\"spritecanvas nitpicker\" style='background-image: url(\"images\/np\/np" + nitpickers[i] + ".png\")'></div>");
+        }
+        console.log(nitpickers[i]);
+    }
+}
+
+
+function KillNitPicker(nitPickerPosition) {
+    if (nitpickers.includes(nitPickerPosition)) {
+        nitpickers.splice(nitpickers.indexOf(nitPickerPosition), 1);
+    }
+    DrawNitPickers();
 }
