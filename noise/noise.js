@@ -27,13 +27,7 @@ $(document).ready(function () {
         const w = cellw * 0.8;
         const h = cellh * 0.8;
 
-        const noise = canvasSketch.util.noise;
-
-        const xx = 10;
-        const yy = 10;
-        const zz = 0.1;
-        const noiseValue = noise(xx, yy, zz);
-        
+       
         ctx.save();
         ctx.translate(x, y);
         ctx.translate(margx, margy);
