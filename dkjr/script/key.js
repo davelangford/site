@@ -40,12 +40,10 @@ function SwingKey() {
 
 function DrawKey() {
     $("#key").css("background-image", "url(images/key/key" + keyPosition + ".png)");
-    $("#cagesleft").text("Cages Left: " + cagesLeft);
 }
 
 function KeyGrabbed() {
     setTimeout(() => {
-        cagesLeft--;
         jrposition = 402;
         DrawJunior();
         keyGrabbed = false;
