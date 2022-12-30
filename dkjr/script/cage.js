@@ -56,6 +56,7 @@ function BlinkCages() {
 
 function AddCage() {
     if (cageCount < 4) {
+        audio_cage.play();
         cageCount++;
     } else {
         ResetCages();

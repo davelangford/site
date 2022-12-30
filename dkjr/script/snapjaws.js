@@ -20,19 +20,25 @@ function AddSnapJaw() {
 
 function MoveSnapJaws() {
     if (GameplayPaused()) return;
+    
     for (i = 0; i < snapjaws.length; i++) {
-        MoveSnapJaw(i);
+        if (snapjaws[i] == jrposition) {
+            KillJunior().then(function () {
+                MoveSnapJaw(i);
+            });
+        } else {
+            MoveSnapJaw(i);
+        }
     }
     DrawSnapJaws();
 }
 
 function MoveSnapJaw(snapjawindex) {
-    if (snapjaws[snapjawindex] == jrposition) {
-        KillJunior();
-    }
+
     switch (snapjaws[snapjawindex]) {
         case 308:
             snapjaws[snapjawindex] = 107;
+            audio_sj_move.play();
             break;
         case 302:
         case 303:
@@ -41,6 +47,7 @@ function MoveSnapJaw(snapjawindex) {
         case 306:
         case 307:
             snapjaws[snapjawindex]++;
+            audio_sj_move.play();
             break;
         case 107:
         case 106:
@@ -49,31 +56,29 @@ function MoveSnapJaw(snapjawindex) {
         case 103:
         case 102:
             snapjaws[snapjawindex]--;
+            audio_sj_move.play();
             break;
         case 101:
             snapjaws.splice(snapjawindex, snapjawindex + 1);
             break;
-
-
     }
-
-
 }
 
 function DrawSnapJaws() {
     $('.snapjaw').remove();
-    
-    console.clear();
+
+    //console.clear();
     for (i = 0; i < snapjaws.length; i++) {
         if (snapjaws[i] != 0) {
             var $div = $("#gamebackground").append("<div id='sj" + snapjaws[i] +
                 "' class=\"spritecanvas snapjaw\" style='background-image: url(\"images\/sj\/sj" + snapjaws[i] + ".png\")'></div>");
         }
-        console.log(snapjaws[i]);
+        //console.log(snapjaws[i]);
     }
 }
 function KillSnapJaw(snapJawPosition) {
     if (snapjaws.includes(snapJawPosition)) {
+        audio_cage.play();
         snapjaws.splice(snapjaws.indexOf(snapJawPosition), 1);
     }
     DrawSnapJaws();

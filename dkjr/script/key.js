@@ -49,8 +49,9 @@ function DrawKey() {
 function KeyGrabbed() {
     setTimeout(() => {
         jrposition = 402;
+        audio_jr_move.play();
         DrawJunior();
         keyGrabbed = false;
-        ResetCages();
+        //ResetCages();
     }, 3000);
 }

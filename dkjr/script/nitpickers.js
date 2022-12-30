@@ -21,21 +21,25 @@ function AddNitPicker() {
 function MoveNitPickers() {
     if (GameplayPaused()) return;
     for (i = 0; i < nitpickers.length; i++) {
-        MoveNitPicker(i);
+        if (nitpickers[i] == jrposition) {
+            KillJunior().then(function () {
+                MoveNitPicker(i);
+            });
+        } else {
+            MoveNitPicker(i);
+        }
+        DrawNitPickers();
     }
-    DrawNitPickers();
 }
 
 function MoveNitPicker(nitpickerindex) {
-    if (nitpickers[nitpickerindex] == jrposition) {
-        KillJunior();
-    }
     switch (nitpickers[nitpickerindex]) {
         case 208:
             nitpickers.splice(nitpickerindex, nitpickerindex + 1);
             break;
         default:
             nitpickers[nitpickerindex]++;
+            audio_np_move.play();
     }
 }
 
@@ -55,6 +59,7 @@ function DrawNitPickers() {
 
 function KillNitPicker(nitPickerPosition) {
     if (nitpickers.includes(nitPickerPosition)) {
+        audio_cage.play();
         nitpickers.splice(nitpickers.indexOf(nitPickerPosition), 1);
     }
     DrawNitPickers();

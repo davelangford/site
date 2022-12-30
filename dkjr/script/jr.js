@@ -72,6 +72,7 @@ function TryMove(direction) {
         case move.RIGHT:
             if (canMoveRight.includes(jrposition)) {
                 jrposition += 1;
+                audio_jr_move.play();
             }
             break;
         case move.LEFT:
@@ -82,6 +83,7 @@ function TryMove(direction) {
                         break;
                     default:
                         jrposition -= 1;
+                        audio_jr_move.play();
                 }
             }
             break;
@@ -93,23 +95,27 @@ function TryMove(direction) {
                         break;
                     default:
                         jrposition += 100;
+                        audio_jr_move.play();
                 }
             }
             break;
         case move.DOWN:
             if (canMoveDown.includes(jrposition)) {
                 jrposition -= 100;
+                audio_jr_move.play();
             }
             break;
         case move.JUMP:
             if (canJump.includes(jrposition)) {
                 jrposition += 100;
+                audio_jr_move.play();
             }
             break;
 
         default:
             break;
     }
+
     DrawJunior();
 
 }
@@ -149,15 +155,22 @@ function FallCheck() {
                     AddCage();
                 } else {
                     jrposition = 402;
+        audio_jr_move.play();
                     DrawJunior();
                 }
                 break;
             case 402:
                 jrposition = 102;
+                audio_jr_move.play();
                 DrawJunior();
+                if (cageCount == 4) {
+                    ResetCages();
+                }
                 break;
             default:
                 TryMove(move.DOWN);
+                audio_jr_move.play();
+
         }
 
     }
@@ -165,16 +178,15 @@ function FallCheck() {
 
 function KillJunior() {
     if (document.getElementById("invincibleCheckbox").checked == true) {
-        return;
+        return Promise.resolve();
     }
 
     killingJunior = true;
+    audio_jr_kill.play();
     $('#jr').hide(500).show(500).hide(500).show(500).hide(500).show(500);
 
     setTimeout(function () {
         Reset();
+        return Promise.resolve();
     }, 3000);
-
-    // sleep 500 ms
-
 }
