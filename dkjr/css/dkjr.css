@@ -47,7 +47,7 @@ body {
 .directionButton {
     position: absolute;
     z-index: 2;
-    border: solid 1px;
+    /*border: solid 1px;*/
 }
 
 #btnUp {
@@ -94,9 +94,5 @@ body {
     width: 20%;
     z-index: 3
 }
-
-
-
-
 
 
