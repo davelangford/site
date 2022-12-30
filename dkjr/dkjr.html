@@ -24,38 +24,37 @@
 </head>
 
 <body>
-    <div id="device"></div>
-    <label id="status" style="font-size: xx-large; position: absolute; z-index: 3"></label>
-    <div id="game">
-        <div id="gamebackground">
-            <div id="jr" class="spritecanvas"></div>
-            <div id="fruit" class="spritecanvas fruit"></div>
-            <div id="key" class="spritecanvas key"></div>
+    <div id="devicecontainer">
+        <div id="device">
+            <label id="status" style="font-size: xx-large; position: absolute; z-index: 3"></label>
+            <div id="gamebackground">
+                <div id="jr" class="spritecanvas"></div>
+                <div id="fruit" class="spritecanvas fruit"></div>
+                <div id="key" class="spritecanvas key"></div>
+            </div>
+            <div class="buttons">
+                <div id="btnUp" class="directionButton"></div>
+                <div id="btnLeft" class="directionButton"></div>
+                <div id="btnRight" class="directionButton"></div>
+                <div id="btnDown" class="directionButton"></div>
+                <div id="btnJump" class="directionButton"></div>
+            </div>
+            <div id="toolbox">
+                <button id="addCageBtn" style="background-color: blue; color: white; padding: 10px; border: none;">AddCage</button>
+                <br />
+                <br />
+                <label class="switch">
+                    <input type="checkbox" id="invincibleCheckbox" checked="checked">
+                    <span class="slider round">Invincible</span>
+                </label>
+
+                <label class="switch">
+                    <input type="checkbox" id="muteCheckbox" checked="checked">
+                    <span class="slider round">Mute</span>
+                </label>
+            </div>
+
         </div>
-    </div>
-    <div class="buttons">
-        <div id="btnUp" class="directionButton"></div>
-        <div id="btnLeft" class="directionButton"></div>
-        <div id="btnRight" class="directionButton"></div>
-        <div id="btnDown" class="directionButton"></div>
-        <div id="btnJump" class="directionButton"></div>
-    </div>
-
-    <div id="toolbox" style="position: absolute; top:0px; left: 0px; border: solid 1px; height:50vh; width: 20vw; z-index: 3">
-        <button id="addCageBtn" style="background-color: blue; color: white; padding: 10px; border: none;">AddCage</button>
-        <br />
-        <br />
-        <label class="switch">
-            <input type="checkbox" id="invincibleCheckbox" checked="checked">
-            <span class="slider round">Invincible</span>
-        </label>
-
-        <label class="switch">
-            <input type="checkbox" id="muteCheckbox" checked="checked">
-            <span class="slider round">Mute</span>
-        </label>
-
-
     </div>
 </body>
 
