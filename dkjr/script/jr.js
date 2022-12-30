@@ -36,7 +36,7 @@ $(document).ready(function () {
         TryMove(move.JUMP);
     });
 
-    $(document).keyup(function (e) {
+    $(document).keydown(function (e) {
         if (e.keyCode == 37) {
             TryMove(move.LEFT);
         }
@@ -146,6 +146,7 @@ function FallCheck() {
                     jrposition = 502;
                     DrawJunior();
                     KeyGrabbed();
+                    AddCage();
                 } else {
                     jrposition = 402;
                     DrawJunior();
@@ -163,6 +164,10 @@ function FallCheck() {
 }
 
 function KillJunior() {
+    if (document.getElementById("invincibleCheckbox").checked == true) {
+        return;
+    }
+
     killingJunior = true;
     $('#jr').hide(500).show(500).hide(500).show(500).hide(500).show(500);
 

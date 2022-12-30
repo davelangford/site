@@ -3,14 +3,12 @@
     "",
     "\\dkjr",
     "\\dkjr\\css",
-    "\\dkjr\\images\\cage",
     "\\dkjr\\script",
     "\\lines1",
-    "\\mountains\\script",
     "\\noise",
     "\\sketchtype",
     "\\test"
   ],
-  "SelectedNode": "\\sketchtype\\sketchtype.js",
+  "SelectedNode": "\\dkjr\\script\\key.js",
   "PreviewInSolutionExplorer": false
 }

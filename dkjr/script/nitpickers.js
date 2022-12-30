@@ -13,7 +13,7 @@ function AddNitPicker() {
     if (snapjaws.includes(nitpickerstart)) {
         return;
     }
-    if (Math.floor(Math.random() * 100) < difficulty) {
+    if (Math.floor(Math.random() * 100) < difficulty && !nitpickers.includes(201) && !nitpickers.includes(200)) {
         nitpickers.push(nitpickerstart);
     }
 }
@@ -27,7 +27,7 @@ function MoveNitPickers() {
 }
 
 function MoveNitPicker(nitpickerindex) {
-    if(nitpickers[nitpickerindex]==jrposition){
+    if (nitpickers[nitpickerindex] == jrposition) {
         KillJunior();
     }
     switch (nitpickers[nitpickerindex]) {
@@ -42,13 +42,13 @@ function MoveNitPicker(nitpickerindex) {
 function DrawNitPickers() {
     $('.nitpicker').remove();
 
-    console.clear();
+    //console.clear();
     for (i = 0; i < nitpickers.length; i++) {
         if (nitpickers[i] != 0) {
             var $div = $("#gamebackground").append("<div id='sj" + nitpickers[i] +
                 "' class=\"spritecanvas nitpicker\" style='background-image: url(\"images\/np\/np" + nitpickers[i] + ".png\")'></div>");
         }
-        console.log(nitpickers[i]);
+        //console.log(nitpickers[i]);
     }
 }
 

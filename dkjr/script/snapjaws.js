@@ -13,7 +13,7 @@ function AddSnapJaw() {
     if (snapjaws.includes(snapjawstart)) {
         return;
     }
-    if (Math.floor(Math.random() * 100) < difficulty) {
+    if (Math.floor(Math.random() * 100) < difficulty && !snapjaws.includes(302) && !snapjaws.includes(303)) {
         snapjaws.push(snapjawstart);
     }
 }
@@ -63,13 +63,13 @@ function MoveSnapJaw(snapjawindex) {
 function DrawSnapJaws() {
     $('.snapjaw').remove();
     
-    //console.clear();
+    console.clear();
     for (i = 0; i < snapjaws.length; i++) {
         if (snapjaws[i] != 0) {
             var $div = $("#gamebackground").append("<div id='sj" + snapjaws[i] +
                 "' class=\"spritecanvas snapjaw\" style='background-image: url(\"images\/sj\/sj" + snapjaws[i] + ".png\")'></div>");
         }
-        //console.log(snapjaws[i]);
+        console.log(snapjaws[i]);
     }
 }
 function KillSnapJaw(snapJawPosition) {

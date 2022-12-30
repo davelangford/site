@@ -16,7 +16,10 @@ function ResetKey() {
 }
 
 function SwingKey() {
-    if (keyGrabbed) return;
+    if (keyGrabbed) {
+        $("#key").css("background-image", "");
+        return;
+    }
 
     if (keyPosition == 1) {
         swingDirection = "RIGHT";
@@ -39,6 +42,7 @@ function SwingKey() {
 }
 
 function DrawKey() {
+    $("#key").show();
     $("#key").css("background-image", "url(images/key/key" + keyPosition + ".png)");
 }
 
@@ -47,5 +51,6 @@ function KeyGrabbed() {
         jrposition = 402;
         DrawJunior();
         keyGrabbed = false;
-    }, 2000);
+        ResetCages();
+    }, 3000);
 }
