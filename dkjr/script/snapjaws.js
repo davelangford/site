@@ -38,7 +38,7 @@ function MoveSnapJaw(snapjawindex) {
     switch (snapjaws[snapjawindex]) {
         case 308:
             snapjaws[snapjawindex] = 107;
-            audio_sj_move.play();
+            AudioPlay(audio_sj_move);
             break;
         case 302:
         case 303:
@@ -47,7 +47,7 @@ function MoveSnapJaw(snapjawindex) {
         case 306:
         case 307:
             snapjaws[snapjawindex]++;
-            audio_sj_move.play();
+            AudioPlay(audio_sj_move);
             break;
         case 107:
         case 106:
@@ -56,7 +56,7 @@ function MoveSnapJaw(snapjawindex) {
         case 103:
         case 102:
             snapjaws[snapjawindex]--;
-            audio_sj_move.play();
+            AudioPlay(audio_sj_move);
             break;
         case 101:
             snapjaws.splice(snapjawindex, snapjawindex + 1);
@@ -78,7 +78,7 @@ function DrawSnapJaws() {
 }
 function KillSnapJaw(snapJawPosition) {
     if (snapjaws.includes(snapJawPosition)) {
-        audio_cage.play();
+        AudioPlay(audio_cage);
         snapjaws.splice(snapjaws.indexOf(snapJawPosition), 1);
     }
     DrawSnapJaws();

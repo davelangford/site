@@ -39,7 +39,7 @@ function MoveNitPicker(nitpickerindex) {
             break;
         default:
             nitpickers[nitpickerindex]++;
-            audio_np_move.play();
+            AudioPlay(audio_np_move);
     }
 }
 
@@ -59,7 +59,7 @@ function DrawNitPickers() {
 
 function KillNitPicker(nitPickerPosition) {
     if (nitpickers.includes(nitPickerPosition)) {
-        audio_cage.play();
+        AudioPlay(audio_cage);
         nitpickers.splice(nitpickers.indexOf(nitPickerPosition), 1);
     }
     DrawNitPickers();

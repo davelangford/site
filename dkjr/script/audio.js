@@ -29,3 +29,11 @@ $(document).ready(function () {
 
 
 });
+
+
+function AudioPlay (audioFile) 
+{
+    if (document.getElementById("muteCheckbox").checked == false) {
+        audioFile.play();
+    }
+}

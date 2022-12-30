@@ -72,7 +72,7 @@ function TryMove(direction) {
         case move.RIGHT:
             if (canMoveRight.includes(jrposition)) {
                 jrposition += 1;
-                audio_jr_move.play();
+                AudioPlay(audio_jr_move);
             }
             break;
         case move.LEFT:
@@ -83,7 +83,7 @@ function TryMove(direction) {
                         break;
                     default:
                         jrposition -= 1;
-                        audio_jr_move.play();
+                        AudioPlay(audio_jr_move);
                 }
             }
             break;
@@ -95,20 +95,20 @@ function TryMove(direction) {
                         break;
                     default:
                         jrposition += 100;
-                        audio_jr_move.play();
+                        AudioPlay(audio_jr_move);
                 }
             }
             break;
         case move.DOWN:
             if (canMoveDown.includes(jrposition)) {
                 jrposition -= 100;
-                audio_jr_move.play();
+                AudioPlay(audio_jr_move);
             }
             break;
         case move.JUMP:
             if (canJump.includes(jrposition)) {
                 jrposition += 100;
-                audio_jr_move.play();
+                AudioPlay(audio_jr_move);
             }
             break;
 
@@ -155,13 +155,13 @@ function FallCheck() {
                     AddCage();
                 } else {
                     jrposition = 402;
-        audio_jr_move.play();
+                    AudioPlay(audio_jr_move);
                     DrawJunior();
                 }
                 break;
             case 402:
                 jrposition = 102;
-                audio_jr_move.play();
+                AudioPlay(audio_jr_move);
                 DrawJunior();
                 if (cageCount == 4) {
                     ResetCages();
@@ -169,7 +169,7 @@ function FallCheck() {
                 break;
             default:
                 TryMove(move.DOWN);
-                audio_jr_move.play();
+                AudioPlay(audio_jr_move);
 
         }
 
@@ -182,11 +182,17 @@ function KillJunior() {
     }
 
     killingJunior = true;
-    audio_jr_kill.play();
+    AudioPlay(audio_jr_kill);
     $('#jr').hide(500).show(500).hide(500).show(500).hide(500).show(500);
 
     setTimeout(function () {
         Reset();
+
+        snapjaws = snapjaws.filter(function (value, index, arr) {
+            return value > 104;
+        });
+
+
         return Promise.resolve();
     }, 3000);
 }
