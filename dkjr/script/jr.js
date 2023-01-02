@@ -18,6 +18,8 @@ var canJump = [102, 103, 104, 105, 106, 107, 304, 305, 306];
 var inTheAir = [201, 203, 206, 402, 403, 404, 405];
 var deadPositions = [101];
 
+// todo: haptic feedback
+
 $(document).ready(function () {
     PreLoadImages();
     $("#btnRight").click(function () {
@@ -195,4 +197,13 @@ function KillJunior() {
 
         return Promise.resolve();
     }, 3000);
+}
+
+if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i)) {
+    /* iOS hides Safari address bar */
+    window.addEventListener("load", function () {
+        setTimeout(function () {
+            window.scrollTo(0, 1);
+        }, 1000);
+    });
 }
