@@ -263,14 +263,31 @@ function LoadColors() {
     for (var key in data) {
         ranges.push(key);
     }
+    const removeValues = ['Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c'];
+    ranges = ranges.filter(range => !removeValues.includes(range));
+
     rangeName = ranges[Math.floor(Math.random() * ranges.length)];
     var colors = [];
 
     colorCount = localStorage.getItem("colorCount") ? Number(localStorage.getItem("colorCount")) : colorCount;
 
-    for (var i = 0; i < colorCount; i++) {
-        var color = partial(rangeName)(map(i, 0, colorCount - 1, 0, 1));
-        colors.push(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
+    if (random(0, 100) < 80) {
+        for (var i = 0; i < colorCount; i++) {
+            var color = partial(rangeName)(map(i, 0, colorCount - 1, 0, 1));
+            colors.push(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
+        }
+    } else {
+        var startColor = GetRandomColor();
+        var endColor = GetRandomColor();
+
+        colors[0] = '#' + startColor;
+        for (var i = 1; i < colorCount - 1; i++) {
+            var r = parseCSSColor(startColor)[0] + (parseCSSColor(endColor)[0] - parseCSSColor(startColor)[0]) / colorCount * i;
+            var g = parseCSSColor(startColor)[1] + (parseCSSColor(endColor)[1] - parseCSSColor(startColor)[1]) / colorCount * i;
+            var b = parseCSSColor(startColor)[2] + (parseCSSColor(endColor)[2] - parseCSSColor(startColor)[2]) / colorCount * i;
+            colors[i] = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+        }
+        colors[colorCount - 1] = '#' + endColor;
     }
 
     var imageInt = GetRandomInt(1, 9);
