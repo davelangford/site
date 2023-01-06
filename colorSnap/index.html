@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- <meta name="apple-mobile-web-app-capable" content="yes" /> -->
+  <title>Color Snap</title>
+
+  <link rel="stylesheet" href="style/styles.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+  <script src="colormap/js-colormaps.js"></script>
+    
+
+  <script src="script/script.js"></script>
+  <script src="script/colorparser.js"></script>
+  <script src="script/touch-sortable.js"></script>
+</head>
+
+<body>
+  <div id="menu">
+    <label class="menu-nav__link newGame">New</label>
+    <label class="menu-nav__link colorCountDown" style="width: 1em;">-</label>
+    <label class="menu-nav__link colorCount" style=" width: 2em; text-align: center; background-color: transparent; color: #d5d5d5;">10</label>
+    <label class="menu-nav__link colorCountUp" style="width: 1em;">+</label>
+    <label class="menu-nav__link lock" style="width: 3em;">Lock</label>
+    <label class="menu-nav__link hint">Hint</label>
+  </div>
+  <div id="menuConfirm" style="display: none;">
+    <label class="menu-nav__link" style="text-align: center; background-color: transparent; color: #d5d5d5;">Clear current game?</label>
+    <label class="menu-nav__link confirmYes">Yes</label>
+    <label class="menu-nav__link confirmNo">No</label>
+  </div>
+  <div id='colorDiv' style="display: none;">
+    <ul id="sortable">
+    </ul>
+  </div>
+  <div id='completeOverlay'>
+  </div>
+  <div id='completeTick' style="display: none;">
+  </div>
+  <input type="checkbox" id="imageMode" name="imageMode" style="position: fixed; bottom: 10px; right: 10px;">
+
+</body>
+
+</html>
