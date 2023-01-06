@@ -246,6 +246,7 @@ function setup() {
     createCanvas(400, 400);
 }
 
+
 function LoadColors() {
     if (localStorage.getItem("imageMode") == null) {
         localStorage.setItem("imageMode", "false");
@@ -266,14 +267,14 @@ function LoadColors() {
     const removeValues = ['Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c'];
     ranges = ranges.filter(range => !removeValues.includes(range));
 
-    rangeName = ranges[Math.floor(Math.random() * ranges.length)];
+    rangeName = ranges[GetRandomInt(0, ranges.length)];
     var colors = [];
 
     colorCount = localStorage.getItem("colorCount") ? Number(localStorage.getItem("colorCount")) : colorCount;
 
-    if (random(0, 100) < 80) {
+    if (GetRandomInt(0, 100) < 80) {
         for (var i = 0; i < colorCount; i++) {
-            var color = partial(rangeName)(map(i, 0, colorCount - 1, 0, 1));
+            var color = partial(rangeName)(mapRange(i, 0, colorCount - 1, 0, 1));
             colors.push(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
         }
     } else {
@@ -338,6 +339,11 @@ function LoadColors() {
 
 }
 
+function mapRange(value, low1, high1, low2, high2) {
+    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+}
+
+
 function GetRandomBoolean() {
     return Math.random() < 0.25;
 }
@@ -359,17 +365,10 @@ function GetRandomHex(min, max) {
 
 function GetRandomColor() {
     var r, g, b;
-    var greyscale = GetRandomBoolean();
 
-    if (greyscale) {
-        r = GetRandomHex(30, 254);
-        g = r;
-        b = r;
-    } else {
         r = GetRandomHex(0, 254);
         g = GetRandomHex(0, 254);
         b = GetRandomHex(0, 254);
-    }
 
     return [r, g, b].join('');// Math.floor(Math.random() * 16777215).toString(16);
 }
