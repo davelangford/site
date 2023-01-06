@@ -57,7 +57,7 @@ function AddClickEvents() {
     });
 
     $('#imageMode').on('click', function () {
-        if (localStorage.getItem("imageMode") == 'false'){
+        if (localStorage.getItem("imageMode") == 'false') {
             localStorage.setItem("imageMode", "true");
         } else {
             localStorage.setItem("imageMode", "false");
@@ -242,7 +242,9 @@ function CheckResult() {
         return false;
     }
 }
-
+function setup() {
+    createCanvas(400, 400);
+}
 
 function LoadColors() {
     if (localStorage.getItem("imageMode") == null) {
@@ -258,34 +260,24 @@ function LoadColors() {
 
     var ranges = [];
     var rangeName;
-        for(var key in data)
-        {
-            ranges.push(key);
-        }
+    for (var key in data) {
+        ranges.push(key);
+    }
     rangeName = ranges[Math.floor(Math.random() * ranges.length)];
-    console.log(rangeName);
-
     var colors = [];
-    var startColor = GetRandomColor();
-    var endColor = GetRandomColor();
 
     colorCount = localStorage.getItem("colorCount") ? Number(localStorage.getItem("colorCount")) : colorCount;
 
-    colors[0] = '#' + startColor;
-    for (var i = 1; i < colorCount - 1; i++) {
-        var r = parseCSSColor(startColor)[0] + (parseCSSColor(endColor)[0] - parseCSSColor(startColor)[0]) / colorCount * i;
-        var g = parseCSSColor(startColor)[1] + (parseCSSColor(endColor)[1] - parseCSSColor(startColor)[1]) / colorCount * i;
-        var b = parseCSSColor(startColor)[2] + (parseCSSColor(endColor)[2] - parseCSSColor(startColor)[2]) / colorCount * i;
-        colors[i] = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+    for (var i = 0; i < colorCount; i++) {
+        var color = partial(rangeName)(map(i, 0, colorCount - 1, 0, 1));
+        colors.push(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
     }
-    colors[colorCount - 1] = '#' + endColor;
 
     var imageInt = GetRandomInt(1, 9);
 
     for (var i = 0; i <= colorCount - 1; i++) {
         var elem = document.createElement('li');
         $(elem).addClass("ui-state-default colorBar");
-        //$(elem).text("Item " + (i + 1));
         $(elem).attr('data-id', (i + 1));
         $(elem).css('background-color', colors[i])
             .css('height', (80 / (colorCount)) + 'vh')
@@ -293,11 +285,10 @@ function LoadColors() {
             .css("border-radius", (1 / colorCount * 20) + 'vh');
 
         if (localStorage.getItem("imageMode") == "true") {
-            $('#imageMode').prop( "checked", true );
+            $('#imageMode').prop("checked", true);
             $(elem).css("background-position", "0vh " + (80 / (colorCount) * -i) + "vh")
                 .css("background-image", "url(images/" + imageInt + ".jpg)");
         }
-        // $(elem).hide();
 
         $('#sortable').append(elem);
     }
