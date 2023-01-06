@@ -111,7 +111,7 @@ function RemoveClickEvents() {
 function ShowHint() {
     var idList = [];
     for (var i = 1; i <= colorCount; i++) {
-        if (Math.abs($($('.colorBar')[i]).attr("data-id") - $($('.colorBar')[i - 1]).attr("data-id")) > 1) {
+        if ($($('.colorBar')[i]).attr("data-id") != i+1) {
             idList.push(i);
         }
     }
@@ -120,13 +120,13 @@ function ShowHint() {
     // $($('.colorBar')[idList[j]]).css("box-shadow", "0px -1vh 3vh 0px #f00, inset -1px 3px 7px -2px #f00");
 
     for (var i = 0; i < idList.length; i++) {
-        $($('.colorBar')[idList[i]]).css("box-shadow", "0px -1vh 3vh 0px #f00, inset -1px 3px 7px -2px #f00");
+        $($('.colorBar')[idList[i]]).css("background-image", "url('images/cross.png')");
     }
     setTimeout(function () {
-        $('.colorBar').addClass('hintHide').css("box-shadow", "none");
+        $('.colorBar').addClass('hintHide');//.css("background-image", "");
     }, 500);
     setTimeout(function () {
-        $('.colorBar').removeClass('hintHide').css("box-shadow", "");
+        $('.colorBar').removeClass('hintHide').css("background-image", "");
     }, 1500);
 
     // $($('.colorBar')[idList[j]]).effect("highlight");
@@ -264,7 +264,7 @@ function LoadColors() {
     for (var key in data) {
         ranges.push(key);
     }
-    const removeValues = ['Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c'];
+    const removeValues = ['Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'Greys', 'binary', 'gist_gray', 'gist_yarg', 'gray' ];
     ranges = ranges.filter(range => !removeValues.includes(range));
 
     rangeName = ranges[GetRandomInt(0, ranges.length)];
@@ -273,11 +273,13 @@ function LoadColors() {
     colorCount = localStorage.getItem("colorCount") ? Number(localStorage.getItem("colorCount")) : colorCount;
 
     if (GetRandomInt(0, 100) < 80) {
+        $('#colorRange').text(rangeName);
         for (var i = 0; i < colorCount; i++) {
             var color = partial(rangeName)(mapRange(i, 0, colorCount - 1, 0, 1));
             colors.push(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
         }
     } else {
+        $('#colorRange').text('');
         var startColor = GetRandomColor();
         var endColor = GetRandomColor();
 

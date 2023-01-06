@@ -29,12 +29,14 @@ li {
   width: 100vw;  
 }
 
-.colorBar{
-  list-style: none;
-  left: 0px;
-  background-size: 100vw;
-  background-repeat: no-repeat;
-  /* position: absolute; */
+.colorBar {
+    list-style: none;
+    left: 0px;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    
+    /* position: absolute; */
 }
 
 /* .colorBarHidden {
@@ -138,5 +140,12 @@ li {
 }
 
 .hintHide {
-  transition: box-shadow 1.2s ease-in;
+    transition: box-shadow 1.2s ease-in;
+    transition: background-image 1.5s ease-in;
+}
+
+#colorRange {
+    position: absolute;
+    top: 0px;
+    right: 19px;
 }
