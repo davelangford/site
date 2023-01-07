@@ -68,7 +68,7 @@ li {
     top: 0px;
     display: none;
     background-color: white;
-    mix-blend-mode: color;
+    opacity: 0.5;
 }
 
 #completeTick {
@@ -146,7 +146,9 @@ li {
 
 #colorRange {
     position: absolute;
-    top: 0px;
-    right: 19px;
-    text-shadow: 0 0 4px white;
+    top: 5px;
+    right: 5px;
+    background: white;
+    padding: 2px 5px;
+    border-radius: 6px;
 }
