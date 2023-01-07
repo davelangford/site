@@ -60,15 +60,15 @@ li {
 }
 
 #completeOverlay {
-  width: 100vw;
-  height: 100vh;
-  z-index: 33333;
-  position: fixed;
-  left: 0px;
-  top: 0px;
-  display: none;
-  background-color: white;
-    
+    width: 100vw;
+    height: 100vh;
+    z-index: 33333;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    display: none;
+    background-color: white;
+    mix-blend-mode: color;
 }
 
 #completeTick {

@@ -1,12 +1,15 @@
 {
   "ExpandedNodes": [
     "",
+    "\\colorSnap",
+    "\\colorSnap\\colormap",
+    "\\colorSnap\\script",
+    "\\colorSnap\\style",
     "\\dkjr",
     "\\dkjr\\audio",
     "\\dkjr\\css",
     "\\dkjr\\script",
     "\\test"
   ],
-  "SelectedNode": "\\dkjr\\script\\jr.js",
   "PreviewInSolutionExplorer": false
 }
