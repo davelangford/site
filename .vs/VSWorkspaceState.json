@@ -2,7 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\colorSnap",
-    "\\colorSnap\\colormap",
+    "\\colorSnap\\images",
     "\\colorSnap\\script",
     "\\colorSnap\\style",
     "\\dkjr",
@@ -11,5 +11,6 @@
     "\\dkjr\\script",
     "\\test"
   ],
+  "SelectedNode": "\\colorSnap\\images\\7.jpg",
   "PreviewInSolutionExplorer": false
 }

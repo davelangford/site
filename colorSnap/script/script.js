@@ -14,6 +14,11 @@ function AddClickEvents() {
         ShowConfirm();
 
     });
+
+    $('#completeTick').on('click', function () {
+        ClickTick();
+    });
+    
     $('.colorCountDown').on('click', function () {
         if (colorCount <= 7) {
             return;
@@ -152,27 +157,30 @@ function EndGameSuccess() {
         $('#completeTick').show("slide", { direction: "right" }, 500);
         $('#completeOverlay').fadeTo(1000, 0.001, function () {
             $('#completeOverlay').fadeOut(2000, function () {
-                $('.colorBar').each(function () { $(this).hide("slide", { direction: "left" }, Math.random() * (1400 - 300) + 300) });
-                $('#colorDiv').hide("slide", { direction: "left" }, 1500);
-                $('#completeTick').hide("slide", { direction: "left" }, 700, function () {
-                    setTimeout(function () {
-                        try {
-                            LoadColors();
-                            if (CheckResult()) {
-                                EndGame();
-                            }
-                        }
-                        catch (err) {
-                            location.reload();
-                        }
-
-                    }, 800)
-                });
+                
             });
         });
     });
 }
 
+const ClickTick = () => {
+    $('.colorBar').each(function () { $(this).hide("slide", { direction: "left" }, Math.random() * (1400 - 300) + 300) });
+    $('#colorDiv').hide("slide", { direction: "left" }, 1500);
+    $('#completeTick').hide("slide", { direction: "left" }, 700, function () {
+        setTimeout(function () {
+            try {
+                LoadColors();
+                if (CheckResult()) {
+                    EndGame();
+                }
+            }
+            catch (err) {
+                location.reload();
+            }
+
+        }, 800)
+    });
+}
 
 function EndGame() {
     $('#menuConfirm').hide("slide", { direction: "left" }, 500);
