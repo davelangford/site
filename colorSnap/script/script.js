@@ -84,8 +84,8 @@ function LockBars() {
     $('#colorDiv').prepend($("ul").find("[data-id='1'")[0]);
     $('#colorDiv').append($("ul").find("[data-id='" + colorCount + "'")[0]);
 
-    $('.colorBar').first().addClass("colorBarLocked");
-    $('.colorBar').last().addClass("colorBarLocked");
+    $('.colorBar').first().append('<img src="images/lock.png" />');//.addClass("colorBarLocked");
+    $('.colorBar').last().append('<img src="images/lock.png" />');//.addClass("colorBarLocked");
 }
 
 function UnlockBars() {
@@ -277,6 +277,7 @@ function LoadColors() {
 
     rangeName = ranges[GetRandomInt(0, ranges.length)];
     var colors = [];
+    var colorsDarker = [];
 
     colorCount = localStorage.getItem("colorCount") ? Number(localStorage.getItem("colorCount")) : colorCount;
 
@@ -285,6 +286,7 @@ function LoadColors() {
         for (var i = 0; i < colorCount; i++) {
             var color = partial(rangeName)(mapRange(i, 0, colorCount - 1, 0, 1));
             colors.push(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
+            colorsDarker.push(`rgb(${Math.floor(color[0] * 0.3)}, ${Math.floor(color[1] * 0.3)}, ${Math.floor(color[2] * 0.3) })`);
         }
     } else {
         $('#colorRange').text('');
@@ -301,22 +303,15 @@ function LoadColors() {
         colors[colorCount - 1] = '#' + endColor;
     }
 
-    var imageInt = GetRandomInt(1, 9);
-
     for (var i = 0; i <= colorCount - 1; i++) {
         var elem = document.createElement('li');
         $(elem).addClass("ui-state-default colorBar");
         $(elem).attr('data-id', (i + 1));
-        $(elem).css('background-color', colors[i])
+        $(elem).css('background', colors[i])
+            .css('background', `linear-gradient(90deg, ${colorsDarker[i]} 0%, ${colors[i]} 8%, ${colors[i]} 92%, ${colorsDarker[i]} 100%)`)
             .css('height', (80 / (colorCount)) + 'vh')
             .css("display", "none")
             .css("border-radius", (1 / colorCount * 20) + 'vh');
-
-        if (localStorage.getItem("imageMode") == "true") {
-            $('#imageMode').prop("checked", true);
-            $(elem).css("background-position", "0vh " + (80 / (colorCount) * -i) + "vh")
-                .css("background-image", "url(images/" + imageInt + ".jpg)");
-        }
 
         $('#sortable').append(elem);
     }

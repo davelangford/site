@@ -1,32 +1,35 @@
 body {
-  padding: 0px;
-  margin: 0px;
-  background-color: black;
-  overflow: hidden;
-  position: fixed;
-  font-family: sans-serif;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: -moz-none;
-  -o-user-select: none;
-  user-select: none;
-  touch-action: none;
+    padding: 0px;
+    margin: 0px;
+    background-color: black;
+    overflow: hidden;
+    position: fixed;
+    font-family: sans-serif;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    user-select: none;
+    touch-action: none;
 }
+
 html {
-  position: fixed;
-  height: 101vh;
+    position: fixed;
+    height: 101vh;
 }
-ul { 
-  list-style-type: none;
-  margin-bottom: 10px;
-  padding: 0px;
-  margin: 0px;
- }
-li { 
-  list-style: none;
-  margin: 0px; 
-  padding: 0px; 
-  width: 100vw;  
+
+ul {
+    list-style-type: none;
+    margin-bottom: 10px;
+    padding: 0px;
+    margin: 0px;
+}
+
+li {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    width: 100vw;
 }
 
 .colorBar {
@@ -34,29 +37,20 @@ li {
     left: 0px;
     background-size: contain;
     background-repeat: no-repeat;
-
-    
     /* position: absolute; */
 }
 
-/* .colorBarHidden {
-    /* background-color: rgb(80 80 80) !important;
-    background-image: url(../images/hidden.png);
-    background-size: 100% 100%;
-    background-blend-mode: hard-light;
-    opacity: 0.7;
-    box-shadow: none;
-} */ 
 
-.colorBarLocked {
-  background-image: url(../images/lock.png);
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+
+.colorBar > img {
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
 #colorDiv {
-  height: 90%;
+    height: 90%;
 }
 
 #completeOverlay {
@@ -68,75 +62,75 @@ li {
     top: 0px;
     display: none;
     background-color: white;
-    opacity: 0.5;
+    opacity: 0.7;
 }
 
 #completeTick {
-  background-image: url('../images/tick.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: right;
-  width: 100vw;
-  height: 25vh;
-  z-index: 2;
-  position: fixed;
-  right: 0vw;
-  bottom: 0vw;
-  filter: drop-shadow(1vh 1vh 1vh #000);
+    background-image: url('../images/tick.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: right;
+    width: 100vw;
+    height: 25vh;
+    z-index: 2;
+    position: fixed;
+    right: 0vw;
+    bottom: 0vw;
+    filter: drop-shadow(1vh 1vh 1vh #000);
 }
 
 #divColorCountUp, #divColorCountDown {
-  position: fixed; 
-  right: 0px; 
-  top: 10vh; 
-  height: 5vh; 
-  width: 10vh;
-  cursor: pointer;
-  background-color: gainsboro;
+    position: fixed;
+    right: 0px;
+    top: 10vh;
+    height: 5vh;
+    width: 10vh;
+    cursor: pointer;
+    background-color: gainsboro;
 }
 
 #divColorCountUp {
-  top: 10vh;
+    top: 10vh;
 }
 
 #divColorCountDown {
-  top: 25vh;
+    top: 25vh;
 }
 
 #menu {
-  display: block;
-  position: fixed;
-  bottom: 0px;
-  width: 100vw;
-  height: 3em;
-  background-color: #565656;
-  text-align: center;
-  padding-top: 3px;
-  border-radius: 1em;
+    display: block;
+    position: fixed;
+    bottom: 0px;
+    width: 100vw;
+    height: 3em;
+    background-color: #565656;
+    text-align: center;
+    padding-top: 3px;
+    border-radius: 1em;
 }
 
 #menuConfirm {
-  display: block;
-  position: fixed;
-  bottom: 3em;
-  width: 100vw;
-  height: 3em;
-  background-color: #565656;
-  text-align: center;
-  padding-top: 3px;
-  border-radius: 1em;
+    display: block;
+    position: fixed;
+    bottom: 3em;
+    width: 100vw;
+    height: 3em;
+    background-color: #565656;
+    text-align: center;
+    padding-top: 3px;
+    border-radius: 1em;
 }
 
 .menu-nav__link {
-  background-color: #b5b5b5;
-  border: none;
-  color: black;
-  padding: 0.7em;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 17px;
-  border-radius: 0.5em;
+    background-color: #b5b5b5;
+    border: none;
+    color: black;
+    padding: 0.7em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 17px;
+    border-radius: 0.5em;
 }
 
 .hintHide {
