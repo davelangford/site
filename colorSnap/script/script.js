@@ -122,17 +122,19 @@ function ShowHint() {
     }
 
     for (var i = 0; i < idList.length; i++) {
+        //$('.colorBar').each(function () { $(this).hide("slide", { direction: "left" }, Math.random() * (1400 - 300) + 300) });
+        
         $($('.colorBar')[idList[i]]).css('position', 'relative').animate({
             width: '80vw',
-            left: '10vw'
-        });
+            left: '10vw',
+        }, GetRandomInt(0, 500));
     }
     setTimeout(function () {
         $('.colorBar').animate({
             width: '100vw',
             left: '0vw'
         });
-    }, 1000);
+    }, GetRandomInt(0, 500));
 }
 
 function NewGame() {
