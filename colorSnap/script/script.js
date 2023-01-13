@@ -1,8 +1,17 @@
 var colorCount = 9;
+const removeValues = ['gist_rainbow', 'gist_stern', 'flag', 'Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'Greys', 'binary', 'gist_gray', 'gist_yarg', 'gray'];
+var ranges = [];
+var rangeName;
+var startColor, endColor;
+var usingRangeName;
 
 $(document).ready(function () {
     AddClickEvents();
-    NewGame();
+    for (var key in data) {
+        ranges.push(key);
+    }
+    ranges = ranges.filter(range => !removeValues.includes(range));
+    NewGame(true);
 
 });
 
@@ -11,13 +20,8 @@ function AddClickEvents() {
         colorCount = colorCount + 2;
         localStorage.setItem("colorCount", colorCount);
         $('.colorCount').text(colorCount);
-        ShowConfirm();
-
-    });
-
-    $('#completeTick').on('click', function () {
-        ClickTick();
-
+        NewGame(false);
+        //ShowConfirm();
     });
 
     $('.colorCountDown').on('click', function () {
@@ -27,29 +31,19 @@ function AddClickEvents() {
         colorCount = colorCount - 2;
         localStorage.setItem("colorCount", colorCount);
         $('.colorCount').text(colorCount);
-        ShowConfirm();
-
-    });
-    $('.newGame').on('click', function () {
-        ShowConfirm();
-        //EndGame();
-    });
-    $('.lock').on('click', function () {
-        // if (localStorage.getItem("lock") == 'false') {
-        //     localStorage.setItem("lock", "true")
-        //     $('.lock').text('Lock');
-        // } else {
-        //     localStorage.setItem("lock", "false")
-        //     $('.lock').text('Unlock');
-        // }
-        // EndGame();
-        if (localStorage.getItem("lock") == 'false') {
-            LockBars();
-        } else {
-            UnlockBars();
-        }
+        NewGame(false);
         //ShowConfirm();
     });
+
+    $('#completeTick').on('click', function () {
+        ClickTick();
+    });
+
+    $('.newGame').on('click', function () {
+        NewGame(true);
+
+    });
+
     $('.hint').on('click', function () {
         ShowHint();
     });
@@ -61,22 +55,6 @@ function AddClickEvents() {
     $('.confirmYes').on('click', function () {
         EndGame();
     });
-
-    $('#imageMode').on('click', function () {
-        if (localStorage.getItem("imageMode") == 'false') {
-            localStorage.setItem("imageMode", "true");
-        } else {
-            localStorage.setItem("imageMode", "false");
-        }
-        EndGame();
-    });
-
-    //     if($("#isAgeSelected").is(':checked'))
-    //     $("#txtAge").show();  // checked
-    // else
-    //     $("#txtAge").hide();  // unchecked
-
-
 }
 
 function LockBars() {
@@ -103,16 +81,13 @@ function ShowConfirm() {
     });
 }
 
-
 function RemoveClickEvents() {
     $('.colorCountUp').off('click');
     $('.colorCountDown').off('click');
     $('.newGame').off('click');
     $('.lock').off('click');
     $('.hint').off('click');
-    $('#imageMode').off('click');
 }
-
 
 function ShowHint() {
     var idList = [];
@@ -137,9 +112,9 @@ function ShowHint() {
     });
 }
 
-function NewGame() {
+function NewGame(shouldLoadNewColorsAndSlideIn) {
     try {
-        LoadColors();
+        LoadColors(shouldLoadNewColorsAndSlideIn);
         if (CheckResult()) {
             EndGame();
         }
@@ -150,14 +125,12 @@ function NewGame() {
 }
 
 function EndGameSuccess() {
-    //$('#menuConfirm').hide("slide", { direction: "left" }, 500);
-
 
     $('.colorBar').each(function () {
         $(this).css('position', 'relative').animate({
-            width: '80vw',
-            left: '10vw',
-        }, mapRange($(this).attr('data-id'), 1, $('.colorBar').length, 100, 500));
+            width: '60vw',
+            left: '20vw',
+        }, mapRange($(this).attr('data-id'), 1, $('.colorBar').length, 100, 700));
     });
     setTimeout(function () {
         $('.colorBar').animate({
@@ -177,7 +150,7 @@ const ClickTick = () => {
     $('#completeTick').hide("slide", { direction: "left" }, 700, function () {
         setTimeout(function () {
             try {
-                LoadColors();
+                LoadColors(true);
                 if (CheckResult()) {
                     EndGame();
                 }
@@ -243,33 +216,28 @@ function setup() {
 }
 
 
-function LoadColors() {
-    if (localStorage.getItem("imageMode") == null) {
-        localStorage.setItem("imageMode", "false");
-    }
-
-    if (localStorage.getItem("lock") == null) {
-        localStorage.setItem("lock", "true");
-    }
+function LoadColors(shouldLoadNewColorsAndSlideIn) {
 
     $('.colorBar').remove();
     $('#completeOverlay').css("opacity", "");
 
-    var ranges = [];
-    var rangeName;
-    for (var key in data) {
-        ranges.push(key);
+    if (shouldLoadNewColorsAndSlideIn) {
+        rangeName = ranges[GetRandomInt(0, ranges.length)];
     }
-    const removeValues = ['Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'Greys', 'binary', 'gist_gray', 'gist_yarg', 'gray'];
-    ranges = ranges.filter(range => !removeValues.includes(range));
-
-    rangeName = ranges[GetRandomInt(0, ranges.length)];
     var colors = [];
     var colorsDarker = [];
 
     colorCount = localStorage.getItem("colorCount") ? Number(localStorage.getItem("colorCount")) : colorCount;
 
-    if (GetRandomInt(0, 100) < 80) {
+    if (shouldLoadNewColorsAndSlideIn) {
+        if (GetRandomInt(0, 100) < 80) {
+            usingRangeName = true;
+        } else {
+            usingRangeName = false;
+        }
+    }
+
+    if (usingRangeName) {
         $('#colorRange').text(rangeName);
         for (var i = 0; i < colorCount; i++) {
             var color = partial(rangeName)(mapRange(i, 0, colorCount - 1, 0, 1));
@@ -277,10 +245,12 @@ function LoadColors() {
             colorsDarker.push(`rgb(${Math.floor(color[0] * 0.9)}, ${Math.floor(color[1] * 0.9)}, ${Math.floor(color[2] * 0.9)})`);
         }
     } else {
-        $('#colorRange').text('');
-        var startColor = GetRandomColor();
-        var endColor = GetRandomColor();
-
+        $('#colorRange').text('random');
+        if (shouldLoadNewColorsAndSlideIn) {
+            startColor = GetRandomColor();
+            endColor = GetRandomColor();
+        }
+            
         colors[0] = '#' + startColor;
         for (var i = 1; i < colorCount - 1; i++) {
             var r = parseCSSColor(startColor)[0] + (parseCSSColor(endColor)[0] - parseCSSColor(startColor)[0]) / colorCount * i;
@@ -314,8 +284,12 @@ function LoadColors() {
     }
 
     $('#colorDiv').show();
-    $('.colorBar').each(function () { $(this).show("slide", { direction: "right" }, Math.random() * (1200 - 200) + 200) });
-    $('.colorBar').show();
+    if (shouldLoadNewColorsAndSlideIn) {
+        $('.colorBar').each(function () { $(this).show("slide", { direction: "right" }, GetRandomInt(200, 1000)) });
+        $('.colorBar').show();
+    } else {
+        $('.colorBar').show();
+    }
 
     localStorage.setItem("colorCount", colorCount);
     $('.colorCount').text(colorCount);
