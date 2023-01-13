@@ -17,8 +17,9 @@ function AddClickEvents() {
 
     $('#completeTick').on('click', function () {
         ClickTick();
+
     });
-    
+
     $('.colorCountDown').on('click', function () {
         if (colorCount <= 7) {
             return;
@@ -116,25 +117,24 @@ function RemoveClickEvents() {
 function ShowHint() {
     var idList = [];
     for (var i = 1; i <= colorCount; i++) {
-        if ($($('.colorBar')[i]).attr("data-id") != i+1) {
+        if ($($('.colorBar')[i]).attr("data-id") != i + 1) {
             idList.push(i);
         }
     }
 
     for (var i = 0; i < idList.length; i++) {
-        //$('.colorBar').each(function () { $(this).hide("slide", { direction: "left" }, Math.random() * (1400 - 300) + 300) });
-        
+
         $($('.colorBar')[idList[i]]).css('position', 'relative').animate({
             width: '80vw',
             left: '10vw',
-        }, GetRandomInt(0, 500));
+        }, GetRandomInt(200, 500));
     }
     setTimeout(function () {
         $('.colorBar').animate({
             width: '100vw',
             left: '0vw'
-        });
-    }, GetRandomInt(0, 500));
+        }, GetRandomInt(500, 1000));
+    });
 }
 
 function NewGame() {
@@ -150,20 +150,30 @@ function NewGame() {
 }
 
 function EndGameSuccess() {
-    $('#menuConfirm').hide("slide", { direction: "left" }, 500);
-    $('#completeOverlay').fadeIn(50, function () {
-        $('#completeTick').show("slide", { direction: "right" }, 500);
-        $('#completeOverlay').fadeTo(1000, 0.001, function () {
-            $('#completeOverlay').fadeOut(1000, function () {
-                
-            });
-        });
+    //$('#menuConfirm').hide("slide", { direction: "left" }, 500);
+
+
+    $('.colorBar').each(function () {
+        $(this).css('position', 'relative').animate({
+            width: '80vw',
+            left: '10vw',
+        }, mapRange($(this).attr('data-id'), 1, $('.colorBar').length, 100, 500));
     });
+    setTimeout(function () {
+        $('.colorBar').animate({
+            width: '100vw',
+            left: '0vw'
+        }, 200);
+    });
+
+
+    $('#completeTick').show("slide", { direction: "right" }, 500);
 }
 
 const ClickTick = () => {
     $('.colorBar').each(function () { $(this).hide("slide", { direction: "left" }, Math.random() * (1400 - 300) + 300) });
     $('#colorDiv').hide("slide", { direction: "left" }, 1500);
+    $('#colorRange').hide("slide", { direction: "left" }, 200);
     $('#completeTick').hide("slide", { direction: "left" }, 700, function () {
         setTimeout(function () {
             try {
@@ -187,22 +197,8 @@ function EndGame() {
     $('.colorBar').each(function () { $(this).hide("slide", { direction: "left" }, Math.random() * (1400 - 300) + 300) });
     $('#colorDiv').hide("slide", { direction: "left" }, 1500, function () {
         setTimeout(function () {
-            // try {
-            //     LoadColors();
-            //     if (CheckResult()) {
-            //         EndGame();
-            //     }
-            // }
-            // catch (err) {
-            //     location.reload();
-            // }
             location.reload();
         }, 800);
-
-        // setTimeout(function () {
-        //     AddClickEvents();
-
-        // }, 2000);
     });
 
 }
@@ -220,12 +216,6 @@ function CheckResult() {
         }
 
         backwardCorrect = false;
-        // for (var i = 1; i < colorCount; i++) {
-        //     if ($("[data-id=" + i + "]")[0] != $('.colorBar')[colorCount - i]) {
-        //         backwardCorrect = false;
-        //         break;
-        //     }
-        // }
 
     } else {
         for (var i = 2; i <= colorCount - 2; i++) {
@@ -270,7 +260,7 @@ function LoadColors() {
     for (var key in data) {
         ranges.push(key);
     }
-    const removeValues = ['Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'Greys', 'binary', 'gist_gray', 'gist_yarg', 'gray' ];
+    const removeValues = ['Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'Greys', 'binary', 'gist_gray', 'gist_yarg', 'gray'];
     ranges = ranges.filter(range => !removeValues.includes(range));
 
     rangeName = ranges[GetRandomInt(0, ranges.length)];
@@ -284,7 +274,7 @@ function LoadColors() {
         for (var i = 0; i < colorCount; i++) {
             var color = partial(rangeName)(mapRange(i, 0, colorCount - 1, 0, 1));
             colors.push(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
-            colorsDarker.push(`rgb(${Math.floor(color[0] * 0.1)}, ${Math.floor(color[1] * 0.1)}, ${Math.floor(color[2] * 0.1) })`);
+            colorsDarker.push(`rgb(${Math.floor(color[0] * 0.9)}, ${Math.floor(color[1] * 0.9)}, ${Math.floor(color[2] * 0.9)})`);
         }
     } else {
         $('#colorRange').text('');
@@ -329,6 +319,7 @@ function LoadColors() {
 
     localStorage.setItem("colorCount", colorCount);
     $('.colorCount').text(colorCount);
+    $('#colorRange').show("slide", { direction: "left" }, 200);
     setTimeout(function () {
         $("#sortable").sortable({
             onComplete: function (ul) {
@@ -369,9 +360,9 @@ function GetRandomHex(min, max) {
 function GetRandomColor() {
     var r, g, b;
 
-        r = GetRandomHex(0, 254);
-        g = GetRandomHex(0, 254);
-        b = GetRandomHex(0, 254);
+    r = GetRandomHex(0, 254);
+    g = GetRandomHex(0, 254);
+    b = GetRandomHex(0, 254);
 
     return [r, g, b].join('');// Math.floor(Math.random() * 16777215).toString(16);
 }

@@ -23,6 +23,7 @@ ul {
     margin-bottom: 10px;
     padding: 0px;
     margin: 0px;
+    width: 100vw;
 }
 
 li {
@@ -117,18 +118,6 @@ li {
     padding-top: 3px;
     border-radius: 1em;
 }
-
-/*.menu-nav__link {
-    background-color: #b5b5b5;
-    border: none;
-    color: black;
-    padding: 0.7em;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 17px;
-    border-radius: 0.5em;
-}*/
 
 .hintHide {
     transition: box-shadow 1.2s ease-in;
