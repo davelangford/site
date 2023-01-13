@@ -40,7 +40,8 @@ function AddClickEvents() {
     });
 
     $('.newGame').on('click', function () {
-        NewGame(true);
+        //NewGame(true);
+        EndGame();
 
     });
 
@@ -285,7 +286,7 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
 
     $('#colorDiv').show();
     if (shouldLoadNewColorsAndSlideIn) {
-        $('.colorBar').each(function () { $(this).show("slide", { direction: "right" }, GetRandomInt(200, 1000)) });
+        $('.colorBar').each(function () { $(this).show("slide", { direction: "right" }, GetRandomInt(500, 1200)) });
         $('.colorBar').show();
     } else {
         $('.colorBar').show();
