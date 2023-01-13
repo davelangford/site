@@ -63,13 +63,10 @@ li {
     display: none;
     background-color: white;
     opacity: 0.7;
+    text-align: right;
 }
 
 #completeTick {
-    background-image: url('../images/tick.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: right;
     width: 100vw;
     height: 25vh;
     z-index: 2;
@@ -77,9 +74,10 @@ li {
     right: 0vw;
     bottom: 0vw;
     filter: drop-shadow(1vh 1vh 1vh #000);
+    text-align: right;
 }
 
-#divColorCountUp, #divColorCountDown {
+/*#divColorCountUp, #divColorCountDown {
     position: fixed;
     right: 0px;
     top: 10vh;
@@ -95,7 +93,7 @@ li {
 
 #divColorCountDown {
     top: 25vh;
-}
+}*/
 
 #menu {
     display: block;
@@ -106,7 +104,6 @@ li {
     background-color: #565656;
     text-align: center;
     padding-top: 3px;
-    border-radius: 1em;
 }
 
 #menuConfirm {
@@ -121,7 +118,7 @@ li {
     border-radius: 1em;
 }
 
-.menu-nav__link {
+/*.menu-nav__link {
     background-color: #b5b5b5;
     border: none;
     color: black;
@@ -131,7 +128,7 @@ li {
     display: inline-block;
     font-size: 17px;
     border-radius: 0.5em;
-}
+}*/
 
 .hintHide {
     transition: box-shadow 1.2s ease-in;

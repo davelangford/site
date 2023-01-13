@@ -121,22 +121,18 @@ function ShowHint() {
         }
     }
 
-    // var j = GetRandomInt(0, idList.length-1);
-    // $($('.colorBar')[idList[j]]).css("box-shadow", "0px -1vh 3vh 0px #f00, inset -1px 3px 7px -2px #f00");
-
     for (var i = 0; i < idList.length; i++) {
-        $($('.colorBar')[idList[i]]).css("background-image", "url('images/cross.png')");
+        $($('.colorBar')[idList[i]]).css('position', 'relative').animate({
+            width: '80vw',
+            left: '10vw'
+        });
     }
     setTimeout(function () {
-        $('.colorBar').addClass('hintHide');//.css("background-image", "");
-    }, 500);
-    setTimeout(function () {
-        $('.colorBar').removeClass('hintHide').css("background-image", "");
-    }, 1500);
-
-    // $($('.colorBar')[idList[j]]).effect("highlight");
-    // $($('.colorBar')[idList[j]-1]).effect("highlight");
-
+        $('.colorBar').animate({
+            width: '100vw',
+            left: '0vw'
+        });
+    }, 1000);
 }
 
 function NewGame() {
@@ -156,7 +152,7 @@ function EndGameSuccess() {
     $('#completeOverlay').fadeIn(50, function () {
         $('#completeTick').show("slide", { direction: "right" }, 500);
         $('#completeOverlay').fadeTo(1000, 0.001, function () {
-            $('#completeOverlay').fadeOut(2000, function () {
+            $('#completeOverlay').fadeOut(1000, function () {
                 
             });
         });
@@ -286,7 +282,7 @@ function LoadColors() {
         for (var i = 0; i < colorCount; i++) {
             var color = partial(rangeName)(mapRange(i, 0, colorCount - 1, 0, 1));
             colors.push(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
-            colorsDarker.push(`rgb(${Math.floor(color[0] * 0.3)}, ${Math.floor(color[1] * 0.3)}, ${Math.floor(color[2] * 0.3) })`);
+            colorsDarker.push(`rgb(${Math.floor(color[0] * 0.1)}, ${Math.floor(color[1] * 0.1)}, ${Math.floor(color[2] * 0.1) })`);
         }
     } else {
         $('#colorRange').text('');
@@ -308,7 +304,7 @@ function LoadColors() {
         $(elem).addClass("ui-state-default colorBar");
         $(elem).attr('data-id', (i + 1));
         $(elem).css('background', colors[i])
-            .css('background', `linear-gradient(90deg, ${colorsDarker[i]} 0%, ${colors[i]} 8%, ${colors[i]} 92%, ${colorsDarker[i]} 100%)`)
+            .css('background', `linear-gradient(90deg, ${colorsDarker[i]} 0%, ${colors[i]} 2%, ${colors[i]} 98%, ${colorsDarker[i]} 100%)`)
             .css('height', (80 / (colorCount)) + 'vh')
             .css("display", "none")
             .css("border-radius", (1 / colorCount * 20) + 'vh');
