@@ -69,7 +69,7 @@ li {
 #completeTick {
     width: 100vw;
     height: 25vh;
-    z-index: 2;
+    z-index: 44444;
     position: fixed;
     right: 0vw;
     bottom: 0vw;
