@@ -303,8 +303,13 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
                 }
             }
         });
-    }, 1500);
+// this works great when- and +
+    }, (shouldLoadNewColorsAndSlideIn ? 2000 : 0));
 
+
+    // this works when refreshing or new game
+//}, 2000);
+        
 
 }
 
