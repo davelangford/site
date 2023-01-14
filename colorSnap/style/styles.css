@@ -66,6 +66,8 @@ li {
     color: inherit;
     background-color: inherit;
     z-index: 9999999999;
+    bottom: 15vh;
+    position: fixed;
 }
 
 #menu {
