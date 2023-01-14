@@ -4,7 +4,7 @@ const removeValues = ['gist_ncar', 'nipy_spectral', 'cubehelix', 'prism', 'twili
 var ranges = [];
 var rangeName;
 var startColor, endColor;
-var startHue;
+var startHue = 0, endHue = 355;
 var startLuminance;
 var usingRangeName;
 var colors = [];
@@ -42,7 +42,8 @@ function AddClickEvents() {
     });
 
     $('#completeTick').on('click', function () {
-        ClickTick();
+        EndGame();
+        //ClickTick();
     });
 
     $('.newGame').on('click', function () {
@@ -136,8 +137,9 @@ function SlideElementsLeft() {
     var p2 = $('.colorBar').each(function () { $(this).hide("slide", { direction: "left" }, Math.random() * (1400 - 300) + 300).promise() });
     var p3 = $('#colorDiv').hide("slide", { direction: "left" }, 1500).promise();
     var p4 = $('#colorRange').hide("slide", { direction: "left" }, 200).promise();
-
-    return $.when(p1, p2, p3, p4).then(function () { });
+    var p5 = $('#completeTick').hide("slide", { direction: "left" }, 700).promise();
+    
+    return $.when(p1, p2, p3, p4, p5).then(function () { });
 }
 
 const ClickTick = () => {
@@ -212,11 +214,11 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
             case (rndWeight <= 20):
                 colors = LoadColorsWithRandomStartAndEnd(shouldLoadNewColorsAndSlideIn);
                 break;
-            case (rndWeight <= 77):
+            case (rndWeight <= 70):
                 colors = LoadColorsWithRandomStartAndComplimentaryEnd(shouldLoadNewColorsAndSlideIn);
                 break;
             case (rndWeight <= 100):
-                colors = LoadColorsFromRange(shouldLoadNewColorsAndSlideIn);
+                colors = LoadColorsAchromaticWithRandomStartHueAndRandomEndHue(shouldLoadNewColorsAndSlideIn);
                 break;
             default:
                 break;
@@ -267,15 +269,32 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
     }
 }
 
+function LoadColorsAchromaticWithRandomStartHueAndRandomEndHue(shouldLoadNewColorsAndSlideIn) {
+    var newColors = [];
+
+    if (shouldLoadNewColorsAndSlideIn) {
+            startHue = GetRandomInt(0, 359);
+            endHue = startHue + GetRandomInt(90, 250);
+    }
+
+    $('#colorRange').text(`a_sh${startHue}.eh${endHue}`);
+
+    for (var i = 1; i <= colorCount; i++) {
+        newColors.push(`hsl(${mapRange(i, 1, colorCount,startHue, endHue)},100%,50%)`);
+    }
+
+    return newColors;
+}
+
 function LoadColorsWithRandomStartAndComplimentaryEnd(shouldLoadNewColorsAndSlideIn) {
     var newColors = [];
 
     if (shouldLoadNewColorsAndSlideIn) {
         startHue = GetRandomInt(0, 359);
-        startLuminance = GetRandomInt(5, 80);
+        startLuminance = GetRandomInt(5, 70);
     }
 
-    $('#colorRange').text('complimentary1');
+    $('#colorRange').text(`c_h${startHue}.l${startLuminance}`);
 
     for (var i = 1; i <= colorCount; i++) {
         newColors.push(getComplimentaryHSLColorAtPointInGradient(startHue, i / colorCount, startLuminance));
