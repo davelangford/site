@@ -13,12 +13,47 @@
                 var complimentaryHue = (hue + 180) % 360;
                 var gradient = "linear-gradient(to right, hsl(" + hue + ",100%,50%), white, hsl(" + complimentaryHue + ",100%,50%))";
                 $("#gradient-box").css("background", gradient);
+
+                $('.color-box2').remove();
+            for (var i = 0; i <= 20; i++) {
+                $("#first-column").append("<div class='color-box2' style='background-color: " + getComplimentaryHSLColorAtPointInGradient(hue, i/20) + "; '></div>");
+            }
             });
+
         });
+
+        function getComplimentaryHue(hue) {
+            return (hue + 180) % 360;
+        }
+
+        function getComplimentaryHSLColorAtPointInGradient(hue, point) {
+            var complimentaryHue = getComplimentaryHue(hue);
+            var color;
+
+            //var newHue = mapRange(point, 0, 1, hue, complimentaryHue);
+            //return "hsl(" + newHue + ",100%,50%)";
+            
+            if (point < 0.5) {
+                color = "hsl(" + hue + ",100%," + (5) + "%)";
+            }
+            else if (point >= 0.5) {
+                color = "hsl(" + complimentaryHue + ",100%," + (5) + "%)";
+            }
+            return color;
+        }
+
+        function mapRange(value, low1, high1, low2, high2) {
+            return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+        }
+    
     </script>
     <style>
         .color-box {
             height: 2px !important;
+        }
+
+        .color-box2 {
+            height: 20px !important;
         }
 
         #gradient-box {

@@ -4,7 +4,12 @@ const removeValues = ['gist_ncar', 'nipy_spectral', 'cubehelix', 'prism', 'twili
 var ranges = [];
 var rangeName;
 var startColor, endColor;
+var startHue;
+var startLuminance;
 var usingRangeName;
+var colors = [];
+var rndWeight;
+
 
 $(document).ready(function () {
     AddClickEvents();
@@ -48,14 +53,6 @@ function AddClickEvents() {
 
     $('.hint').on('click', function () {
         ShowHint();
-    });
-
-    $('.confirmNo').on('click', function () {
-        $('#menuConfirm').hide("slide", { direction: "right" }, 500);
-    });
-
-    $('.confirmYes').on('click', function () {
-        EndGame();
     });
 }
 
@@ -108,6 +105,7 @@ function NewGame(shouldLoadNewColorsAndSlideIn) {
         }
     }
     catch (err) {
+        alert(err);
         location.reload();
     }
 }
@@ -133,37 +131,29 @@ function EndGameSuccess() {
     $('#completeTick').show("slide", { direction: "down" }, 200);
 }
 
-const ClickTick = () => {
-    $('.colorBar').each(function () { $(this).hide("slide", { direction: "left" }, Math.random() * (1400 - 300) + 300) });
-    $('#colorDiv').hide("slide", { direction: "left" }, 1500);
-    $('#colorRange').hide("slide", { direction: "left" }, 200);
-    $('#completeTick').hide("slide", { direction: "left" }, 700, function () {
-        setTimeout(function () {
-            try {
-                LoadColors(true);
-                if (CheckResult()) {
-                    EndGame();
-                }
-            }
-            catch (err) {
-                location.reload();
-            }
+function SlideElementsLeft() {
+    var p1 = $('#gameCountLifetime').hide("slide", { direction: "left" }, 500).promise();
+    var p2 = $('.colorBar').each(function () { $(this).hide("slide", { direction: "left" }, Math.random() * (1400 - 300) + 300).promise() });
+    var p3 = $('#colorDiv').hide("slide", { direction: "left" }, 1500).promise();
+    var p4 = $('#colorRange').hide("slide", { direction: "left" }, 200).promise();
 
-        }, 800)
-    });
+    return $.when(p1, p2, p3, p4).then(function () { });
+}
+
+const ClickTick = () => {
+
+    $('#completeTick').hide("slide", { direction: "left" }, 700);
+        SlideElementsLeft().then(function () {
+            LoadColors(true);
+        });
 }
 
 function EndGame() {
-    $('#gameCountLifetime').hide("slide", { direction: "left" }, 500);
-
     RemoveClickEvents();
-    $('.colorBar').each(function () { $(this).hide("slide", { direction: "left" }, Math.random() * (1400 - 300) + 300) });
-    $('#colorDiv').hide("slide", { direction: "left" }, 1500, function () {
-        setTimeout(function () {
-            location.reload();
-        }, 800);
+    SlideElementsLeft().then(function () {
+        LoadColors(true);
+        AddClickEvents();
     });
-
 }
 
 function CheckResult() {
@@ -178,6 +168,8 @@ function CheckResult() {
 function DisplayGameCount() {
     $('#gameCountLifetime').text(localStorage.getItem("gameCountLifetime") ? Number(localStorage.getItem("gameCountLifetime")) : 0);
     $('#gameCountLifetime').css('color', getFontColorBasedOnBackground(rgbToHex($($('.colorBar')[0]).css("background-color"))));
+    $('#gameCountLifetime').show("slide", { direction: "left" }, 200);
+
 }
 
 function rgbToHex(rgb) {
@@ -208,106 +200,129 @@ function UpdateGameCount() {
     }
 }
 function LoadColors(shouldLoadNewColorsAndSlideIn) {
+    try {
+        $('.colorBar').remove();
 
-    $('.colorBar').remove();
+        colorCount = localStorage.getItem("colorCount") ? Number(localStorage.getItem("colorCount")) : colorCount;
 
-    if (shouldLoadNewColorsAndSlideIn) {
-        rangeName = ranges[GetRandomInt(0, ranges.length)];
-    }
-    var colors = [];
-
-    colorCount = localStorage.getItem("colorCount") ? Number(localStorage.getItem("colorCount")) : colorCount;
-
-    if (shouldLoadNewColorsAndSlideIn) {
-        var rnd = GetRandomInt(0, 100);
+        if (shouldLoadNewColorsAndSlideIn) {
+            rndWeight = GetRandomInt(0, 100);
+        }
         switch (true) {
-            case (rnd <= 33):
-                usingRangeName = false;
+            case (rndWeight <= 33):
+                colors = LoadColorsWithRandomStartAndEnd(shouldLoadNewColorsAndSlideIn);
                 break;
-            case (rnd <= 66):
-                usingRangeName = true;
+            case (rndWeight <= 66):
+                colors = LoadColorsWithRandomStartAndComplimentaryEnd(shouldLoadNewColorsAndSlideIn);
                 break;
-            case (rnd <= 100):
-                usingRangeName = true;
+            case (rndWeight <= 100):
+                colors = LoadColorsFromRange(shouldLoadNewColorsAndSlideIn);
                 break;
             default:
                 break;
         }
 
-        
+        for (var i = 0; i <= colorCount - 1; i++) {
+            var elem = document.createElement('li');
+            $(elem).addClass("ui-state-default colorBar");
+            $(elem).attr('data-id', (i + 1));
+            $(elem).css('background', colors[i])
+                .css('height', (80 / (colorCount)) + 'vh')
+                .css("display", "none")
+                .css("border-radius", (1 / colorCount * 20) + 'vh');
+
+            $('#sortable').append(elem);
+        }
+
+        DisplayGameCount();
+
+        $('#sortable').shuffleChildren();
+        $('#sortable').shuffleChildren();
+
+        LockBars()
+
+        $('#colorDiv').show();
+        if (shouldLoadNewColorsAndSlideIn) {
+            $('.colorBar').each(function () { $(this).show("slide", { direction: "right" }, GetRandomInt(500, 1200)) });
+            $('.colorBar').show();
+        } else {
+            $('.colorBar').show();
+        }
+
+        localStorage.setItem("colorCount", colorCount);
+        $('.colorCount').text(colorCount);
+        $('#colorRange').show("slide", { direction: "left" }, 200);
+        setTimeout(function () {
+            $("#sortable").sortable({
+                onComplete: function (ul) {
+                    if (CheckResult()) {
+                        EndGameSuccess();
+                    }
+                }
+            });
+        }, (shouldLoadNewColorsAndSlideIn ? 1300 : 0));
+
+    } catch (err) {
+        alert('LoadColors(): ' + err);
+    }
+}
+
+function LoadColorsWithRandomStartAndComplimentaryEnd(shouldLoadNewColorsAndSlideIn) {
+    var newColors = [];
+
+    if (shouldLoadNewColorsAndSlideIn) {
+        startHue = GetRandomInt(0, 359);
+        startLuminance = GetRandomInt(5, 80);
     }
 
-    if (usingRangeName) {
+    $('#colorRange').text('complimentary1');
+
+    for (var i = 1; i <= colorCount; i++) {
+        newColors.push(getComplimentaryHSLColorAtPointInGradient(startHue, i / colorCount, startLuminance));
+    }
+
+    return newColors;
+}
+
+function LoadColorsWithRandomStartAndEnd(shouldLoadNewColorsAndSlideIn) {
+    var newColors = [];
+    if (shouldLoadNewColorsAndSlideIn) {
+        startColor = GetRandomColor();
+        endColor = GetRandomColor();
+    }
+
+    $('#colorRange').text('random1');
+
+    newColors[0] = '#' + startColor;
+    for (var i = 1; i < colorCount - 1; i++) {
+        var r = parseCSSColor(startColor)[0] + (parseCSSColor(endColor)[0] - parseCSSColor(startColor)[0]) / colorCount * i;
+        var g = parseCSSColor(startColor)[1] + (parseCSSColor(endColor)[1] - parseCSSColor(startColor)[1]) / colorCount * i;
+        var b = parseCSSColor(startColor)[2] + (parseCSSColor(endColor)[2] - parseCSSColor(startColor)[2]) / colorCount * i;
+        newColors[i] = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+    }
+    newColors[colorCount - 1] = '#' + endColor;
+
+    return newColors;
+}
+
+function LoadColorsFromRange(shouldLoadNewColorsAndSlideIn) {
+    try {
+
+        var newColors = [];
+        if (shouldLoadNewColorsAndSlideIn) {
+            rangeName = ranges[GetRandomInt(0, ranges.length)];
+        }
         $('#colorRange').text(rangeName);
         for (var i = 0; i < colorCount; i++) {
             var color = partial(rangeName)(mapRange(i, 0, colorCount - 1, 0, 1));
-            colors.push(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
+            newColors.push(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
         }
-    } else {
-        $('#colorRange').text('random');
-        if (shouldLoadNewColorsAndSlideIn) {
-            startColor = GetRandomColor();
-            endColor = GetRandomColor();
-        }
+        return newColors;
+    } catch (err) {
+        alert('LoadColorsFromRange(): ' + err);
 
-        colors[0] = '#' + startColor;
-        for (var i = 1; i < colorCount - 1; i++) {
-            var r = parseCSSColor(startColor)[0] + (parseCSSColor(endColor)[0] - parseCSSColor(startColor)[0]) / colorCount * i;
-            var g = parseCSSColor(startColor)[1] + (parseCSSColor(endColor)[1] - parseCSSColor(startColor)[1]) / colorCount * i;
-            var b = parseCSSColor(startColor)[2] + (parseCSSColor(endColor)[2] - parseCSSColor(startColor)[2]) / colorCount * i;
-            colors[i] = 'rgb(' + r + ', ' + g + ', ' + b + ')';
-        }
-        colors[colorCount - 1] = '#' + endColor;
     }
-
-    for (var i = 0; i <= colorCount - 1; i++) {
-        var elem = document.createElement('li');
-        $(elem).addClass("ui-state-default colorBar");
-        $(elem).attr('data-id', (i + 1));
-        $(elem).css('background', colors[i])
-            .css('height', (80 / (colorCount)) + 'vh')
-            .css("display", "none")
-            .css("border-radius", (1 / colorCount * 20) + 'vh');
-
-        $('#sortable').append(elem);
-    }
-
-    DisplayGameCount();
-
-    $('#sortable').shuffleChildren();
-    $('#sortable').shuffleChildren();
-
-    LockBars()
-
-    $('#colorDiv').show();
-    if (shouldLoadNewColorsAndSlideIn) {
-        $('.colorBar').each(function () { $(this).show("slide", { direction: "right" }, GetRandomInt(500, 1200)) });
-        $('.colorBar').show();
-    } else {
-        $('.colorBar').show();
-    }
-
-    localStorage.setItem("colorCount", colorCount);
-    $('.colorCount').text(colorCount);
-    $('#colorRange').show("slide", { direction: "left" }, 200);
-    setTimeout(function () {
-        $("#sortable").sortable({
-            onComplete: function (ul) {
-                if (CheckResult()) {
-                    EndGameSuccess();
-                }
-            }
-        });
-        // this works great when- and +
-    }, (shouldLoadNewColorsAndSlideIn ? 1300 : 0));
-
-
-    // this works when refreshing or new game
-    //}, 2000);
-
-
 }
-
 function mapRange(value, low1, high1, low2, high2) {
     return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 }
@@ -355,3 +370,22 @@ $.fn.shuffleChildren = function () {
         $find.appendTo($el);
     });
 };
+
+function getComplimentaryHue(hue) {
+    return (hue + 180) % 360;
+}
+
+function getComplimentaryHSLColorAtPointInGradient(hue, point, startingLuminance = 50) {
+    var complimentaryHue = getComplimentaryHue(hue);
+    var color;
+    //var newHue = mapRange(point, 0, 1, hue, complimentaryHue);
+    //return "hsl(" + newHue + ",100%,50%)";
+
+    if (point <= 0.5) {
+        color = "hsl(" + hue + ",100%," + mapRange(point, 0, 0.5, startingLuminance, 100) + "%)";
+    }
+    else if (point > 0.5) {
+        color = "hsl(" + complimentaryHue + ",100%," + mapRange(0.5, point, 0, 100, startingLuminance) + "%)";
+    }
+    return color;
+}
