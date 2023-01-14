@@ -209,10 +209,10 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
             rndWeight = GetRandomInt(0, 100);
         }
         switch (true) {
-            case (rndWeight <= 33):
+            case (rndWeight <= 20):
                 colors = LoadColorsWithRandomStartAndEnd(shouldLoadNewColorsAndSlideIn);
                 break;
-            case (rndWeight <= 66):
+            case (rndWeight <= 77):
                 colors = LoadColorsWithRandomStartAndComplimentaryEnd(shouldLoadNewColorsAndSlideIn);
                 break;
             case (rndWeight <= 100):
