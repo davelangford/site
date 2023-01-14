@@ -57,47 +57,16 @@ li {
     height: 90%;
 }
 
-#completeOverlay {
-    width: 100vw;
-    height: 100vh;
-    z-index: 33333;
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    display: none;
-    background-color: white;
-    opacity: 0.7;
-    text-align: right;
-}
-
 #completeTick {
-    width: 100vw;
-    height: 25vh;
-    z-index: 44444;
-    position: fixed;
-    right: 0vw;
-    bottom: 0vw;
-    filter: drop-shadow(1vh 1vh 1vh #000);
-    text-align: right;
-}
+    color: #fff !important;
+    background-color: #4CAF50 !important;
+    width: 37vw;
 
-/*#divColorCountUp, #divColorCountDown {
-    position: fixed;
-    right: 0px;
-    top: 10vh;
-    height: 5vh;
-    width: 10vh;
-    cursor: pointer;
-    background-color: gainsboro;
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: inherit;
+    background-color: inherit;
 }
-
-#divColorCountUp {
-    top: 10vh;
-}
-
-#divColorCountDown {
-    top: 25vh;
-}*/
 
 #menu {
     display: block;
@@ -108,23 +77,6 @@ li {
     background-color: #565656;
     text-align: center;
     padding-top: 3px;
-}
-
-#menuConfirm {
-    display: block;
-    position: fixed;
-    bottom: 3em;
-    width: 100vw;
-    height: 3em;
-    background-color: #565656;
-    text-align: center;
-    padding-top: 3px;
-    border-radius: 1em;
-}
-
-.hintHide {
-    transition: box-shadow 1.2s ease-in;
-    transition: background-image 1.5s ease-in;
 }
 
 #colorRange {
@@ -143,7 +95,7 @@ li {
     border: none;
     display: inline-block;
     color: #000;
-    font-size: 1.5em;
+    font-size: 1em;
 }
 
 

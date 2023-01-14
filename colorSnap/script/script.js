@@ -1,6 +1,6 @@
 var colorCount = 9;
 var gameCountLifetime = 0;
-const removeValues = ['prism', 'twilight', 'hsv', 'gist_rainbow', 'gist_stern', 'flag', 'Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'Greys', 'binary', 'gist_gray', 'gist_yarg', 'gray'];
+const removeValues = ['cubehelix', 'prism', 'twilight', 'twilight_shifted', 'hsv', 'gist_rainbow', 'gist_stern', 'flag', 'Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'Greys', 'binary', 'gist_gray', 'gist_yarg', 'gray'];
 var ranges = [];
 var rangeName;
 var startColor, endColor;
@@ -144,7 +144,7 @@ function EndGameSuccess() {
     });
 
 
-    $('#completeTick').show("slide", { direction: "right" }, 500);
+    $('#completeTick').show("slide", { direction: "down" }, 200);
 }
 
 const ClickTick = () => {
@@ -224,7 +224,6 @@ function UpdateGameCount() {
 function LoadColors(shouldLoadNewColorsAndSlideIn) {
 
     $('.colorBar').remove();
-    $('#completeOverlay').css("opacity", "");
 
     if (shouldLoadNewColorsAndSlideIn) {
         rangeName = ranges[GetRandomInt(0, ranges.length)];
