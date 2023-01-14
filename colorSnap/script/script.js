@@ -1,5 +1,6 @@
 var colorCount = 9;
-const removeValues = ['gist_rainbow', 'gist_stern', 'flag', 'Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'Greys', 'binary', 'gist_gray', 'gist_yarg', 'gray'];
+var gameCountLifetime = 0;
+const removeValues = ['hsv', 'gist_rainbow', 'gist_stern', 'flag', 'Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'Greys', 'binary', 'gist_gray', 'gist_yarg', 'gray'];
 var ranges = [];
 var rangeName;
 var startColor, endColor;
@@ -126,6 +127,8 @@ function NewGame(shouldLoadNewColorsAndSlideIn) {
 }
 
 function EndGameSuccess() {
+    UpdateGameCount();
+    DisplayGameCount();
 
     $('.colorBar').each(function () {
         $(this).css('position', 'relative').animate({
@@ -178,45 +181,26 @@ function EndGame() {
 }
 
 function CheckResult() {
-    var forwardCorrect = true;
-    var backwardCorrect = true;
-
-    if (localStorage.getItem("lock") == "true") {
-        for (var i = 1; i <= colorCount; i++) {
-            if ($("[data-id=" + i + "]")[0] != $('.colorBar')[i - 1]) {
-                forwardCorrect = false;
-                break;
-            }
-        }
-
-        backwardCorrect = false;
-
-    } else {
-        for (var i = 2; i <= colorCount - 2; i++) {
-            if ($("[data-id=" + i + "]")[0] != $('.colorBar')[i - 1]) {
-                forwardCorrect = false;
-                break;
-            }
-        }
-        for (var i = 2; i < colorCount; i++) {
-            if ($("[data-id=" + i + "]")[0] != $('.colorBar')[colorCount - i]) {
-                backwardCorrect = false;
-                break;
-            }
+    for (var i = 1; i <= colorCount; i++) {
+        if ($("[data-id=" + i + "]")[0] != $('.colorBar')[i - 1]) {
+            return false;
         }
     }
+    return true;
+}
 
-    if (forwardCorrect || backwardCorrect) {
-        return true;
+function DisplayGameCount() {
+    $('#gameCountLifetime').text(localStorage.getItem("gameCountLifetime") ? Number(localStorage.getItem("gameCountLifetime")) : 0);
+}
+
+function UpdateGameCount() {
+    let gameCount = localStorage.getItem("gameCountLifetime");
+    if (gameCount === null) {
+        localStorage.setItem("gameCountLifetime", 1);
     } else {
-        return false;
+        localStorage.setItem("gameCountLifetime", parseInt(gameCount) + 1);
     }
 }
-function setup() {
-    createCanvas(400, 400);
-}
-
-
 function LoadColors(shouldLoadNewColorsAndSlideIn) {
 
     $('.colorBar').remove();
@@ -229,6 +213,7 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
     var colorsDarker = [];
 
     colorCount = localStorage.getItem("colorCount") ? Number(localStorage.getItem("colorCount")) : colorCount;
+    DisplayGameCount();
 
     if (shouldLoadNewColorsAndSlideIn) {
         if (GetRandomInt(0, 100) < 80) {
@@ -251,7 +236,7 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
             startColor = GetRandomColor();
             endColor = GetRandomColor();
         }
-            
+
         colors[0] = '#' + startColor;
         for (var i = 1; i < colorCount - 1; i++) {
             var r = parseCSSColor(startColor)[0] + (parseCSSColor(endColor)[0] - parseCSSColor(startColor)[0]) / colorCount * i;
@@ -303,13 +288,13 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
                 }
             }
         });
-// this works great when- and +
-    }, (shouldLoadNewColorsAndSlideIn ? 2000 : 0));
+        // this works great when- and +
+    }, (shouldLoadNewColorsAndSlideIn ? 1300 : 0));
 
 
     // this works when refreshing or new game
-//}, 2000);
-        
+    //}, 2000);
+
 
 }
 

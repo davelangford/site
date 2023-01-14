@@ -132,3 +132,12 @@ li {
     padding: 2px 5px;
     border-radius: 6px;
 }
+
+#gameCountLifetime {
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
+    background: white;
+    padding: 2px 5px;
+    border-radius: 6px;
+}
