@@ -5,7 +5,7 @@
     <script>
         $(document).ready(function () {
             for (var i = 0; i <= 360; i++) {
-                $("#first-column").append("<div class='color-box' data-hue='" + i + "' style='background-color: hsl(" + i + ", 100%, 50%); height: 10px; width: 30vw;'></div>");
+                $("#first-column").append("<div class='color-box' data-hue='" + i + "' style='background-color: hsl(" + i + ", 100%, 50%); '></div>");
             }
             $("#second-column").append("<div id='gradient-box' style=''></div>");
             $(".color-box").click(function () {
@@ -18,11 +18,15 @@
     </script>
     <style>
         .color-box {
-            display: inline-block;
+            height: 2px !important;
         }
 
         #gradient-box {
-            display: inline-block;
+            height: 10px;
+            width: 30vw;
+            background: linear-gradient(to right, rgb(255, 34, 0), white, rgb(0, 221, 255));
+            position: fixed;
+            top: 0px;
         }
     </style>
 </head>
