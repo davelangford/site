@@ -69,20 +69,6 @@ function LockBars() {
     $('.colorBar').last().append('<img src="images/lock.png" />');//.addClass("colorBarLocked");
 }
 
-function UnlockBars() {
-    localStorage.setItem("lock", "false")
-    $('.lock').text("Lock");
-    $('.colorBar').first().removeClass("colorBarLocked");
-    $('.colorBar').last().removeClass("colorBarLocked");
-}
-
-function ShowConfirm() {
-    RemoveClickEvents();
-    $('#menuConfirm').show("slide", { direction: "right" }, 500, function () {
-        AddClickEvents();
-    });
-}
-
 function RemoveClickEvents() {
     $('.colorCountUp').off('click');
     $('.colorCountDown').off('click');
@@ -280,11 +266,7 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
     $('#sortable').shuffleChildren();
     $('#sortable').shuffleChildren();
 
-    if (localStorage.getItem("lock") == "true") {
-        LockBars()
-    } else {
-        UnlockBars();
-    }
+    LockBars()
 
     $('#colorDiv').show();
     if (shouldLoadNewColorsAndSlideIn) {
