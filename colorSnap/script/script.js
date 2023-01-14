@@ -1,6 +1,6 @@
 var colorCount = 9;
 var gameCountLifetime = 0;
-const removeValues = ['nipy_spectral', 'cubehelix', 'prism', 'twilight', 'twilight_shifted', 'hsv', 'gist_rainbow', 'gist_stern', 'flag', 'Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'Greys', 'binary', 'gist_gray', 'gist_yarg', 'gray'];
+const removeValues = ['gist_ncar', 'nipy_spectral', 'cubehelix', 'prism', 'twilight', 'twilight_shifted', 'hsv', 'gist_rainbow', 'gist_stern', 'flag', 'Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'Greys', 'binary', 'gist_gray', 'gist_yarg', 'gray'];
 var ranges = [];
 var rangeName;
 var startColor, endColor;
@@ -219,11 +219,22 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
     colorCount = localStorage.getItem("colorCount") ? Number(localStorage.getItem("colorCount")) : colorCount;
 
     if (shouldLoadNewColorsAndSlideIn) {
-        if (GetRandomInt(0, 100) < 80) {
-            usingRangeName = true;
-        } else {
-            usingRangeName = false;
+        var rnd = GetRandomInt(0, 100);
+        switch (true) {
+            case (rnd <= 33):
+                usingRangeName = false;
+                break;
+            case (rnd <= 66):
+                usingRangeName = true;
+                break;
+            case (rnd <= 100):
+                usingRangeName = true;
+                break;
+            default:
+                break;
         }
+
+        
     }
 
     if (usingRangeName) {
