@@ -1,6 +1,6 @@
 var colorCount = 9;
 var gameCountLifetime = 0;
-const removeValues = ['hsv', 'gist_rainbow', 'gist_stern', 'flag', 'Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'Greys', 'binary', 'gist_gray', 'gist_yarg', 'gray'];
+const removeValues = ['prism', 'twilight', 'hsv', 'gist_rainbow', 'gist_stern', 'flag', 'Pastel1', 'Pastel2', 'Paired', 'Accent', 'Dark2', 'Set1', 'Set2', 'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'Greys', 'binary', 'gist_gray', 'gist_yarg', 'gray'];
 var ranges = [];
 var rangeName;
 var startColor, endColor;
@@ -168,7 +168,7 @@ const ClickTick = () => {
 }
 
 function EndGame() {
-    $('#menuConfirm').hide("slide", { direction: "left" }, 500);
+    $('#gameCountLifetime').hide("slide", { direction: "left" }, 500);
 
     RemoveClickEvents();
     $('.colorBar').each(function () { $(this).hide("slide", { direction: "left" }, Math.random() * (1400 - 300) + 300) });
@@ -191,6 +191,26 @@ function CheckResult() {
 
 function DisplayGameCount() {
     $('#gameCountLifetime').text(localStorage.getItem("gameCountLifetime") ? Number(localStorage.getItem("gameCountLifetime")) : 0);
+    $('#gameCountLifetime').css('color', getFontColorBasedOnBackground(rgbToHex($($('.colorBar')[0]).css("background-color"))));
+}
+
+function rgbToHex(rgb) {
+    let parts = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    delete (parts[0]);
+    for (let i = 1; i <= 3; ++i) {
+        parts[i] = parseInt(parts[i]).toString(16);
+        if (parts[i].length == 1) parts[i] = '0' + parts[i];
+    }
+    return '#' + parts.join('');
+}
+
+function getFontColorBasedOnBackground(hexcolor) {
+    hexcolor = hexcolor.replace("#", "");
+    var r = parseInt(hexcolor.substr(0, 2), 16);
+    var g = parseInt(hexcolor.substr(2, 2), 16);
+    var b = parseInt(hexcolor.substr(4, 2), 16);
+    var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    return (yiq >= 128) ? '#000000' : '#FFFFFF';
 }
 
 function UpdateGameCount() {
@@ -210,10 +230,8 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
         rangeName = ranges[GetRandomInt(0, ranges.length)];
     }
     var colors = [];
-    var colorsDarker = [];
 
     colorCount = localStorage.getItem("colorCount") ? Number(localStorage.getItem("colorCount")) : colorCount;
-    DisplayGameCount();
 
     if (shouldLoadNewColorsAndSlideIn) {
         if (GetRandomInt(0, 100) < 80) {
@@ -228,7 +246,6 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
         for (var i = 0; i < colorCount; i++) {
             var color = partial(rangeName)(mapRange(i, 0, colorCount - 1, 0, 1));
             colors.push(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
-            colorsDarker.push(`rgb(${Math.floor(color[0] * 0.9)}, ${Math.floor(color[1] * 0.9)}, ${Math.floor(color[2] * 0.9)})`);
         }
     } else {
         $('#colorRange').text('random');
@@ -252,13 +269,14 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
         $(elem).addClass("ui-state-default colorBar");
         $(elem).attr('data-id', (i + 1));
         $(elem).css('background', colors[i])
-            .css('background', `linear-gradient(90deg, ${colorsDarker[i]} 0%, ${colors[i]} 2%, ${colors[i]} 98%, ${colorsDarker[i]} 100%)`)
             .css('height', (80 / (colorCount)) + 'vh')
             .css("display", "none")
             .css("border-radius", (1 / colorCount * 20) + 'vh');
 
         $('#sortable').append(elem);
     }
+
+    DisplayGameCount();
 
     $('#sortable').shuffleChildren();
     $('#sortable').shuffleChildren();

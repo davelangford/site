@@ -18,6 +18,9 @@ html {
     height: 101vh;
 }
 
+
+
+
 ul {
     list-style-type: none;
     margin-bottom: 10px;
@@ -135,9 +138,23 @@ li {
 
 #gameCountLifetime {
     position: fixed;
-    bottom: 5px;
+    top: 5px;
     left: 5px;
-    background: white;
-    padding: 2px 5px;
-    border-radius: 6px;
+    border: none;
+    display: inline-block;
+    color: #000;
+    font-size: 1.5em;
+}
+
+
+
+.menu-nav__link {
+    border: none;
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: inherit;
+    background-color: inherit;
+    color: #fff;
+    background-color: #000;
 }

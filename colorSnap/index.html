@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- <meta name="apple-mobile-web-app-capable" content="yes" /> -->
     <title>Color Snap</title>
 
     <link rel="stylesheet" href="style/styles.css">
@@ -13,7 +12,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script src="colormap/js-colormaps.js"></script>
-    <!--<script src="https://cdn.jsdelivr.net/npm/p5@1/lib/p5.min.js"></script>-->
 
 
     <script src="script/script.js"></script>
@@ -23,18 +21,12 @@
 
 <body>
     <div id="menu">
-        <label class="menu-nav__link newGame w3-button w3-round-large w3-black">New</label>
-        <label class="menu-nav__link colorCountDown w3-button w3-round-large w3-black" style="min-width: 2em">-</label>
-        <label class="menu-nav__link colorCount w3-button" style="color: white">10</label>
-        <label class="menu-nav__link colorCountUp w3-button w3-round-large w3-black">+</label>
-        <!--<label class="menu-nav__link lock" style="width: 3em;">Lock</label>-->
-        <label class="menu-nav__link hint w3-button w3-round-large w3-black">Hint</label>
+        <label class="menu-nav__link newGame">New</label>
+        <label class="menu-nav__link colorCountDown" style="min-width: 2em">-</label>
+        <label class="menu-nav__link colorCount" style="color: white">10</label>
+        <label class="menu-nav__link colorCountUp">+</label>
+        <label class="menu-nav__link hint">Hint</label>
     </div>
-    <!--<div id="menuConfirm" style="display: none;">
-        <label class="menu-nav__link" style="text-align: center; background-color: transparent; color: #d5d5d5;">Clear current game?</label>
-        <label class="menu-nav__link confirmYes w3-button w3-round-large w3-black">Yes</label>
-        <label class="menu-nav__link confirmNo w3-button w3-round-large w3-black">No</label>
-    </div>-->
     <div id='colorDiv' style="display: none;">
         <ul id="sortable">
         </ul>
