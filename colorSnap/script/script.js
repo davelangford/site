@@ -48,6 +48,8 @@ function AddClickEvents() {
 
     $('.newGame').on('click', function () {
         //NewGame(true);
+        $('.newGame').css("background-color", "");
+
         EndGame();
 
     });
@@ -128,8 +130,14 @@ function EndGameSuccess() {
         }, 200);
     });
 
-
-    $('#completeTick').show("slide", { direction: "down" }, 200);
+    var interval = setInterval(function () {
+        var currentBG = $('.newGame').css("background-color");
+        $('.newGame').css("background-color", currentBG == "rgb(0, 0, 0)" ? "#4CAF50" : "black");
+    }, 200);
+    setTimeout(function () {
+        clearInterval(interval);
+        $('.newGame').css("background-color", "#4CAF50");
+    }, 2000);
 }
 
 function SlideElementsLeft() {
@@ -138,16 +146,16 @@ function SlideElementsLeft() {
     var p3 = $('#colorDiv').hide("slide", { direction: "left" }, 1500).promise();
     var p4 = $('#colorRange').hide("slide", { direction: "left" }, 200).promise();
     var p5 = $('#completeTick').hide("slide", { direction: "left" }, 700).promise();
-    
+
     return $.when(p1, p2, p3, p4, p5).then(function () { });
 }
 
 const ClickTick = () => {
 
     $('#completeTick').hide("slide", { direction: "left" }, 700);
-        SlideElementsLeft().then(function () {
-            LoadColors(true);
-        });
+    SlideElementsLeft().then(function () {
+        LoadColors(true);
+    });
 }
 
 function EndGame() {
@@ -273,14 +281,14 @@ function LoadColorsAchromaticWithRandomStartHueAndRandomEndHue(shouldLoadNewColo
     var newColors = [];
 
     if (shouldLoadNewColorsAndSlideIn) {
-            startHue = GetRandomInt(0, 359);
-            endHue = startHue + GetRandomInt(90, 250);
+        startHue = GetRandomInt(0, 359);
+        endHue = startHue + GetRandomInt(90, 250);
     }
 
     $('#colorRange').text(`a_sh${startHue}.eh${endHue}`);
 
     for (var i = 1; i <= colorCount; i++) {
-        newColors.push(`hsl(${mapRange(i, 1, colorCount,startHue, endHue)},100%,50%)`);
+        newColors.push(`hsl(${mapRange(i, 1, colorCount, startHue, endHue)},100%,50%)`);
     }
 
     return newColors;
