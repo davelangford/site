@@ -6,6 +6,7 @@ var rangeName;
 var startColor, endColor;
 var startHue = 0, endHue = 355;
 var startLuminance;
+var startSaturation;
 var usingRangeName;
 var colors = [];
 var rndWeight;
@@ -227,8 +228,14 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
             case (rndWeight <= 20):
                 colors = LoadColorsWithRandomStartAndEnd(shouldLoadNewColorsAndSlideIn);
                 break;
-            case (rndWeight <= 70):
+            case (rndWeight <= 60):
                 colors = LoadColorsWithRandomStartAndComplimentaryEnd(shouldLoadNewColorsAndSlideIn);
+                break;
+            case (rndWeight <= 70):
+                colors = LoadColorsWithRandomStartAndWhiteEnd(shouldLoadNewColorsAndSlideIn);
+                break;
+            case (rndWeight <= 80):
+                colors = LoadColorsWithRandomStartAndBlackEnd(shouldLoadNewColorsAndSlideIn);
                 break;
             case (rndWeight <= 100):
                 colors = LoadColorsAchromaticWithRandomStartHueAndRandomEndHue(shouldLoadNewColorsAndSlideIn);
@@ -313,6 +320,44 @@ function LoadColorsWithRandomStartAndComplimentaryEnd(shouldLoadNewColorsAndSlid
 
     for (var i = 1; i <= colorCount; i++) {
         newColors.push(getComplimentaryHSLColorAtPointInGradient(startHue, i / colorCount, startLuminance));
+    }
+
+    return newColors;
+}
+
+function LoadColorsWithRandomStartAndWhiteEnd(shouldLoadNewColorsAndSlideIn) {
+    var newColors = [];
+
+
+    if (shouldLoadNewColorsAndSlideIn) {
+        startHue = GetRandomInt(0, 359);
+        startSaturation = GetRandomInt(50, 100);
+        startLuminance = GetRandomInt(10, 60);
+    }
+
+    $('#colorRange').text(`w_h${startHue}.s${startSaturation}`);
+
+    for (var i = 1; i <= colorCount; i++) {
+        newColors.push(`hsl(${startHue}, ${startSaturation}%, ${mapRange(i, 1, colorCount, startLuminance, 100)}%)`);
+    }
+
+    return newColors;
+}
+
+function LoadColorsWithRandomStartAndBlackEnd(shouldLoadNewColorsAndSlideIn) {
+    var newColors = [];
+
+
+    if (shouldLoadNewColorsAndSlideIn) {
+        startHue = GetRandomInt(0, 359);
+        startSaturation = GetRandomInt(50, 100);
+        startLuminance = GetRandomInt(40, 100);
+    }
+
+    $('#colorRange').text(`b_h${startHue}.s${startSaturation}`);
+
+    for (var i = 1; i <= colorCount; i++) {
+        newColors.push(`hsl(${startHue}, ${startSaturation}%, ${mapRange(i, 1, colorCount, startLuminance, 6)}%)`);
     }
 
     return newColors;
