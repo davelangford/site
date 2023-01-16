@@ -243,7 +243,11 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
             default:
                 break;
         }
-
+        if (GetRandomBoolean()) {
+            colors = colors.reverse();
+            $('#colorRange').text($('#colorRange').text() + '_r')
+        }
+        
         for (var i = 0; i <= colorCount - 1; i++) {
             var elem = document.createElement('li');
             $(elem).addClass("ui-state-default colorBar");
@@ -258,8 +262,7 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
 
         DisplayGameCount();
 
-        $('#sortable').shuffleChildren();
-        $('#sortable').shuffleChildren();
+        ShuffleBars();
 
         LockBars()
 
@@ -289,6 +292,14 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
     } catch (err) {
         alert('LoadColors(): ' + err);
     }
+}
+
+function ShuffleBars() {
+
+    $('#sortable').shuffleChildren();
+    //$('#sortable').shuffleChildren();
+
+    
 }
 
 function LoadColorsAchromaticWithRandomStartHueAndRandomEndHue(shouldLoadNewColorsAndSlideIn) {
