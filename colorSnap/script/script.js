@@ -225,20 +225,20 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
             rndWeight = GetRandomInt(0, 100);
         }
         switch (true) {
-            case (rndWeight <= 20):
-                colors = LoadColorsWithRandomStartAndEnd(shouldLoadNewColorsAndSlideIn);
+            case (rndWeight <= 30): // 1
+                colors = LoadColorsWithRandomCentreBlackStartAndWhiteEnd(shouldLoadNewColorsAndSlideIn);
                 break;
-            case (rndWeight <= 60):
-                colors = LoadColorsWithRandomStartAndComplimentaryEnd(shouldLoadNewColorsAndSlideIn);
+            case (rndWeight <= 60): // 2
+                colors = LoadColorsAchromaticWithRandomStartHueAndRandomEndHue(shouldLoadNewColorsAndSlideIn);
                 break;
-            case (rndWeight <= 70):
+            case (rndWeight <= 75): //3
                 colors = LoadColorsWithRandomStartAndWhiteEnd(shouldLoadNewColorsAndSlideIn);
                 break;
-            case (rndWeight <= 80):
+            case (rndWeight <= 90): //3
                 colors = LoadColorsWithRandomStartAndBlackEnd(shouldLoadNewColorsAndSlideIn);
                 break;
-            case (rndWeight <= 100):
-                colors = LoadColorsAchromaticWithRandomStartHueAndRandomEndHue(shouldLoadNewColorsAndSlideIn);
+            case (rndWeight <= 100): // 5
+                colors = LoadColorsWithRandomStartAndComplimentaryEnd(shouldLoadNewColorsAndSlideIn);
                 break;
             default:
                 break;
@@ -324,7 +324,7 @@ function LoadColorsWithRandomStartAndComplimentaryEnd(shouldLoadNewColorsAndSlid
 
     if (shouldLoadNewColorsAndSlideIn) {
         startHue = GetRandomInt(0, 359);
-        startLuminance = GetRandomInt(5, 70);
+        startLuminance = 50;// GetRandomInt(5, 70);
     }
 
     $('#colorRange').text(`c_h${startHue}.l${startLuminance}`);
@@ -369,6 +369,23 @@ function LoadColorsWithRandomStartAndBlackEnd(shouldLoadNewColorsAndSlideIn) {
 
     for (var i = 1; i <= colorCount; i++) {
         newColors.push(`hsl(${startHue}, ${startSaturation}%, ${mapRange(i, 1, colorCount, startLuminance, 6)}%)`);
+    }
+
+    return newColors;
+}
+
+function LoadColorsWithRandomCentreBlackStartAndWhiteEnd(shouldLoadNewColorsAndSlideIn) {
+    var newColors = [];
+
+
+    if (shouldLoadNewColorsAndSlideIn) {
+        startHue = GetRandomInt(0, 359);
+    }
+
+    $('#colorRange').text(`bw_h${startHue}`);
+
+    for (var i = 1; i <= colorCount; i++) {
+        newColors.push(`hsl(${startHue}, 100%, ${mapRange(i, 1, colorCount, 0, 100)}%)`);
     }
 
     return newColors;
