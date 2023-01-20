@@ -296,11 +296,25 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
 
 function ShuffleBars() {
 
-    $('#sortable').shuffleChildren();
+    $('#sortable').shuffleChildren2();
     //$('#sortable').shuffleChildren();
 
     
 }
+
+$.fn.shuffleChildren2 = function () {
+    $.each(this.get(), function (index, el) {
+        var $el = $(el);
+        var $find = $el.children();
+
+        $find.sort(function () {
+            return 0.5 - Math.random();
+        });
+
+        $el.empty();
+        $find.appendTo($el);
+    });
+};
 
 function LoadColorsAchromaticWithRandomStartHueAndRandomEndHue(shouldLoadNewColorsAndSlideIn) {
     var newColors = [];
