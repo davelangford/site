@@ -149,10 +149,10 @@ function SlideElementsLeft() {
     var p1 = $('#gameCountLifetime').hide("slide", { direction: "left" }, 500).promise();
     var p2 = $('.colorBar').each(function () { $(this).hide("slide", { direction: "left" }, Math.random() * (1400 - 300) + 300).promise() });
     var p3 = $('#colorDiv').hide("slide", { direction: "left" }, 1500).promise();
-    var p4 = $('#colorRange').hide("slide", { direction: "right" }, 200).promise();
+    //var p4 = $('#colorRange').hide("slide", { direction: "right" }, 200).promise();
     var p5 = $('#completeTick').hide("slide", { direction: "left" }, 700).promise();
 
-    return $.when(p1, p2, p3, p4, p5).then(function () { });
+    return $.when(p1, p2, p3,  p5).then(function () { });
 }
 
 const ClickTick = () => {
@@ -182,7 +182,7 @@ function CheckResult() {
 
 function DisplayGameCount() {
     $('#gameCountLifetime').text(localStorage.getItem("gameCountLifetime") ? Number(localStorage.getItem("gameCountLifetime")) : 0);
-    $('#gameCountLifetime').css('color', getFontColorBasedOnBackground(rgbToHex($($('.colorBar')[0]).css("background-color"))));
+    //$('#gameCountLifetime').css('color', getFontColorBasedOnBackground(rgbToHex($($('.colorBar')[0]).css("background-color"))));
     $('#gameCountLifetime').show("slide", { direction: "left" }, 200);
     $('#colorRange').css('color', getFontColorBasedOnBackground(rgbToHex($($('.colorBar')[0]).css("background-color"))));
 
@@ -276,7 +276,7 @@ function LoadColors(shouldLoadNewColorsAndSlideIn) {
 
         localStorage.setItem("colorCount", colorCount);
         $('.colorCount').text(colorCount);
-        $('#colorRange').show("slide", { direction: "right" }, 200);
+        //$('#colorRange').show("slide", { direction: "right" }, 200);
         setTimeout(function () {
             $('.newGame').css("background-color", "");
 

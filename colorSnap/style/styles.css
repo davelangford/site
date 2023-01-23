@@ -87,15 +87,16 @@ li {
     right: 5px;
     padding: 2px 5px;
     border-radius: 6px;
+    display:none;
 }
 
 #gameCountLifetime {
     position: fixed;
-    top: 5px;
+    bottom: 10px;
     left: 5px;
     border: none;
     display: inline-block;
-    color: #000;
+    color: white;
     font-size: 1em;
 }
 
