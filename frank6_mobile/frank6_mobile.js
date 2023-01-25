@@ -1,7 +1,7 @@
 /** @type {HTMLCanvasElement} */
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
-const CANVAS_WIDTH = canvas.width = 1300;
+const CANVAS_WIDTH = canvas.width = 1400;
 const CANVAS_HEIGHT = canvas.height = 720;
 let enemies = [];
 let score = 0;
@@ -12,6 +12,9 @@ $(document).ready(function () {
     class InputHandler {
         constructor() {
             this.keys = [];
+            this.touchY = '';
+            this.touchThreshold = 30;
+            
             $(document).keydown(e => {
                 if ((e.key == 'ArrowDown' ||
                     e.key == 'ArrowUp' ||
@@ -33,9 +36,44 @@ $(document).ready(function () {
                 }
                 console.log(e.key, this.keys);
             });
+            // touchstart event on window
+            $(window).on('touchstart', e => {
+                this.touchY = e.changedTouches[0].pageY;
+            });
+            // touchmove on window
+            $(window).on('touchmove', e => {
+                const swipeDistance = e.changedTouches[0].pageY - this.touchY;
+                if (swipeDistance < -this.touchThreshold && this.keys.indexOf('swipe up') === -1) {
+                    this.keys.push('swipe up');
+                } else if (swipeDistance > this.touchThreshold && this.keys.indexOf('swipe down') === -1) {
+                    this.keys.push('swipe down');
+                    if (gameOver) {
+                        restartgame();
+                    }
+                }
+                    
+                    
+
+            });
+            // touchend event on window
+            $(window).on('touchend', e => {
+                console.log(this.keys);
+                this.keys.splice(this.keys.indexOf('swipe up'), 1);
+                this.keys.splice(this.keys.indexOf('swipe down'), 1);
+                
+            });
+            
+            
         }
+        
+            
+        
     }
 
+    // click event on fullScreenButton
+    $('#fullScreenButton').on('click', function () {
+        toggleFullScreen();
+    });
     class Player {
         constructor(gameWidth, gameHeight) {
             this.gameWidth = gameWidth;
@@ -89,7 +127,7 @@ $(document).ready(function () {
             } else {
                 this.speed = 0;
             }
-            if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
+            if ((input.keys.indexOf('ArrowUp') > -1 || input.keys.indexOf('swipe up') > -1) && this.onGround()) {
                 this.vy -= 32;
             }
             // horizontal movement
@@ -228,6 +266,23 @@ $(document).ready(function () {
         background.restart();
         animate(0);
     }
+    
+    function toggleFullScreen() {
+        console.log(document.fullscreenElement);
+        if (!document.fullscreenElement) {
+            canvas.requestFullscreen().catch(err =>
+                alert(`can't enable fullscreen mode: ${err.message} (${err.name})`)
+            );
+        } else {
+            document.exitFullscreen();
+        }
+        //} else {
+        //    if (document.exitFullscreen) {
+        //        document.exitFullscreen();
+        //    }
+        //}
+    }
+    
 
 
     const input = new InputHandler();
