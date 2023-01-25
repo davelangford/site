@@ -18,10 +18,67 @@ var canJump = [102, 103, 104, 105, 106, 107, 304, 305, 306];
 var inTheAir = [201, 203, 206, 402, 403, 404, 405];
 var deadPositions = [101];
 
-// todo: haptic feedback
+function AddSwipes() {
+    //$(document).on("swiperight", function () {
+    //    console.log('asf');
+    //    TryMove(move.RIGHT);
+    //});
+    //$(document).on("swipeleft", function () {
+    //    TryMove(move.LEFT);
+    //});
+    //$(document).on("swipeup", function () {
+    //    TryMove(move.UP);
+    //});
+    //$(document).on("swipedown", function () {
+    //    TryMove(move.DOWN);
+    //});
+
+    var touchX = '';// e.changedTouches[0].pageX;
+    var touchY = '' // e.changedTouches[0].pageY;
+    var touchThreshold = 30;
+    var isMoving = false;
+
+    $(window).on('touchstart', e => {
+        touchX = e.changedTouches[0].pageX;
+        touchY = e.changedTouches[0].pageY;
+    });
+    // touchmove on window
+    $(window).on('touchmove', e => {
+        if (isMoving) {
+            return;
+        }
+
+        const swipeDistanceX = e.changedTouches[0].pageX - touchX;
+        const swipeDistanceY = e.changedTouches[0].pageY - touchY;
+
+        if (Math.abs(swipeDistanceX) < 50) {// it's a vertical swipe
+            if (swipeDistanceY < -touchThreshold) {
+                TryMove(move.UP);
+            } else if (swipeDistanceY > touchThreshold) {
+                TryMove(move.DOWN);
+            }
+        } else {
+            if (swipeDistanceX < -touchThreshold) {
+                TryMove(move.LEFT);
+            } else if (swipeDistanceX > touchThreshold) {
+                TryMove(move.RIGHT);
+            }
+        }
+        isMoving = true;
+    });
+    // touchend event on window
+    $(window).on('touchend', e => {
+        isMoving = false;
+    });
+}
+
+
+
+
 
 $(document).ready(function () {
     PreLoadImages();
+
     $("#btnRight").click(function () {
         TryMove(move.RIGHT);
     });
@@ -37,6 +94,7 @@ $(document).ready(function () {
     $("#btnJump").click(function () {
         TryMove(move.JUMP);
     });
+    AddSwipes();
 
     $(document).keydown(function (e) {
         if (e.keyCode == 37) {
@@ -99,6 +157,10 @@ function TryMove(direction) {
                         jrposition += 100;
                         AudioPlay(audio_jr_move);
                 }
+            }
+            if (canJump.includes(jrposition)) {
+                jrposition += 100;
+                AudioPlay(audio_jr_move);
             }
             break;
         case move.DOWN:

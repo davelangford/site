@@ -1,15 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\colorSnap",
-    "\\colorSnap\\colormap",
-    "\\colorSnap\\colormap\\images",
-    "\\colorSnap\\script",
-    "\\colorSnap\\style",
-    "\\mountains",
-    "\\mountains\\images",
+    "\\dkjr",
+    "\\dkjr\\script",
+    "\\frank6_mobile",
     "\\test"
   ],
-  "SelectedNode": "\\mountains\\images",
+  "SelectedNode": "\\dkjr\\script\\jr.js",
   "PreviewInSolutionExplorer": false
 }
