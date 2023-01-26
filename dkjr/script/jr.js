@@ -19,6 +19,7 @@ var inTheAir = [201, 203, 206, 402, 403, 404, 405];
 var deadPositions = [101];
 
 function AddSwipes() {
+    detectSwipe();
     //$(document).on("swiperight", function () {
     //    console.log('asf');
     //    TryMove(move.RIGHT);
@@ -33,40 +34,89 @@ function AddSwipes() {
     //    TryMove(move.DOWN);
     //});
 
-    var touchX = '';// e.changedTouches[0].pageX;
-    var touchY = '' // e.changedTouches[0].pageY;
-    var touchThreshold = 30;
-    var isMoving = false;
+    //var touchX = '';// e.changedTouches[0].pageX;
+    //var touchY = '' // e.changedTouches[0].pageY;
+    //var touchThreshold = 30;
+    //var isMoving = false;
 
-    $(window).on('touchstart', e => {
-        touchX = e.changedTouches[0].pageX;
-        touchY = e.changedTouches[0].pageY;
-    });
-    // touchmove on window
-    $(window).on('touchmove', e => {
+    //$(window).on('touchstart', e => {
+    //    touchX = e.changedTouches[0].pageX;
+    //    touchY = e.changedTouches[0].pageY;
+    //});
+    //// touchmove on window
+    //$(window).on('touchmove', e => {
 
-    });
-    // touchend event on window
-    $(window).on('touchend', e => {
-        const swipeDistanceX = e.changedTouches[0].pageX - touchX;
-        const swipeDistanceY = e.changedTouches[0].pageY - touchY;
+    //});
+    //// touchend event on window
+    //$(window).on('touchend', e => {
+    //    const swipeDistanceX = e.changedTouches[0].pageX - touchX;
+    //    const swipeDistanceY = e.changedTouches[0].pageY - touchY;
 
-        if (Math.abs(swipeDistanceX) < touchThreshold) {// it's a vertical swipe
-            if (swipeDistanceY < -touchThreshold) {
-                TryMove(move.UP);
-            } else if (swipeDistanceY > touchThreshold) {
-                TryMove(move.DOWN);
-            }
-        } else {
-            if (swipeDistanceX < -touchThreshold) {
-                TryMove(move.LEFT);
-            } else if (swipeDistanceX > touchThreshold) {
-                TryMove(move.RIGHT);
-            }
-        }
-    });
+    //    if (Math.abs(swipeDistanceX) < touchThreshold) {// it's a vertical swipe
+    //        if (swipeDistanceY < -touchThreshold) {
+    //            TryMove(move.UP);
+    //        } else if (swipeDistanceY > touchThreshold) {
+    //            TryMove(move.DOWN);
+    //        }
+    //    } else {
+    //        if (swipeDistanceX < -touchThreshold) {
+    //            TryMove(move.LEFT);
+    //        } else if (swipeDistanceX > touchThreshold) {
+    //            TryMove(move.RIGHT);
+    //        }
+    //    }
+    //});
 }
 
+function detectSwipe() {
+    let swipeDirection;
+    let startX;
+    let startY;
+    let distX;
+    let distY;
+    let threshold = 150; //required min distance traveled to be considered swipe
+    let restraint = 100; // maximum distance allowed at the same time in perpendicular direction
+    let allowedTime = 300; // maximum time allowed to travel that distance
+    let elapsedTime;
+    let startTime;
+
+    window.addEventListener('touchstart', function (event) {
+        let touchobj = event.changedTouches[0];
+        swipeDirection = 'none';
+        startX = touchobj.pageX;
+        startY = touchobj.pageY;
+        startTime = new Date().getTime();
+    }, false);
+
+    window.addEventListener('touchmove', function (event) {
+        event.preventDefault();
+    }, false);
+
+    window.addEventListener('touchend', function (event) {
+        let touchobj = event.changedTouches[0];
+        distX = touchobj.pageX - startX;
+        distY = touchobj.pageY - startY;
+        elapsedTime = new Date().getTime() - startTime;
+
+        if (elapsedTime <= allowedTime) {
+            if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint) {
+                
+                swipeDirection = (distX < 0) ? TryMove(move.LEFT) : TryMove(move.RIGHT);
+            } else if (Math.abs(distY) >= threshold && Math.abs(distX) <= restraint) {
+                swipeDirection = (distY < 0) ? TryMove(move.UP) : TryMove(move.DOWN);
+            }
+        }
+
+        if (Math.abs(distX) >= threshold && Math.abs(distY) >= threshold) {
+            if (Math.abs(distX) > Math.abs(distY)) {
+                swipeDirection = (distX < 0) ? TryMove(move.LEFT) : TryMove(move.RIGHT);
+            } else {
+                swipeDirection = (distY < 0) ? TryMove(move.UP) : TryMove(move.DOWN);
+            }
+        }
+        return swipeDirection;
+    }, false);
+}
 
 
 
