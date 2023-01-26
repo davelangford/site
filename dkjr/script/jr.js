@@ -44,14 +44,14 @@ function AddSwipes() {
     });
     // touchmove on window
     $(window).on('touchmove', e => {
-        if (isMoving) {
-            return;
-        }
 
+    });
+    // touchend event on window
+    $(window).on('touchend', e => {
         const swipeDistanceX = e.changedTouches[0].pageX - touchX;
         const swipeDistanceY = e.changedTouches[0].pageY - touchY;
 
-        if (Math.abs(swipeDistanceX) < 50) {// it's a vertical swipe
+        if (Math.abs(swipeDistanceX) < touchThreshold) {// it's a vertical swipe
             if (swipeDistanceY < -touchThreshold) {
                 TryMove(move.UP);
             } else if (swipeDistanceY > touchThreshold) {
@@ -64,11 +64,6 @@ function AddSwipes() {
                 TryMove(move.RIGHT);
             }
         }
-        isMoving = true;
-    });
-    // touchend event on window
-    $(window).on('touchend', e => {
-        isMoving = false;
     });
 }
 
