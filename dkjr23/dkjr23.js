@@ -5,10 +5,31 @@ const ctx = canvas.getContext('2d');
 const gameOver = false;
 
 
+class Background {
+    constructor() {
+        this.x = 0;
+        this.y = 0;
+        this.width = canvas.width;
+        this.height = canvas.height;
+        this.imageDevice = new Image();
+        this.imageDevice.src = 'images/device/device.png';
+        this.imageScreen = new Image();
+        this.imageScreen.src = 'images/device/screen.png';
+
+    }
+
+    draw() {
+        ctx.drawImage(this.imageScreen, this.x, this.y, this.width, this.height);
+        ctx.drawImage(this.imageDevice, this.x, this.y, this.width, this.height);
+    }
+}
+
 $(document).ready(function () {
 
-    canvas.width = 1400;
-    canvas.height = 720;
+    canvas.width = 1334;
+    canvas.height = 750;
+
+    var background = new Background();
     
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -26,7 +47,7 @@ $(document).ready(function () {
         ctx.stroke();
        
         
-        //background.draw();
+        background.draw();
         //background.update();
         //player.draw();
         //player.update();
