@@ -97,7 +97,7 @@ function detectSwipe() {
     let distX;
     let distY;
     let threshold = 50; //required min distance traveled to be considered swipe
-    let restraint = 100; // maximum distance allowed at the same time in perpendicular direction
+    let restraint = 300; // maximum distance allowed at the same time in perpendicular direction
     let allowedTime = 300; // maximum time allowed to travel that distance
     let elapsedTime;
     let startTime;
