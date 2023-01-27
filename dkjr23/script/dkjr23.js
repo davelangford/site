@@ -60,6 +60,7 @@ $(document).ready(function () {
         
         screen.draw();
         background.draw();
+        junior.update();
         junior.draw();
         //background.update();
         //player.draw();

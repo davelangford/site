@@ -6,6 +6,7 @@ var move = {
     JUMP: 4
 };
 
+var jumpAirTime = 50;
 var canMoveRight = [101, 102, 103, 104, 105, 106, 202, 204, 205, 304, 305, 306];
 var canMoveLeft = [103, 104, 105, 106, 107, 204, 205, 304, 305, 306, 307];
 var canMoveUp = [103, 106, 207, 304];
@@ -20,6 +21,7 @@ class Junior {
         this.blink = false;
         this.image = new Image();
         this.image.src = `images/jr/jr${this.position}.png`;
+        this.jumpCounter = 0;
     }
 
     draw() {
@@ -28,8 +30,19 @@ class Junior {
 
     update() {
         this.image.src = `images/jr/jr${this.position}.png`;
+        if (inTheAir.includes(this.position)) {
+            console.log(this.jumpCounter);
+            if (this.jumpCounter < jumpAirTime) {
+                this.jumpCounter++;
+            } else if (this.jumpCounter >= jumpAirTime) {
+                this.jumpCounter = 0;
+                this.TryMove(move.DOWN);
+            }
+        }
     }
-    
+
+
+
     TryMove(direction) {
         //if (GameplayPaused()) {
         //    return;
@@ -80,6 +93,5 @@ class Junior {
             default:
                 break;
         }
-        this.update();
     }
 }
