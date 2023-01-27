@@ -59,9 +59,9 @@ $(document).ready(function () {
         
         
         screen.draw();
-        background.draw();
         junior.update();
         junior.draw();
+        background.draw();
         //background.update();
         //player.draw();
         //player.update();

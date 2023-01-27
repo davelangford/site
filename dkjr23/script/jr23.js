@@ -9,11 +9,11 @@ var move = {
 var jumpAirTime = 50;
 var canMoveRight = [101, 102, 103, 104, 105, 106, 202, 204, 205, 304, 305, 306];
 var canMoveLeft = [103, 104, 105, 106, 107, 204, 205, 304, 305, 306, 307];
-var canMoveUp = [103, 106, 207, 304];
+var canMoveUp = [102, 103, 104, 105, 106, 107, 207, 304, 305, 306];
+var canJump = [304];
 var canMoveDown = [201, 202, 203, 204, 205, 206, 207, 307, 404, 405, 406];
-var canJump = [102, 103, 104, 105, 106, 107, 304, 305, 306];
 var inTheAir = [201, 203, 206, 402, 403, 404, 405];
-var deadPositions = [101];
+var intheBushes = 101;
 
 class Junior {
     constructor() {
@@ -30,8 +30,15 @@ class Junior {
 
     update() {
         this.image.src = `images/jr/jr${this.position}.png`;
+        if (this.position == intheBushes) {
+            if (this.jumpCounter < jumpAirTime) {
+                this.jumpCounter++;
+            } else if (this.jumpCounter >= jumpAirTime) {
+                this.jumpCounter = 0;
+                this.position = 102;
+            }
+        }
         if (inTheAir.includes(this.position)) {
-            console.log(this.jumpCounter);
             if (this.jumpCounter < jumpAirTime) {
                 this.jumpCounter++;
             } else if (this.jumpCounter >= jumpAirTime) {
@@ -66,17 +73,10 @@ class Junior {
                 break;
             case move.UP:
                 if (canMoveUp.includes(this.position)) {
-                    switch (this.position) {
-                        case 304:
-                            this.position = 403;
-                            break;
-                        default:
-                            this.position += 100;
-                    }
-                }
-                if (canJump.includes(this.position)) {
+
                     this.position += 100;
                 }
+                
                 break;
             case move.DOWN:
                 if (canMoveDown.includes(this.position)) {
@@ -86,12 +86,13 @@ class Junior {
             case move.JUMP:
                 console.log('jump');
                 if (canJump.includes(this.position)) {
-                    this.position += 100;
+                    this.position = 403;
                 }
                 break;
 
             default:
                 break;
         }
+        console.log(this.position);
     }
 }
