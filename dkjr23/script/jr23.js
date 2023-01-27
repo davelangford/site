@@ -71,6 +71,7 @@ class Junior {
                 }
                 break;
             case move.JUMP:
+                console.log('jump');
                 if (canJump.includes(this.position)) {
                     this.position += 100;
                 }

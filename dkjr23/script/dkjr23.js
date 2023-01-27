@@ -87,20 +87,16 @@ function AddEvents() {
         if (e.keyCode == 40) {
             junior.TryMove(move.DOWN);
         }
-        if (e.keyCode == 32) {
-            junior.TryMove(move.JUMP);
-        }
     });
 
 }
 
 function detectSwipe() {
-    let swipeDirection;
     let startX;
     let startY;
     let distX;
     let distY;
-    let threshold = 150; //required min distance traveled to be considered swipe
+    let threshold = 50; //required min distance traveled to be considered swipe
     let restraint = 100; // maximum distance allowed at the same time in perpendicular direction
     let allowedTime = 300; // maximum time allowed to travel that distance
     let elapsedTime;
@@ -108,7 +104,6 @@ function detectSwipe() {
 
     window.addEventListener('touchstart', function (event) {
         let touchobj = event.changedTouches[0];
-        swipeDirection = 'none';
         startX = touchobj.pageX;
         startY = touchobj.pageY;
         startTime = new Date().getTime();
@@ -126,21 +121,22 @@ function detectSwipe() {
 
         if (elapsedTime <= allowedTime) {
             if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint) {
-
-                swipeDirection = (distX < 0) ? junior.TryMove(move.LEFT) : junior.TryMove(move.RIGHT);
+                (distX < 0) ? junior.TryMove(move.LEFT) : junior.TryMove(move.RIGHT);
             } else if (Math.abs(distY) >= threshold && Math.abs(distX) <= restraint) {
-                swipeDirection = (distY < 0) ? junior.TryMove(move.UP) : junior.TryMove(move.DOWN);
+                (distY < 0) ? junior.TryMove(move.UP) : junior.TryMove(move.DOWN);
             }
         }
 
         if (Math.abs(distX) >= threshold && Math.abs(distY) >= threshold) {
             if (Math.abs(distX) > Math.abs(distY)) {
-                swipeDirection = (distX < 0) ? junior.TryMove(move.LEFT) : junior.TryMove(move.RIGHT);
+                (distX < 0) ? junior.TryMove(move.LEFT) : junior.TryMove(move.RIGHT);
             } else {
-                swipeDirection = (distY < 0) ? junior.TryMove(move.UP) : junior.TryMove(move.DOWN);
+                (distY < 0) ? junior.TryMove(move.UP) : junior.TryMove(move.DOWN);
+            }
+            if (distX < 0 && distY < 0) {
+                junior.TryMove(move.JUMP);
             }
         }
-        return swipeDirection;
     }, false);
 }
 
