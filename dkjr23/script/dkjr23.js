@@ -5,8 +5,17 @@ const gameOver = false;
 var background;
 var screen;
 var junior;
+var key;
+var gameState;
+var cages = [];
 
-
+const States = {
+    Playing: 0,
+    GameOver: 1,
+    KeyGrabbed: 2,
+    CherryDropping: 3,
+    Dying: 4,
+}
 
 class Background {
     constructor() {
@@ -16,7 +25,7 @@ class Background {
         this.height = canvas.height;
         this.image = new Image();
         this.image.src = 'images/device/device.png';
-        
+
     }
 
     draw() {
@@ -32,7 +41,7 @@ class Screen {
         this.height = 445;
         this.right = this.x + this.width;
         this.bottom = this.y + this.height;
-        
+
         this.image = new Image();
         this.image.src = 'images/device/screen.png';
     }
@@ -44,30 +53,38 @@ class Screen {
 
 $(document).ready(function () {
 
+    gameState = States.Playing;
+
     canvas.width = 1334;
     canvas.height = 750;
 
     background = new Background();
     screen = new Screen();
     junior = new Junior();
+    key = new Key(1.5);
+    for (var i = 1; i <= 4; i++) {
+        cages.push(new Cage(i, 1));
+    }
 
     AddEvents();
 
-    function animate() {
-        
-       
-        
-        
+    let lastTime = 0;
+    function animate(timeStamp) {
+        const deltaTime = timeStamp - lastTime;
+        lastTime = timeStamp;
+
         screen.draw();
         junior.update();
         junior.draw();
+        key.update();
+        key.draw(deltaTime);
+        cages.forEach(cage => {
+            cage.draw(deltaTime);
+        });
         background.draw();
-        //background.update();
-        //player.draw();
-        //player.update();
         if (!gameOver) requestAnimationFrame(animate);
     }
-    animate();
+    animate(0);
 
 });
 
@@ -87,6 +104,9 @@ function AddEvents() {
         }
         if (e.keyCode == 40) {
             junior.TryMove(move.DOWN);
+        }
+        if (e.keyCode == 32) {
+            junior.TryMove(move.JUMP);
         }
     });
 
@@ -120,6 +140,18 @@ function detectSwipe() {
         distY = touchobj.pageY - startY;
         elapsedTime = new Date().getTime() - startTime;
 
+        if (Math.abs(distX) >= threshold && Math.abs(distY) >= threshold) {
+            if (distX < 0 && distY < 0) {
+                junior.TryMove(move.JUMP);
+                return;
+            }
+            if (Math.abs(distX) > Math.abs(distY)) {
+                (distX < 0) ? junior.TryMove(move.LEFT) : junior.TryMove(move.RIGHT);
+            } else {
+                (distY < 0) ? junior.TryMove(move.UP) : junior.TryMove(move.DOWN);
+            }
+        }
+
         if (elapsedTime <= allowedTime) {
             if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint) {
                 (distX < 0) ? junior.TryMove(move.LEFT) : junior.TryMove(move.RIGHT);
@@ -128,16 +160,6 @@ function detectSwipe() {
             }
         }
 
-        if (Math.abs(distX) >= threshold && Math.abs(distY) >= threshold) {
-            if (Math.abs(distX) > Math.abs(distY)) {
-                (distX < 0) ? junior.TryMove(move.LEFT) : junior.TryMove(move.RIGHT);
-            } else {
-                (distY < 0) ? junior.TryMove(move.UP) : junior.TryMove(move.DOWN);
-            }
-            if (distX < 0 && distY < 0) {
-                junior.TryMove(move.JUMP);
-            }
-        }
     }, false);
 }
 

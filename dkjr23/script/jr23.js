@@ -12,13 +12,12 @@ var canMoveLeft = [103, 104, 105, 106, 107, 204, 205, 304, 305, 306, 307];
 var canMoveUp = [102, 103, 104, 105, 106, 107, 207, 304, 305, 306];
 var canJump = [304];
 var canMoveDown = [201, 202, 203, 204, 205, 206, 207, 307, 404, 405, 406];
-var inTheAir = [201, 203, 206, 402, 403, 404, 405];
+var inTheAir = [201, 203, 206, 402, 403, 404, 405, 502];
 var intheBushes = 101;
 
 class Junior {
     constructor() {
         this.position = 102;
-        this.blink = false;
         this.image = new Image();
         this.image.src = `images/jr/jr${this.position}.png`;
         this.jumpCounter = 0;
@@ -42,10 +41,22 @@ class Junior {
             if (this.jumpCounter < jumpAirTime) {
                 this.jumpCounter++;
             } else if (this.jumpCounter >= jumpAirTime) {
+                if (this.position == 403 && key.position == 1) {
+                    UnlockCage();
+                    this.position = 502;
+                } else if (this.position == 403) {
+                    this.position = 201;
+                } else if (this.position == 502) {
+                    this.position = 402;
+                } else if (this.position == 402) {
+                        this.position = 102;
+                } else {
+                    this.TryMove(move.DOWN);
+                }
                 this.jumpCounter = 0;
-                this.TryMove(move.DOWN);
             }
         }
+
     }
 
 
@@ -76,7 +87,7 @@ class Junior {
 
                     this.position += 100;
                 }
-                
+
                 break;
             case move.DOWN:
                 if (canMoveDown.includes(this.position)) {
