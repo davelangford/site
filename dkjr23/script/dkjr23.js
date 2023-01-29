@@ -10,6 +10,7 @@ var gameState;
 var cages = [];
 var cagesVisible = true;
 var fruit;
+var snapJaws = [];
 
 const States = {
     Playing: 0,
@@ -70,7 +71,7 @@ $(document).ready(function () {
     junior = new Junior();
     key = new Key(1.5);
     fruit = new Fruit(1);
-    
+
     for (var i = 1; i <= 4; i++) {
         cages.push(new Cage(i, 1));
     }
@@ -88,6 +89,10 @@ $(document).ready(function () {
         key.update();
         key.draw(deltaTime);
         fruit.draw(deltaTime);
+        snapJaws = snapJaws.filter(sj => !sj.remove);
+        snapJaws.forEach(snapJaw => {
+            snapJaw.draw(deltaTime);
+        });
         cages.forEach(cage => {
             cage.draw(deltaTime);
         });
@@ -171,6 +176,20 @@ function detectSwipe() {
         }
 
     }, false);
+}
+
+function NewRound() {
+    junior.position = 102;
+    ChangeState(States.Playing);
+    fruit.reset();
+    jumpAirTime = 50;
+    snapJaws = snapJaws.filter(sj => sj.position > 103);
+
+}
+
+// randomInt function
+function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 function TestRectangleDraw(x, y, width, height) {
