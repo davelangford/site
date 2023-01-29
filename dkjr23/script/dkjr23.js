@@ -8,13 +8,16 @@ var junior;
 var key;
 var gameState;
 var cages = [];
+var cagesVisible = true;
+var fruit;
 
 const States = {
     Playing: 0,
     GameOver: 1,
     KeyGrabbed: 2,
-    CherryDropping: 3,
-    Dying: 4,
+    MonkeyFreed: 3,
+    FruitDropping: 4,
+    Dying: 5,
 }
 
 class Background {
@@ -50,10 +53,14 @@ class Screen {
     }
 }
 
+function ChangeState(state) {
+    gameState = state;
+    console.log(Object.keys(States)[state]);
+}
 
 $(document).ready(function () {
 
-    gameState = States.Playing;
+    ChangeState(States.Playing);
 
     canvas.width = 1334;
     canvas.height = 750;
@@ -62,6 +69,8 @@ $(document).ready(function () {
     screen = new Screen();
     junior = new Junior();
     key = new Key(1.5);
+    fruit = new Fruit(1);
+    
     for (var i = 1; i <= 4; i++) {
         cages.push(new Cage(i, 1));
     }
@@ -78,6 +87,7 @@ $(document).ready(function () {
         junior.draw();
         key.update();
         key.draw(deltaTime);
+        fruit.draw(deltaTime);
         cages.forEach(cage => {
             cage.draw(deltaTime);
         });

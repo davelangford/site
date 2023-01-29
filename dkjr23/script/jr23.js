@@ -38,10 +38,13 @@ class Junior {
             }
         }
         if (inTheAir.includes(this.position)) {
+            if (gameState == States.FruitDropping) return;
+            
             if (this.jumpCounter < jumpAirTime) {
                 this.jumpCounter++;
             } else if (this.jumpCounter >= jumpAirTime) {
                 if (this.position == 403 && key.position == 1) {
+                    ChangeState(States.KeyGrabbed);
                     UnlockCage();
                     this.position = 502;
                 } else if (this.position == 403) {
@@ -49,7 +52,10 @@ class Junior {
                 } else if (this.position == 502) {
                     this.position = 402;
                 } else if (this.position == 402) {
-                        this.position = 102;
+                    this.position = 102;
+                    ChangeState(States.Playing);
+                } else if (this.position == 405 && gameState != States.FruitDropping) {
+                    ChangeState(States.FruitDropping);
                 } else {
                     this.TryMove(move.DOWN);
                 }
@@ -95,7 +101,7 @@ class Junior {
                 }
                 break;
             case move.JUMP:
-                console.log('jump');
+                //console.log('jump');
                 if (canJump.includes(this.position)) {
                     this.position = 403;
                 }
@@ -104,6 +110,6 @@ class Junior {
             default:
                 break;
         }
-        console.log(this.position);
+        //console.log(this.position);
     }
 }

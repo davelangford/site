@@ -11,6 +11,10 @@ class Cage extends Object23 {
         
     }
     draw(deltaTime) {
+        if (gameState == States.MonkeyFreed) {
+            this.visible = true;
+            return;
+        }
         if (this.frameReady(deltaTime)) {
             if (this.unlocked) {
                 this.visible = !this.visible;
@@ -25,10 +29,18 @@ class Cage extends Object23 {
 }
 
 function UnlockCage() {
-    for (let i = 0; i < cages.length; i++) {
+    var i = 0;
+    for (i; i < 4 ; i++) {
         if (!cages[i].unlocked) {
             cages[i].unlocked = true;
             break;
         }
+    }
+    if (i == 3) {
+        ChangeState(States.MonkeyFreed);
+        cages.forEach(cage => {
+            cage.unlocked = false;
+
+        });
     }
 }
