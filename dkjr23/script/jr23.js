@@ -38,6 +38,12 @@ class Junior {
                 NewRound();
             }
         }
+        if (this.position == 403 && key.position == 1) {
+            ChangeState(States.KeyGrabbed);
+            jumpAirTime = 50;
+            UnlockCage();
+            this.position = 502;
+        }
         if (inTheAir.includes(this.position)) {
             if (gameState == States.FruitDropping) return;
             if (this.position == 405 && gameState != States.FruitDropping) {
@@ -46,12 +52,7 @@ class Junior {
             if (this.jumpCounter < jumpAirTime) {
                 this.jumpCounter++;
             } else if (this.jumpCounter >= jumpAirTime) {
-                if (this.position == 403 && key.position == 1) {
-                    ChangeState(States.KeyGrabbed);
-                    jumpAirTime = 100;
-                    UnlockCage();
-                    this.position = 502;
-                } else if (this.position == 403) {
+                if (this.position == 403) {
                     this.position = 201;
                 } else if (this.position == 502) {
                     this.position = 402;

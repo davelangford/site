@@ -11,6 +11,7 @@ var cages = [];
 var cagesVisible = true;
 var fruit;
 var snapJaws = [];
+var nitPickers = [];
 
 const States = {
     Playing: 0,
@@ -79,6 +80,7 @@ $(document).ready(function () {
     AddEvents();
 
     let lastTime = 0;
+    
     function animate(timeStamp) {
         const deltaTime = timeStamp - lastTime;
         lastTime = timeStamp;
@@ -92,6 +94,10 @@ $(document).ready(function () {
         snapJaws = snapJaws.filter(sj => !sj.remove);
         snapJaws.forEach(snapJaw => {
             snapJaw.draw(deltaTime);
+        });
+        nitPickers = nitPickers.filter(np => !np.remove);
+        nitPickers.forEach(nitPicker => {
+            nitPicker.draw(deltaTime);
         });
         cages.forEach(cage => {
             cage.draw(deltaTime);
@@ -182,7 +188,7 @@ function NewRound() {
     junior.position = 102;
     ChangeState(States.Playing);
     fruit.reset();
-    jumpAirTime = 50;
+    jumpAirTime = 30;
     snapJaws = snapJaws.filter(sj => sj.position > 103);
 
 }
