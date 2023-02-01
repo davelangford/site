@@ -40,7 +40,7 @@ class Junior {
         }
         if (this.position == 403 && key.position == 1) {
             ChangeState(States.KeyGrabbed);
-            jumpAirTime = 50;
+            jumpAirTime = 100;
             UnlockCage();
             this.position = 502;
         }
