@@ -3,7 +3,6 @@ class Cage extends Object23 {
         super(fps);
         this.position = position;
         this.image.src = `images/cage/cage${this.position}.png`;
-        this.direction = 1;
         this.unlocked = false;
         this.visible = true;
     }
@@ -17,7 +16,11 @@ class Cage extends Object23 {
         }
         if (this.frameReady(deltaTime)) {
             if (this.unlocked) {
-                this.visible = !this.visible;
+                if (this.position == 1) {
+                    this.visible = !this.visible;
+                } else {
+                    this.visible = cages[0].visible;
+                }
             } else {
                 this.visible = true;
             }

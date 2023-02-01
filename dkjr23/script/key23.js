@@ -21,7 +21,6 @@ class Key extends Object23 {
             this.image.src = `images/key/key${this.position}.png`;
         }
         ctx.drawImage(this.image, screen.x, screen.y, screen.width, screen.height);
-        console.log(this.position);
     }
 
 }
