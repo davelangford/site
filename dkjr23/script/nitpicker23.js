@@ -5,6 +5,7 @@ class NitPicker extends Object23 {
         this.image.src = `images/np/np${this.position}.png`;
         this.remove = false;
         this.triggerFrame = triggerFrame;
+        this.dead = false;
     }
     update() {
         

@@ -21,14 +21,31 @@ class Junior {
         this.image = new Image();
         this.image.src = `images/jr/jr${this.position}.png`;
         this.jumpCounter = 0;
+        this.visible = true;
+        this.dyingBlinkCounter = 150;
     }
 
     draw() {
-        ctx.drawImage(this.image, screen.x, screen.y, screen.width, screen.height);
+        if (this.visible) {
+            ctx.drawImage(this.image, screen.x, screen.y, screen.width, screen.height);
+        }
     }
 
     update() {
         this.image.src = `images/jr/jr${this.position}.png`;
+        if (gameState == States.Dying) {
+            if (this.dyingBlinkCounter > 0) {
+                this.dyingBlinkCounter--;
+                if (this.visible) {
+                    this.visible = false;
+                } else {
+                    this.visible = true;
+                }
+            } else {
+                NewRound();
+            }
+            return;
+        }
         if (this.position == intheBushes) {
             if (this.jumpCounter < jumpAirTime) {
                 this.jumpCounter++;
@@ -38,11 +55,9 @@ class Junior {
                 NewRound();
             }
         }
-        if (this.position == 403 && key.position == 1) {
+        if (this.position == 403 && key.position == 1 && gameState == States.Playing) {
             ChangeState(States.KeyGrabbed);
             jumpAirTime = 100;
-            UnlockCage();
-            this.position = 502;
         }
         if (inTheAir.includes(this.position)) {
             if (gameState == States.FruitDropping) return;
@@ -52,7 +67,11 @@ class Junior {
             if (this.jumpCounter < jumpAirTime) {
                 this.jumpCounter++;
             } else if (this.jumpCounter >= jumpAirTime) {
-                if (this.position == 403) {
+                if (this.position == 403 && key.position == 1) {
+                    UnlockCage();
+                    jumpAirTime = 100;
+                    this.position = 502;
+                } else if (this.position == 403) {
                     this.position = 201;
                 } else if (this.position == 502) {
                     this.position = 402;
@@ -64,6 +83,7 @@ class Junior {
                 this.jumpCounter = 0;
             }
         }
+        
 
     }
 
@@ -73,6 +93,9 @@ class Junior {
         //if (GameplayPaused()) {
         //    return;
         //}
+        if (gameState == States.Dying) {
+            return;
+        }
         switch (direction) {
             case move.RIGHT:
                 if (canMoveRight.includes(this.position)) {

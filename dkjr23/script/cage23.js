@@ -36,6 +36,7 @@ function UnlockCage() {
     for (i; i < 4 ; i++) {
         if (!cages[i].unlocked) {
             cages[i].unlocked = true;
+            ChangeState(States.CageUnlocking);
             break;
         }
     }

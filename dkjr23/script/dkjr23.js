@@ -20,6 +20,7 @@ const States = {
     MonkeyFreed: 3,
     FruitDropping: 4,
     Dying: 5,
+    CageUnlocking: 6
 }
 
 class Background {
@@ -91,11 +92,11 @@ $(document).ready(function () {
         key.update();
         key.draw(deltaTime);
         fruit.draw(deltaTime);
-        snapJaws = snapJaws.filter(sj => !sj.remove);
+        snapJaws = snapJaws.filter(sj => !sj.remove && !sj.dead);
         snapJaws.forEach(snapJaw => {
             snapJaw.draw(deltaTime);
         });
-        nitPickers = nitPickers.filter(np => !np.remove);
+        nitPickers = nitPickers.filter(np => !np.remove && !np.dead);
         nitPickers.forEach(nitPicker => {
             nitPicker.draw(deltaTime);
         });
@@ -103,6 +104,7 @@ $(document).ready(function () {
             cage.draw(deltaTime);
         });
         background.draw();
+        CheckCollisions();
         if (!gameOver) requestAnimationFrame(animate);
     }
     animate(0);
@@ -186,11 +188,37 @@ function detectSwipe() {
 
 function NewRound() {
     junior.position = 102;
+    junior.dyingBlinkCounter = 150;
     ChangeState(States.Playing);
     fruit.reset();
-    jumpAirTime = 30;
+    jumpAirTime = 50;
     snapJaws = snapJaws.filter(sj => sj.position > 103);
 
+}
+
+function CheckCollisions() {
+    var jrDead = false;
+    
+    snapJaws.forEach(sj => {
+        if (sj.position == fruit.position) {
+            sj.dead = true;
+        }
+        if (sj.position == junior.position) {
+            jrDead = true;
+        }
+    });
+    nitPickers.forEach(np => {
+        if (np.position == fruit.position) {
+            np.dead = true;
+        }
+        if (np.position == junior.position) {
+            jrDead = true;
+        }
+    });
+
+    if (jrDead) {
+        ChangeState(States.Dying);
+    }
 }
 
 // randomInt function

@@ -9,9 +9,12 @@ class Key extends Object23 {
 
     }
     draw(deltaTime) {
-        if (gameState == States.KeyGrabbed) return;
-        
-        if (this.frameReady(deltaTime)) {
+        if (gameState == States.MonkeyFreed || gameState == States.CageUnlocking) {
+            return;
+        }
+        if (gameState == States.KeyGrabbed) {
+            this.position = 1;
+        } else if (this.frameReady(deltaTime)) {
             this.position += this.direction;
             if (this.position === 4) {
                 this.direction = -1;
