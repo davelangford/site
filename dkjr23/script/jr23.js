@@ -135,6 +135,11 @@ class Junior {
             default:
                 break;
         }
-        //console.log(this.position);
+        snapJaws.forEach(sj => {
+            sj.ResetCollisionDetector();
+        });
+        nitPickers.forEach(np => {
+            np.ResetCollisionDetector();
+        });
     }
 }

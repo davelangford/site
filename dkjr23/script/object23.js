@@ -5,6 +5,8 @@ class Object23 {
         this.image = new Image();
         this.frameTimer = 0;
         this.frameInterval = 1000 / this.fps;
+        this.collisionDelay = 0;
+        this.readyForCollision = false;
     }
     frameReady(deltaTime) {
         if (this.frameTimer > this.frameInterval) {
@@ -14,5 +16,9 @@ class Object23 {
             this.frameTimer += deltaTime;
             return false;
         }
+    }
+    ResetCollisionDetector() {
+        this.collisionDelay = 0;
+        this.readyForCollision = false;
     }
 }

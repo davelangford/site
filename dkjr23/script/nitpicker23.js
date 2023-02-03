@@ -6,14 +6,22 @@ class NitPicker extends Object23 {
         this.remove = false;
         this.triggerFrame = triggerFrame;
         this.dead = false;
+        
     }
     update() {
         
     }
     draw(deltaTime) {
+        if (this.collisionDelay < 20) {
+            this.collisionDelay++;
+        } else {
+            this.readyForCollision = true;
+        }
         if (gameState == States.Playing) {
 
             if (this.frameReady(deltaTime)) {
+                this.ResetCollisionDetector();
+                
                 if (this.position == this.triggerFrame) {
                     nitPickers.push(new NitPicker(1, randomInt(205, 207)));
                 }
@@ -27,6 +35,7 @@ class NitPicker extends Object23 {
         }
         ctx.drawImage(this.image, screen.x, screen.y, screen.width, screen.height);
     }
+
 }
 
 $(document).ready(function () {

@@ -6,14 +6,22 @@ class SnapJaw extends Object23 {
         this.direction = 1;
         this.remove = false;
         this.triggerFrame = triggerFrame;
+        this.dead = false;
     }
     update() {
         
     }
     draw(deltaTime) {
+        if (this.collisionDelay < 20) {
+            this.collisionDelay++;
+        } else {
+            this.readyForCollision = true;
+        }
         if (gameState == States.Playing) {
 
             if (this.frameReady(deltaTime)) {
+                this.ResetCollisionDetector();
+                
                 if (this.position == this.triggerFrame) {
                     snapJaws.push(new SnapJaw(1, randomInt(305, 308)));
                 }
@@ -30,6 +38,10 @@ class SnapJaw extends Object23 {
             }
         }
         ctx.drawImage(this.image, screen.x, screen.y, screen.width, screen.height);
+    }
+    ResetCollisionDetector() {
+        this.collisionDelay = 0;
+        this.readyForCollision = false;
     }
 }
 

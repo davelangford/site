@@ -197,13 +197,14 @@ function NewRound() {
 }
 
 function CheckCollisions() {
+
     var jrDead = false;
     
     snapJaws.forEach(sj => {
         if (sj.position == fruit.position) {
             sj.dead = true;
         }
-        if (sj.position == junior.position) {
+        if (sj.position == junior.position && sj.readyForCollision) {
             jrDead = true;
         }
     });
@@ -211,7 +212,7 @@ function CheckCollisions() {
         if (np.position == fruit.position) {
             np.dead = true;
         }
-        if (np.position == junior.position) {
+        if (np.position == junior.position && np.readyForCollision) {
             jrDead = true;
         }
     });
