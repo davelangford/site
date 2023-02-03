@@ -1,11 +1,11 @@
 class SnapJaw extends Object23 {
-    constructor(fps, triggerFrame) {
+    constructor(fps) {
         super(fps);
         this.position = 302;
         this.image.src = `images/sj/sj${this.position}.png`;
         this.direction = 1;
         this.remove = false;
-        this.triggerFrame = triggerFrame;
+        this.triggerFrame = randomInt(305, 308);
         this.dead = false;
     }
     update() {
@@ -23,7 +23,7 @@ class SnapJaw extends Object23 {
                 this.ResetCollisionDetector();
                 
                 if (this.position == this.triggerFrame) {
-                    snapJaws.push(new SnapJaw(1, randomInt(305, 308)));
+                    snapJaws.push(new SnapJaw(1));
                 }
                 if (this.position == 308) {
                     this.position = 108;
@@ -46,5 +46,5 @@ class SnapJaw extends Object23 {
 }
 
 $(document).ready(function () {
-    snapJaws.push(new SnapJaw(1, randomInt(306, 308)));
+    snapJaws.push(new SnapJaw(1));
 });

@@ -6,10 +6,10 @@ class NitPicker extends Object23 {
         this.remove = false;
         this.triggerFrame = triggerFrame;
         this.dead = false;
-        
+
     }
     update() {
-        
+
     }
     draw(deltaTime) {
         if (this.collisionDelay < 20) {
@@ -20,8 +20,13 @@ class NitPicker extends Object23 {
         if (gameState == States.Playing) {
 
             if (this.frameReady(deltaTime)) {
+                nitPickers.forEach(np => {
+                    if (np.position == fruit.position) {
+                        np.dead = true;
+                    }
+                });
                 this.ResetCollisionDetector();
-                
+
                 if (this.position == this.triggerFrame) {
                     nitPickers.push(new NitPicker(1, randomInt(205, 207)));
                 }

@@ -12,6 +12,11 @@ class Fruit extends Object23 {
         if (gameState == States.FruitDropping)
         {
             if (this.frameReady(deltaTime)) {
+                snapJaws.forEach(sj => {
+                    if (sj.position == fruit.position) {
+                        sj.dead = true;
+                    }
+                });
                 if (this.position == 105) {
                     this.used = true;
                     junior.position = 305;

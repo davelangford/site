@@ -12,6 +12,7 @@ var cagesVisible = true;
 var fruit;
 var snapJaws = [];
 var nitPickers = [];
+var miss;
 
 const States = {
     Playing: 0,
@@ -73,6 +74,7 @@ $(document).ready(function () {
     junior = new Junior();
     key = new Key(1.5);
     fruit = new Fruit(1);
+    miss = new Miss();
 
     for (var i = 1; i <= 4; i++) {
         cages.push(new Cage(i, 1));
@@ -103,6 +105,7 @@ $(document).ready(function () {
         cages.forEach(cage => {
             cage.draw(deltaTime);
         });
+        miss.draw();
         background.draw();
         CheckCollisions();
         if (!gameOver) requestAnimationFrame(animate);
@@ -188,11 +191,15 @@ function detectSwipe() {
 
 function NewRound() {
     junior.position = 102;
+    junior.visible = true;
     junior.dyingBlinkCounter = 150;
     ChangeState(States.Playing);
     fruit.reset();
     jumpAirTime = 50;
     snapJaws = snapJaws.filter(sj => sj.position > 103);
+    if (snapJaws.filter(sj => sj.position > 300).length == 0) {
+        snapJaws.push(new SnapJaw(1));
+    }
 
 }
 
@@ -201,17 +208,11 @@ function CheckCollisions() {
     var jrDead = false;
     
     snapJaws.forEach(sj => {
-        if (sj.position == fruit.position) {
-            sj.dead = true;
-        }
         if (sj.position == junior.position && sj.readyForCollision) {
             jrDead = true;
         }
     });
     nitPickers.forEach(np => {
-        if (np.position == fruit.position) {
-            np.dead = true;
-        }
         if (np.position == junior.position && np.readyForCollision) {
             jrDead = true;
         }

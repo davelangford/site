@@ -22,7 +22,7 @@ class Junior {
         this.image.src = `images/jr/jr${this.position}.png`;
         this.jumpCounter = 0;
         this.visible = true;
-        this.dyingBlinkCounter = 150;
+        this.dyingBlinkCounter = 180;
     }
 
     draw() {
@@ -36,12 +36,15 @@ class Junior {
         if (gameState == States.Dying) {
             if (this.dyingBlinkCounter > 0) {
                 this.dyingBlinkCounter--;
-                if (this.visible) {
-                    this.visible = false;
-                } else {
-                    this.visible = true;
+                if (this.dyingBlinkCounter % 30 == 0) {
+                    if (this.visible) {
+                        this.visible = false;
+                    } else {
+                        this.visible = true;
+                    }
                 }
             } else {
+                miss.missCount++;
                 NewRound();
             }
             return;
@@ -61,7 +64,7 @@ class Junior {
         }
         if (inTheAir.includes(this.position)) {
             if (gameState == States.FruitDropping) return;
-            if (this.position == 405 && gameState != States.FruitDropping) {
+            if (this.position == 405 && gameState != States.FruitDropping && fruit.used == false) {
                 ChangeState(States.FruitDropping);
             }
             if (this.jumpCounter < jumpAirTime) {
