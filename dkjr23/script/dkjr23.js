@@ -13,6 +13,11 @@ var fruit;
 var snapJaws = [];
 var nitPickers = [];
 var miss;
+var currentScore = 0;
+var newScore = 0;
+// create an array of four SevenSeg objects
+var scoreDigits = [];
+
 
 const States = {
     Playing: 0,
@@ -58,6 +63,13 @@ class Screen {
 }
 
 function ChangeState(state) {
+    switch (state) {
+        case States.CageUnlocking:
+            newScore = currentScore + 20;
+            break;
+        default:
+            break;
+    }
     gameState = state;
     console.log(Object.keys(States)[state]);
 }
@@ -75,6 +87,9 @@ $(document).ready(function () {
     key = new Key(1.5);
     fruit = new Fruit(1);
     miss = new Miss();
+    for (var i = 0; i < 3; i++) {
+        scoreDigits[i] = new SevenSeg(863 + (i * 43), 160);
+    }
 
     for (var i = 1; i <= 4; i++) {
         cages.push(new Cage(i, 1));
@@ -83,7 +98,7 @@ $(document).ready(function () {
     AddEvents();
 
     let lastTime = 0;
-    
+
     function animate(timeStamp) {
         const deltaTime = timeStamp - lastTime;
         lastTime = timeStamp;
@@ -107,12 +122,25 @@ $(document).ready(function () {
         });
         miss.draw();
         background.draw();
+        DrawScore();
         CheckCollisions();
         if (!gameOver) requestAnimationFrame(animate);
     }
     animate(0);
 
 });
+
+function DrawScore() {
+    if (currentScore < newScore) {
+        currentScore++;
+    }
+    // convert score to 4 character string, left padded string with leading zeros
+    var scoreString = currentScore.toString().padStart(3, " ");
+
+    for (var i = 0; i <= 2; i++) {
+        scoreDigits[i].draw(scoreString[i]);
+    }
+}
 
 function AddEvents() {
 
@@ -206,7 +234,7 @@ function NewRound() {
 function CheckCollisions() {
 
     var jrDead = false;
-    
+
     snapJaws.forEach(sj => {
         if (sj.position == junior.position && sj.readyForCollision) {
             jrDead = true;
