@@ -31,6 +31,7 @@ class NitPicker extends Object23 {
                     nitPickers.push(new NitPicker(1, randomInt(205, 207)));
                 }
                 this.position += 1;
+                AudioPlay(AudioType.npMove);
                 if (this.position > 208) {
                     this.remove = true;
                     return;

@@ -76,9 +76,12 @@ class Junior {
                     this.position = 502;
                 } else if (this.position == 403) {
                     this.position = 201;
+                    AudioPlay(AudioType.jrMove);
                 } else if (this.position == 502) {
                     this.position = 402;
+                    AudioPlay(AudioType.jrMove);
                 } else if (this.position == 402) {
+                    AudioPlay(AudioType.jrMove);
                     NewRound();
                 } else {
                     this.TryMove(move.DOWN);
@@ -86,7 +89,7 @@ class Junior {
                 this.jumpCounter = 0;
             }
         }
-        
+
 
     }
 
@@ -103,6 +106,7 @@ class Junior {
             case move.RIGHT:
                 if (canMoveRight.includes(this.position)) {
                     this.position += 1;
+                    AudioPlay(AudioType.jrMove);
                 }
                 break;
             case move.LEFT:
@@ -114,24 +118,27 @@ class Junior {
                         default:
                             this.position -= 1;
                     }
+                    AudioPlay(AudioType.jrMove);
                 }
                 break;
             case move.UP:
                 if (canMoveUp.includes(this.position)) {
-
                     this.position += 100;
+                    AudioPlay(AudioType.jrMove);
                 }
 
                 break;
             case move.DOWN:
                 if (canMoveDown.includes(this.position)) {
                     this.position -= 100;
+                    AudioPlay(AudioType.jrMove);
                 }
                 break;
             case move.JUMP:
                 //console.log('jump');
                 if (canJump.includes(this.position)) {
                     this.position = 403;
+                    AudioPlay(AudioType.jrMove);
                 }
                 break;
 

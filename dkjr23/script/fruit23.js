@@ -15,6 +15,14 @@ class Fruit extends Object23 {
                 snapJaws.forEach(sj => {
                     if (sj.position == fruit.position) {
                         sj.dead = true;
+                        newScore = currentScore + 9;
+
+                    }
+                });
+                nitPickers.forEach(np => {
+                    if (np.position == fruit.position) {
+                        np.dead = true;
+                        newScore = currentScore + 6;
                     }
                 });
                 if (this.position == 105) {

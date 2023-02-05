@@ -17,6 +17,7 @@ var currentScore = 0;
 var newScore = 0;
 // create an array of four SevenSeg objects
 var scoreDigits = [];
+var scorePause = false;
 
 
 const States = {
@@ -85,7 +86,7 @@ $(document).ready(function () {
     screen = new Screen();
     junior = new Junior();
     key = new Key(1.5);
-    fruit = new Fruit(1);
+    fruit = new Fruit(1.3);
     miss = new Miss();
     for (var i = 0; i < 3; i++) {
         scoreDigits[i] = new SevenSeg(863 + (i * 43), 160);
@@ -132,7 +133,16 @@ $(document).ready(function () {
 
 function DrawScore() {
     if (currentScore < newScore) {
-        currentScore++;
+        if (scorePause) {
+            scorePause = false;
+        } else {
+            currentScore++;
+            audio_point = new Audio();
+            audio_point.src = "audio/point.mp3";
+            audio_point.loop = false;
+            audio_point.play();
+            scorePause = true;
+        }
     }
     // convert score to 4 character string, left padded string with leading zeros
     var scoreString = currentScore.toString().padStart(3, " ");

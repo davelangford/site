@@ -9,7 +9,7 @@ class SnapJaw extends Object23 {
         this.dead = false;
     }
     update() {
-        
+
     }
     draw(deltaTime) {
         if (this.collisionDelay < 20) {
@@ -21,7 +21,7 @@ class SnapJaw extends Object23 {
 
             if (this.frameReady(deltaTime)) {
                 this.ResetCollisionDetector();
-                
+
                 if (this.position == this.triggerFrame) {
                     snapJaws.push(new SnapJaw(1));
                 }
@@ -30,6 +30,7 @@ class SnapJaw extends Object23 {
                     this.direction = -1;
                 }
                 this.position += this.direction;
+                AudioPlay(AudioType.sjMove);
                 if (this.position <= 100) {
                     this.remove = true;
                     return;
