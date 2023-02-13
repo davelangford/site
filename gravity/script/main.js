@@ -2,8 +2,8 @@
 
 var canvas = document.getElementById("galaxy");
 var ctx = canvas.getContext("2d");
-var width = canvas.width = window.innerWidth - 200;
-var height = canvas.height = window.innerHeight - 200;
+var width = canvas.width = window.innerWidth - 10;
+var height = canvas.height = window.innerHeight - 10;
 var planet = new Planet();;
 var satellite;
 var mouseDown = false;
