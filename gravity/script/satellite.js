@@ -13,7 +13,7 @@ class Satellite {
             var distanceX = planet.pos.x - this.pos.x;
             var distanceY = planet.pos.y - this.pos.y;
             var distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-            var force = planet.mass / (distance  * distance);
+            var force = planet.mass / distance; //  * distance);
             var angle = Math.atan2(distanceY, distanceX);
             var forceX = Math.cos(angle) * force;
             var forceY = Math.sin(angle) * force;
