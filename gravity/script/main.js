@@ -29,19 +29,37 @@ function animate() {
 }
 
 function addEvents() {
-    $("#galaxy").mousedown(function (event) {
+    $("#galaxy").on("mousedown touchstart", function (event) {
+        event.preventDefault();
         mouseDown = true;
-        satellite = new Satellite(event.offsetX, event.offsetY);
+        var x, y;
+        if (event.type === "mousedown") {
+            x = event.offsetX;
+            y = event.offsetY;
+        } else {
+            x = event.originalEvent.touches[0].pageX - $(this).offset().left;
+            y = event.originalEvent.touches[0].pageY - $(this).offset().top;
+        }
+        satellite = new Satellite(x, y);
     });
-    $("#galaxy").mouseup(function (event) {
+    $("#galaxy").on("mouseup touchend", function (event) {
         if(mouseDown && !satellite.hasLaunched) {
             satellite.launch();
         }
         mouseDown = false;
     });
-    $("#galaxy").mousemove(function (event) {
-        mouseX = event.offsetX;
-        mouseY = event.offsetY;
+    $("#galaxy").on("mousemove touchmove", function (event) {
+        event.preventDefault();
+        var x, y;
+        if (event.type === "mousemove") {
+            x = event.offsetX;
+            y = event.offsetY;
+        } else {
+            x = event.originalEvent.touches[0].pageX - $(this).offset().left;
+            y = event.originalEvent.touches[0].pageY - $(this).offset().top;
+        }
+        mouseX = x;
+        mouseY = y;
     });
 }
 

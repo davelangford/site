@@ -13,7 +13,7 @@ class Satellite {
             var distanceX = planet.pos.x - this.pos.x;
             var distanceY = planet.pos.y - this.pos.y;
             var distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-            var force = planet.mass / distance; //  * distance);
+            var force = planet.mass / (distance  * distance);
             var angle = Math.atan2(distanceY, distanceX);
             var forceX = Math.cos(angle) * force;
             var forceY = Math.sin(angle) * force;
@@ -24,12 +24,9 @@ class Satellite {
             this.pos.x += this.vel.x;
             this.pos.y += this.vel.y;
         }
-        if (this.trailCounter > 0) {
-            this.trailCounter--;
-        } else {
-            this.trailCounter = 0;
             this.trail.push(createPoint(this.pos.x, this.pos.y));
-        }
+
+
         if (this.trail.length > 1000) {
             this.trail.shift();
         }
