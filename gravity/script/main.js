@@ -7,6 +7,7 @@ var height = canvas.height = window.innerHeight - 200;
 var planet = new Planet();;
 var satellite;
 var mouseDown = false;
+var hasLaunched = false;
 
 $(document).ready(function () {
     animate();
@@ -20,6 +21,7 @@ function animate() {
 
     planet.draw();
     if (satellite) {
+        satellite.update();
         satellite.draw();
     }
 
@@ -32,6 +34,9 @@ function addEvents() {
         satellite = new Satellite(event.offsetX, event.offsetY);
     });
     $("#galaxy").mouseup(function (event) {
+        if(mouseDown && !satellite.hasLaunched) {
+            satellite.launch();
+        }
         mouseDown = false;
     });
     $("#galaxy").mousemove(function (event) {

@@ -3,15 +3,15 @@
     "",
     "\\dkjr",
     "\\dkjr23",
-    "\\dkjr23\\images",
-    "\\dkjr23\\images\\miss",
     "\\dkjr23\\script",
     "\\dkjr\\css",
     "\\dkjr\\images",
     "\\dkjr\\script",
     "\\frank6_mobile",
+    "\\gravity",
+    "\\gravity\\script",
     "\\test"
   ],
-  "SelectedNode": "\\dkjr23\\script\\nitpicker23.js",
+  "SelectedNode": "\\gravity\\script\\planet.js",
   "PreviewInSolutionExplorer": false
 }
