@@ -1,7 +1,7 @@
 class Planet {
     constructor() {
-        this.r = randomInt(45, 70);
-        this.pos = createPoint(randomInt(this.r, width - this.r), randomInt(this.r, height - this.r));
+        this.r = width/20;// randomInt(width/20, 45);
+        this.pos = createPoint(width/2, height/2);
         this.mass = this.r*2; // * this.r;
     }
 

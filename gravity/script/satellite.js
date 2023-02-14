@@ -1,6 +1,6 @@
 class Satellite {
     constructor(x, y) {
-        this.r = 20;
+        this.r = 10;
         this.pos = createPoint(x, y);
         this.mass = this.r * this.r;
         this.hasLaunched = false;
@@ -24,10 +24,14 @@ class Satellite {
             this.pos.x += this.vel.x;
             this.pos.y += this.vel.y;
         }
+        if (this.trailCounter++ % 5 == 0) {
             this.trail.push(createPoint(this.pos.x, this.pos.y));
-
-
+            if (this.trailCounter > 1000) {
+                this.trailCounter = 0;
+            }
+        }
         if (this.trail.length > 1000) {
+
             this.trail.shift();
         }
 
@@ -61,9 +65,17 @@ class Satellite {
             let yc = (this.trail[i].y + this.trail[i + 1].y) / 2;
             ctx.quadraticCurveTo(this.trail[i].x, this.trail[i].y, xc, yc);
         }
+        //draw quadratic curve to the satellite
+        ctx.quadraticCurveTo(this.trail[this.trail.length - 1].x, this.trail[this.trail.length - 1].y, this.pos.x, this.pos.y);
 
+        let gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        gradient.addColorStop(0, 'rgb(0, 255, 255)');
+        gradient.addColorStop(0.5, 'white');
+        gradient.addColorStop(1, 'rgb(0, 255, 255)');
+        ctx.strokeStyle = gradient;
+        
         ctx.lineWidth = 1;
-        ctx.strokeStyle = "lightblue";
+        // ctx.strokeStyle = "lightblue";
         ctx.stroke();
 
 
