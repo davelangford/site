@@ -84,6 +84,7 @@ function ShowHint() {
         if ($($('.colorBar')[i]).attr("data-id") != i + 1) {
             idList.push(i);
         }
+        alert("ffff")
     }
 
     for (var i = 0; i < idList.length; i++) {
