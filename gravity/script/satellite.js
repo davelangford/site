@@ -69,9 +69,9 @@ class Satellite {
         ctx.quadraticCurveTo(this.trail[this.trail.length - 1].x, this.trail[this.trail.length - 1].y, this.pos.x, this.pos.y);
 
         let gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-        gradient.addColorStop(0, 'rgb(0, 255, 255)');
+        gradient.addColorStop(0, 'rgb(0, 0, 255)');
         gradient.addColorStop(0.5, 'white');
-        gradient.addColorStop(1, 'rgb(0, 255, 255)');
+        gradient.addColorStop(1, 'rgb(0, 0, 255)');
         ctx.strokeStyle = gradient;
         
         ctx.lineWidth = 1;
