@@ -10,6 +10,7 @@ canvas.height = window.innerHeight * window.devicePixelRatio;
 var gridSize = 9;
 var squareSize = 0;
 var numbers = [];
+var grid = [{}];
 var selectedSquares = [];
 var selectedNumber = 0;
 var selectedNote = 0;
@@ -21,7 +22,14 @@ if (canvas.width <= canvas.height) {
     squareSize = canvas.height / gridSize;
 }
 
-// Add event listeners to highlight each square as you tap it on touch devices or with a mouse
+class SudokuSquare {
+    constructor(value) {
+        this.value = value;
+        this.possibleValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        this.selected = false;
+    }
+}
+
 var isDragging = false;
 
 function AddListeners() {
@@ -160,7 +168,7 @@ $(document).ready(function () {
                 numbers = board;
                 console.log(board);
                 localStorage.setItem("numbers", JSON.stringify(numbers));
-
+                PopulateGrid(numbers);
                 DrawNumbers();
             })
             .catch((error) => {
@@ -168,9 +176,22 @@ $(document).ready(function () {
             });
     } else {
         numbers = JSON.parse(localStorage.getItem("numbers"));
+        PopulateGrid(numbers);
         DrawNumbers();
     }
 });
+
+function PopulateGrid(numbers) {
+    grid = Array.from({ length: 9 }, () =>
+        Array.from({ length: 9 }, () => new SudokuSquare(0))
+    );
+    for (row = 0; row < 9; row++) {
+        for (col = 0; col < 9; col++) {
+            var value = numbers[row][col];
+            grid[row][col] = new SudokuSquare(value);
+        }
+    }
+}
 
 function DrawNumbers() {
     ctx.fillStyle = "#000";
