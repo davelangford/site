@@ -11,7 +11,7 @@ var gridSize = 9;
 var squareSize = canvas.width / gridSize;
 
 // Draw the grid lines
-ctx.strokeStyle = '#000';
+ctx.strokeStyle = '#100';
 ctx.lineWidth = 2;
 for (var i = 0; i <= gridSize; i++) {
     ctx.beginPath();
