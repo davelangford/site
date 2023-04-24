@@ -8,7 +8,14 @@ canvas.height = window.innerHeight * window.devicePixelRatio;
 
 // Define the size of the grid and the size of each square
 var gridSize = 9;
-var squareSize = canvas.width / gridSize;
+var squareSize = 0;
+
+if(canvas.width <= canvas.height) {
+    squareSize = canvas.width / gridSize;
+} else {
+    squareSize = canvas.height / gridSize;
+}
+        
 
 // Draw the grid lines
 ctx.strokeStyle = '#100';
