@@ -77,11 +77,18 @@ function highlightSquare(x, y) {
     ctx.fillRect(col * squareSize, row * squareSize, squareSize, squareSize);
     DrawStuff();
   }
+  if (row > 0 && row <= 3 && col > 9) {
+    ctx.fillStyle = "#ff0";
+    ctx.fillRect(col * squareSize, row * squareSize, squareSize, squareSize);
+    DrawStuff();
+  }
 }
 
 function DrawStuff(drawnumbers = true) {
   DrawLines();
   DrawToolboxNumbers();
+  DrawToolboxNotes();
+
   if (drawnumbers) {
     DrawNumbers();
   }
@@ -147,35 +154,69 @@ function DrawLines() {
 }
 
 function DrawToolboxNumbers() {
-  ctx.strokeStyle = "#100";
-
-  var buffer = squareSize;
-  var startX = 9 * squareSize + buffer;
-  var startY = buffer;
-
-  for (var i = 0; i <= 3; i++) {
-    ctx.lineWidth = 10;
-    ctx.beginPath();
-    ctx.moveTo(startX + i * squareSize, startY);
-    ctx.lineTo(startX + i * squareSize, startY + squareSize * 3);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(startX, startY + i * squareSize);
-    ctx.lineTo(startX + squareSize * 3, startY + i * squareSize);
-    ctx.stroke();
-  }
-
-  ctx.fillStyle = "#000";
-  ctx.font = "bold " + squareSize * 0.6 + "px Arial";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-
-  for (row = 0; row < 3; row++) {
-    for (col = 0; col < 3; col++) {
-      var value = 6;
-      var x = startX + (col + 0.5) * squareSize;
-      var y = startY + (row + 0.5) * squareSize;
-      ctx.fillText(value, x, y);
+    ctx.strokeStyle = "#100";
+  
+    var buffer = squareSize;
+    var startX = 9 * squareSize + buffer;
+    var startY = buffer;
+  
+    for (var i = 0; i <= 3; i++) {
+      ctx.lineWidth = 10;
+      ctx.beginPath();
+      ctx.moveTo(startX + i * squareSize, startY);
+      ctx.lineTo(startX + i * squareSize, startY + squareSize * 3);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(startX, startY + i * squareSize);
+      ctx.lineTo(startX + squareSize * 3, startY + i * squareSize);
+      ctx.stroke();
+    }
+  
+    ctx.fillStyle = "#000";
+    ctx.font = "bold " + squareSize * 0.6 + "px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+  
+    for (row = 0; row < 3; row++) {
+      for (col = 0; col < 3; col++) {
+        var value = 6;
+        var x = startX + (col + 0.5) * squareSize;
+        var y = startY + (row + 0.5) * squareSize;
+        ctx.fillText(value, x, y);
+      }
     }
   }
-}
+
+  function DrawToolboxNotes() {
+    ctx.strokeStyle = "#100";
+  
+    var buffer = squareSize;
+    var startX = 9 * squareSize + buffer;
+    var startY = 4 * squareSize + buffer;
+  
+    for (var i = 0; i <= 3; i++) {
+      ctx.lineWidth = 10;
+      ctx.beginPath();
+      ctx.moveTo(startX + i * squareSize, startY);
+      ctx.lineTo(startX + i * squareSize, startY + squareSize * 3);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(startX, startY + i * squareSize);
+      ctx.lineTo(startX + squareSize * 3, startY + i * squareSize);
+      ctx.stroke();
+    }
+  
+    ctx.fillStyle = "#000";
+    ctx.font = "bold " + squareSize * 0.6 + "px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+  
+    for (row = 0; row < 3; row++) {
+      for (col = 0; col < 3; col++) {
+        var value = 6;
+        var x = startX + (col + 0.5) * squareSize;
+        var y = startY + (row + 0.5) * squareSize;
+        ctx.fillText(value, x, y);
+      }
+    }
+  }
