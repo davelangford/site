@@ -9,39 +9,12 @@ canvas.height = window.innerHeight * window.devicePixelRatio;
 // Define the size of the grid and the size of each square
 var gridSize = 9;
 var squareSize = 0;
+var numbers = [];
 
 if (canvas.width <= canvas.height) {
     squareSize = canvas.width / gridSize;
 } else {
     squareSize = canvas.height / gridSize;
-}
-
-
-// Draw the grid lines
-ctx.strokeStyle = '#100';
-ctx.lineWidth = 20;
-for (var i = 0; i <= gridSize; i++) {
-    ctx.beginPath();
-    ctx.moveTo(i * squareSize, 0);
-    ctx.lineTo(i * squareSize, squareSize * 9);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(0, i * squareSize);
-    ctx.lineTo(squareSize * 9, i * squareSize);
-    ctx.stroke();
-}
-
-// Draw numbers
-ctx.font = 'bold ' + (squareSize * 0.6) + 'px Arial';
-ctx.textAlign = 'center';
-ctx.textBaseline = 'middle';
-for (var i = 0; i < gridSize; i++) {
-    for (var j = 0; j < gridSize; j++) {
-        var value = Math.floor(Math.random() * 9) + 1;
-        var x = (i + 0.5) * squareSize;
-        var y = (j + 0.5) * squareSize;
-        ctx.fillText(value, x, y);
-    }
 }
 
 // Add event listeners to highlight each square as you tap it on touch devices or with a mouse
@@ -103,4 +76,65 @@ function highlightSquare(x, y) {
     var col = Math.floor(x / squareSize);
     ctx.fillStyle = '#ff0';
     ctx.fillRect(col * squareSize, row * squareSize, squareSize, squareSize);
+    DrawLines();
+    DrawNumbers();
+}
+
+async function fetchSudokuBoard() {
+    const response = await fetch('https://sugoku.onrender.com/board?difficulty=hard');
+    const data = await response.json();
+    return data.board;
+}
+
+
+$(document).ready(function () {
+    DrawLines();
+
+    fetchSudokuBoard()
+        .then(board => {
+            numbers = board;
+            console.log(board);
+            DrawNumbers();
+        })
+        .catch(error => {
+            console.error('Error fetching Sudoku board:', error);
+        });
+});
+
+
+function DrawNumbers() {
+    ctx.fillStyle = '#000';
+    ctx.font = 'bold ' + (squareSize * 0.6) + 'px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    for (row = 0; row < 9; row++) {
+        for (col = 0; col < 9; col++) {
+            var value = numbers[row][col];
+            if (value != 0) {
+                var x = (col + 0.5) * squareSize;
+                var y = (row + 0.5) * squareSize;
+                ctx.fillText(value, x, y);
+            }
+        }
+    }
+}
+
+function DrawLines() {
+    ctx.strokeStyle = '#100';
+    for (var i = 0; i <= gridSize; i++) {
+        if (i % 3 == 0) {
+            ctx.lineWidth = 10;
+        } else {
+            ctx.lineWidth = 2;
+        }
+        ctx.beginPath();
+        ctx.moveTo(i * squareSize, 0);
+        ctx.lineTo(i * squareSize, squareSize * 9);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, i * squareSize);
+        ctx.lineTo(squareSize * 9, i * squareSize);
+        ctx.stroke();
+    }
 }
