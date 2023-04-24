@@ -13,6 +13,7 @@ var numbers = [];
 var selectedSquares = [];
 var selectedNumber = 0;
 var selectedNote = 0;
+var higlightColor = "#f99";
 
 if (canvas.width <= canvas.height) {
     squareSize = canvas.width / gridSize;
@@ -23,98 +24,63 @@ if (canvas.width <= canvas.height) {
 // Add event listeners to highlight each square as you tap it on touch devices or with a mouse
 var isDragging = false;
 
-canvas.addEventListener("touchstart", function (event) {
-    event.preventDefault();
-    var rect = canvas.getBoundingClientRect();
-    var x = (event.touches[0].clientX - rect.left) * window.devicePixelRatio;
-    var y = (event.touches[0].clientY - rect.top) * window.devicePixelRatio;
-    highlightSquare(x, y);
-    SelectSquare(x, y);
-    isDragging = true;
-});
-
-canvas.addEventListener("mousedown", function (event) {
-    event.preventDefault();
-    var rect = canvas.getBoundingClientRect();
-    var x = (event.clientX - rect.left) * window.devicePixelRatio;
-    var y = (event.clientY - rect.top) * window.devicePixelRatio;
-    highlightSquare(x, y);
-    SelectSquare(x, y);
-    isDragging = true;
-});
-
-canvas.addEventListener("touchmove", function (event) {
-    event.preventDefault();
-    if (isDragging) {
+function AddListeners() {
+    canvas.addEventListener("touchstart", function (event) {
+        event.preventDefault();
         var rect = canvas.getBoundingClientRect();
         var x =
             (event.touches[0].clientX - rect.left) * window.devicePixelRatio;
         var y = (event.touches[0].clientY - rect.top) * window.devicePixelRatio;
-        highlightSquare(x, y);
         SelectSquare(x, y);
-    }
-});
+        isDragging = true;
+    });
 
-canvas.addEventListener("mousemove", function (event) {
-    event.preventDefault();
-    if (isDragging) {
+    canvas.addEventListener("mousedown", function (event) {
+        event.preventDefault();
         var rect = canvas.getBoundingClientRect();
         var x = (event.clientX - rect.left) * window.devicePixelRatio;
         var y = (event.clientY - rect.top) * window.devicePixelRatio;
-        highlightSquare(x, y);
         SelectSquare(x, y);
-    }
-});
+        isDragging = true;
+    });
 
-canvas.addEventListener("touchend", function (event) {
-    event.preventDefault();
-    isDragging = false;
-});
+    canvas.addEventListener("touchmove", function (event) {
+        event.preventDefault();
+        if (isDragging) {
+            var rect = canvas.getBoundingClientRect();
+            var x =
+                (event.touches[0].clientX - rect.left) *
+                window.devicePixelRatio;
+            var y =
+                (event.touches[0].clientY - rect.top) * window.devicePixelRatio;
+            SelectSquare(x, y);
+        }
+    });
 
-canvas.addEventListener("mouseup", function (event) {
-    event.preventDefault();
-    isDragging = false;
-});
+    canvas.addEventListener("mousemove", function (event) {
+        event.preventDefault();
+        if (isDragging) {
+            var rect = canvas.getBoundingClientRect();
+            var x = (event.clientX - rect.left) * window.devicePixelRatio;
+            var y = (event.clientY - rect.top) * window.devicePixelRatio;
+            SelectSquare(x, y);
+        }
+    });
 
-// Function to highlight the square at the given coordinates
-function highlightSquare(x, y) {
-    var row = Math.floor(y / squareSize);
-    var col = Math.floor(x / squareSize);
-    if (row < 9 && col < 9) {
-        ctx.fillStyle = "#ff0";
-        ctx.fillRect(
-            col * squareSize,
-            row * squareSize,
-            squareSize,
-            squareSize
-        );
-        DrawStuff();
-    }
-    if (row > 0 && row <= 3 && col > 9) {
-        ctx.fillStyle = "#ff0";
-        ctx.fillRect(
-            col * squareSize,
-            row * squareSize,
-            squareSize,
-            squareSize
-        );
-        DrawStuff();
-    }
-    if (row > 4 && row <= 9 && col > 9) {
-        ctx.fillStyle = "#ff0";
-        ctx.fillRect(
-            col * squareSize,
-            row * squareSize,
-            squareSize,
-            squareSize
-        );
-        DrawStuff();
-    }
+    canvas.addEventListener("touchend", function (event) {
+        event.preventDefault();
+        isDragging = false;
+    });
+
+    canvas.addEventListener("mouseup", function (event) {
+        event.preventDefault();
+        isDragging = false;
+    });
 }
 
 function HighlightSquares() {
     for (i = 0; i < selectedSquares.length; i++) {
-        ctx.fillStyle = "#f00";
+        ctx.fillStyle = higlightColor;
         ctx.fillRect(
             selectedSquares[i].col * squareSize,
             selectedSquares[i].row * squareSize,
@@ -169,7 +135,7 @@ function DrawStuff(drawnumbers = true) {
     DrawToolboxNumbers();
     DrawToolboxNotes();
     DrawLines();
-    
+
     if (drawnumbers) {
         DrawNumbers();
     }
@@ -184,6 +150,7 @@ async function fetchSudokuBoard() {
 }
 
 $(document).ready(function () {
+    AddListeners();
     DrawStuff(false);
 
     // get localstorage object called numbers, assign it to the numbers variable. If it doesn't exist, create it and call the fetch function
@@ -249,8 +216,6 @@ function DrawToolboxNumbers() {
     var startX = 9 * squareSize + buffer;
     var startY = buffer;
 
-   
-
     ctx.fillStyle = "#000";
     ctx.font = "bold " + squareSize * 0.6 + "px Arial";
     ctx.textAlign = "center";
@@ -263,10 +228,10 @@ function DrawToolboxNumbers() {
             var y = startY + (row + 0.5) * squareSize;
 
             if (value == selectedNumber) {
-                ctx.fillStyle = "#f00";
+                ctx.fillStyle = higlightColor;
                 ctx.fillRect(
                     x - squareSize / 2,
-                    (y - squareSize / 2),
+                    y - squareSize / 2,
                     squareSize,
                     squareSize
                 );
@@ -306,19 +271,18 @@ function DrawToolboxNotes() {
         for (col = 0; col < 3; col++) {
             var x = startX + (col + 0.5) * squareSize;
             var y = startY + (row + 0.5) * squareSize;
-            
+
             if (value == selectedNote) {
-                ctx.fillStyle = "#f00";
+                ctx.fillStyle = higlightColor;
                 ctx.fillRect(
                     x - squareSize / 2,
-                    (y - squareSize / 2),
+                    y - squareSize / 2,
                     squareSize,
                     squareSize
                 );
             }
             ctx.fillStyle = "#000";
             ctx.fillText(value++, x, y);
-
         }
     }
     for (var i = 0; i <= 3; i++) {
