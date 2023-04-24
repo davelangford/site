@@ -9,7 +9,6 @@ canvas.height = window.innerHeight * window.devicePixelRatio;
 // Define the size of the grid and the size of each square
 var gridSize = 9;
 var squareSize = 0;
-var numbers = [];
 var grid = [{}];
 var selectedSquares = [];
 var selectedNumber = 0;
@@ -163,25 +162,27 @@ $(document).ready(function () {
 
     // get localstorage object called numbers, assign it to the numbers variable. If it doesn't exist, create it and call the fetch function
     if (localStorage.getItem("numbers") == null) {
+        var numbers = [];
+
         fetchSudokuBoard()
             .then((board) => {
                 numbers = board;
                 console.log(board);
                 localStorage.setItem("numbers", JSON.stringify(numbers));
-                PopulateGrid(numbers);
+                PopulateGrid();
                 DrawNumbers();
             })
             .catch((error) => {
                 console.error("Error fetching Sudoku board:", error);
             });
     } else {
-        numbers = JSON.parse(localStorage.getItem("numbers"));
-        PopulateGrid(numbers);
+        PopulateGrid();
         DrawNumbers();
     }
 });
 
-function PopulateGrid(numbers) {
+function PopulateGrid() {
+    var numbers = JSON.parse(localStorage.getItem("numbers"));
     grid = Array.from({ length: 9 }, () =>
         Array.from({ length: 9 }, () => new SudokuSquare(0))
     );
@@ -201,11 +202,57 @@ function DrawNumbers() {
 
     for (row = 0; row < 9; row++) {
         for (col = 0; col < 9; col++) {
-            var value = numbers[row][col];
+            var value = grid[row][col].value;
             if (value != 0) {
                 var x = (col + 0.5) * squareSize;
                 var y = (row + 0.5) * squareSize;
+                ctx.font = "bold " + squareSize * 0.6 + "px Arial";
                 ctx.fillText(value, x, y);
+                continue;
+            }
+            ctx.font = squareSize * 0.2 + "px Arial";
+            for (i = 0; i < grid[row][col].possibleValues.length; i++) {
+                switch (grid[row][col].possibleValues[i]) {
+                    case 1:
+                        x = (col + 0.2) * squareSize;
+                        y = (row + 0.2) * squareSize;
+                        break;
+                    case 2:
+                        x = (col + 0.5) * squareSize;
+                        y = (row + 0.2) * squareSize;
+                        break;
+                    case 3:
+                        x = (col + 0.8) * squareSize;
+                        y = (row + 0.2) * squareSize;
+                        break;
+                        case 4:
+                        x = (col + 0.2) * squareSize;
+                        y = (row + 0.5) * squareSize;
+                        break;
+                    case 5:
+                        x = (col + 0.5) * squareSize;
+                        y = (row + 0.5) * squareSize;
+                        break;
+                    case 6:
+                        x = (col + 0.8) * squareSize;
+                        y = (row + 0.5) * squareSize;
+                        break;
+                        case 7:
+                        x = (col + 0.2) * squareSize;
+                        y = (row + 0.8) * squareSize;
+                        break;
+                    case 8:
+                        x = (col + 0.5) * squareSize;
+                        y = (row + 0.8) * squareSize;
+                        break;
+                    case 9:
+                        x = (col + 0.8) * squareSize;
+                        y = (row + 0.8) * squareSize;
+                        break;
+                    default:
+                        break;
+                }
+                ctx.fillText(grid[row][col].possibleValues[i], x, y);
             }
         }
     }
