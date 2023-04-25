@@ -14,6 +14,7 @@ var selectedSquares = [];
 var selectedNumber = 0;
 var selectedNote = 0;
 var higlightColor = "#f99";
+var currentRow, currentCol;
 
 if (canvas.width <= canvas.height) {
     squareSize = canvas.width / gridSize;
@@ -82,11 +83,15 @@ function AddListeners() {
     canvas.addEventListener("touchend", function (event) {
         event.preventDefault();
         isDragging = false;
+        currentRow = 0;
+        currentCol = 0;
     });
 
     canvas.addEventListener("mouseup", function (event) {
         event.preventDefault();
         isDragging = false;
+        currentRow = 0;
+        currentCol = 0;
     });
 }
 
@@ -109,10 +114,20 @@ function HighlightSquares() {
 }
 
 function SelectSquare(x, y) {
+
     var row = Math.floor(y / squareSize);
     var col = Math.floor(x / squareSize);
+
+    if(currentRow == row && currentCol == col) return;
+
+    console.log(
+        `currentRow: ${currentRow}, currentCol: ${currentCol}, col: ${col}, row: ${row}`
+    );
+    currentRow = row;
+    currentCol = col;
+
     if (row < 9 && col < 9) {
-        grid[row][col].selected = true;
+        grid[row][col].selected = !grid[row][col].selected;
 
     } else if (row > 0 && row <= 3 && col > 9) {
         // Number in toolbox clicked
@@ -133,9 +148,7 @@ function SelectSquare(x, y) {
         selectedNumber = 0;
         selectedNote = 0;
     }
-    console.log(
-        `seelctedNumber: ${selectedNumber}, selectedNote: ${selectedNote}, squares: ${selectedSquares}`
-    );
+
     DrawStuff();
 }
 
@@ -190,24 +203,22 @@ function DrawStuff(drawnumbers = true) {
 }
 
 function DrawLoading() {
-    const x = 100;
-    const y = 100;
-    const width = 200;
-    const height = 50;
+    const width = 300;
+    const height = 100;
+    const x = squareSize*4.5 -(width/2);
+    const y = squareSize*4.5 - (height/2);
 
-    // add some styling to make it look like a dialog
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = '#BBDDff';
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 2;
     ctx.fillRect(x, y, width, height);
     ctx.strokeRect(x, y, width, height);
 
-    // set the content of the dialog
-    const message = 'Generating Sudoku, Please Wait...';
+    const message = 'Generating, please wait...';
     ctx.fillStyle = '#000000';
-    ctx.font = '16px Arial';
+    ctx.font = '18px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText(message, x + (width / 2), y + (height / 2) + 5);
+    ctx.fillText(message, x + (width / 2), y + (height / 2) + 1);
 }
 
 async function fetchSudokuBoard() {
