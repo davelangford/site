@@ -37,7 +37,28 @@ class SudokuSquare {
 
 var isDragging = false;
 
+
+function NewGame(difficulty) {
+    localStorage.removeItem("numbers");
+    localStorage.removeItem("grid");
+    DrawStuff(false);
+    LoadBoard(difficulty);
+}
 function AddListeners() {
+
+    easyButton.addEventListener("click", () => {
+        NewGame("easy");
+    });
+
+    mediumButton.addEventListener("click", () => {
+        NewGame("medium");
+    });
+
+    hardButton.addEventListener("click", () => {
+        NewGame("hard");
+    });
+
+
     canvas.addEventListener("touchstart", function (event) {
         event.preventDefault();
         var rect = canvas.getBoundingClientRect();
@@ -98,6 +119,8 @@ function AddListeners() {
 function HighlightSquares() {
     if (grid.length != 9) return;
 
+    var anySelected = false;
+
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             if (grid[row][col].selected == true) {
@@ -108,6 +131,22 @@ function HighlightSquares() {
                     squareSize,
                     squareSize
                 );
+                anySelected = true;
+            }
+        }
+    }
+    if (!anySelected && selectedNumber != 0) {
+        for (var row = 0; row < 9; row++) {
+            for (var col = 0; col < 9; col++) {
+                if (grid[row][col].value == selectedNumber) {
+                    ctx.fillStyle = "#cc9";
+                    ctx.fillRect(
+                        col * squareSize,
+                        row * squareSize,
+                        squareSize,
+                        squareSize
+                    );
+                }
             }
         }
     }
@@ -118,7 +157,7 @@ function SelectSquare(x, y) {
     var row = Math.floor(y / squareSize);
     var col = Math.floor(x / squareSize);
 
-    if(currentRow == row && currentCol == col) return;
+    if (currentRow == row && currentCol == col) return;
 
     console.log(
         `currentRow: ${currentRow}, currentCol: ${currentCol}, col: ${col}, row: ${row}`
@@ -128,6 +167,8 @@ function SelectSquare(x, y) {
 
     if (row < 9 && col < 9) {
         grid[row][col].selected = !grid[row][col].selected;
+        selectedNote = 0;
+        selectedNumber = 0;
 
     } else if (row > 0 && row <= 3 && col > 9) {
         // Number in toolbox clicked
@@ -205,8 +246,8 @@ function DrawStuff(drawnumbers = true) {
 function DrawLoading() {
     const width = 300;
     const height = 100;
-    const x = squareSize*4.5 -(width/2);
-    const y = squareSize*4.5 - (height/2);
+    const x = squareSize * 4.5 - (width / 2);
+    const y = squareSize * 4.5 - (height / 2);
 
     ctx.fillStyle = '#BBDDff';
     ctx.strokeStyle = '#000000';
@@ -221,9 +262,9 @@ function DrawLoading() {
     ctx.fillText(message, x + (width / 2), y + (height / 2) + 1);
 }
 
-async function fetchSudokuBoard() {
+async function fetchSudokuBoard(difficulty) {
     const response = await fetch(
-        "https://sugoku.onrender.com/board?difficulty=hard"
+        "https://sugoku.onrender.com/board?difficulty=" + difficulty
     );
     const data = await response.json();
     return data.board;
@@ -233,11 +274,16 @@ $(document).ready(function () {
     AddListeners();
     DrawStuff(false);
 
+    LoadBoard('easy');
+
+});
+
+function LoadBoard(difficulty) {
     // get localstorage object called numbers, assign it to the numbers variable. If it doesn't exist, create it and call the fetch function
     if (localStorage.getItem("numbers") == null) {
         var numbers = [];
 
-        fetchSudokuBoard()
+        fetchSudokuBoard(difficulty)
             .then((board) => {
                 numbers = board;
                 console.log(board);
@@ -252,8 +298,7 @@ $(document).ready(function () {
         PopulateGrid();
         DrawStuff();
     }
-});
-
+}
 function PopulateGrid() {
     var numbers = JSON.parse(localStorage.getItem("numbers"));
 
@@ -277,8 +322,6 @@ function DrawNumbers() {
 
     localStorage.setItem("grid", JSON.stringify(grid));
 
-    ctx.fillStyle = "#000";
-    ctx.font = "bold " + squareSize * 0.6 + "px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
@@ -288,53 +331,61 @@ function DrawNumbers() {
             if (value != 0) {
                 var x = (col + 0.5) * squareSize;
                 var y = (row + 0.5) * squareSize;
-                ctx.font = "bold " + squareSize * 0.6 + "px Arial";
-                ctx.fillText(value, x, y);
-                continue;
-            }
-            ctx.font = squareSize * 0.2 + "px Arial";
-            for (i = 0; i < grid[row][col].possibleValues.length; i++) {
-                switch (grid[row][col].possibleValues[i]) {
-                    case 1:
-                        x = (col + 0.2) * squareSize;
-                        y = (row + 0.2) * squareSize;
-                        break;
-                    case 2:
-                        x = (col + 0.5) * squareSize;
-                        y = (row + 0.2) * squareSize;
-                        break;
-                    case 3:
-                        x = (col + 0.8) * squareSize;
-                        y = (row + 0.2) * squareSize;
-                        break;
-                    case 4:
-                        x = (col + 0.2) * squareSize;
-                        y = (row + 0.5) * squareSize;
-                        break;
-                    case 5:
-                        x = (col + 0.5) * squareSize;
-                        y = (row + 0.5) * squareSize;
-                        break;
-                    case 6:
-                        x = (col + 0.8) * squareSize;
-                        y = (row + 0.5) * squareSize;
-                        break;
-                    case 7:
-                        x = (col + 0.2) * squareSize;
-                        y = (row + 0.8) * squareSize;
-                        break;
-                    case 8:
-                        x = (col + 0.5) * squareSize;
-                        y = (row + 0.8) * squareSize;
-                        break;
-                    case 9:
-                        x = (col + 0.8) * squareSize;
-                        y = (row + 0.8) * squareSize;
-                        break;
-                    default:
-                        break;
+                ctx.font = squareSize * 0.6 + "px Arial";
+                if (grid[row][col].fixed) {
+                    ctx.fillStyle = "#000";
+
+                } else {
+                    ctx.fillStyle = "#009";
+
                 }
-                ctx.fillText(grid[row][col].possibleValues[i], x, y);
+                ctx.fillText(value, x, y);
+            } else {
+                ctx.font = squareSize * 0.2 + "px Arial";
+                ctx.fillStyle = "#000";
+                for (i = 0; i < grid[row][col].possibleValues.length; i++) {
+                    switch (grid[row][col].possibleValues[i]) {
+                        case 1:
+                            x = (col + 0.2) * squareSize;
+                            y = (row + 0.2) * squareSize;
+                            break;
+                        case 2:
+                            x = (col + 0.5) * squareSize;
+                            y = (row + 0.2) * squareSize;
+                            break;
+                        case 3:
+                            x = (col + 0.8) * squareSize;
+                            y = (row + 0.2) * squareSize;
+                            break;
+                        case 4:
+                            x = (col + 0.2) * squareSize;
+                            y = (row + 0.5) * squareSize;
+                            break;
+                        case 5:
+                            x = (col + 0.5) * squareSize;
+                            y = (row + 0.5) * squareSize;
+                            break;
+                        case 6:
+                            x = (col + 0.8) * squareSize;
+                            y = (row + 0.5) * squareSize;
+                            break;
+                        case 7:
+                            x = (col + 0.2) * squareSize;
+                            y = (row + 0.8) * squareSize;
+                            break;
+                        case 8:
+                            x = (col + 0.5) * squareSize;
+                            y = (row + 0.8) * squareSize;
+                            break;
+                        case 9:
+                            x = (col + 0.8) * squareSize;
+                            y = (row + 0.8) * squareSize;
+                            break;
+                        default:
+                            break;
+                    }
+                    ctx.fillText(grid[row][col].possibleValues[i], x, y);
+                }
             }
         }
     }

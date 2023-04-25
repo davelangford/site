@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Sudoku IIII</title>
     <link rel="stylesheet" type="text/css" href="sudoku.css">
@@ -7,13 +8,19 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
+
 <body>
 
-    <div id="fff"></div>
-    
+    <div id="buttons" style="position: absolute; right: 0px; z-index: 1;">
+        <button id="easyButton">Easy</button>
+        <button id="mediumButton">Medium</button>
+        <button id="hardButton">Hard</button>
+    </div>
+
 
 
     <canvas id="sudokucanvas"></canvas>
     <script src="script/sudoku.js"></script>
 </body>
+
 </html>
