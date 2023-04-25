@@ -24,8 +24,13 @@ if (canvas.width <= canvas.height) {
 class SudokuSquare {
     constructor(value) {
         this.value = value;
-        this.possibleValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        this.possibleValues = [];
         this.selected = false;
+        if (this.value != 0) {
+            this.fixed = true;
+        } else {
+            this.fixed = false;
+        }
     }
 }
 
@@ -86,47 +91,45 @@ function AddListeners() {
 }
 
 function HighlightSquares() {
-    for (i = 0; i < selectedSquares.length; i++) {
-        ctx.fillStyle = higlightColor;
-        ctx.fillRect(
-            selectedSquares[i].col * squareSize,
-            selectedSquares[i].row * squareSize,
-            squareSize,
-            squareSize
-        );
+    if (grid.length != 9) return;
+
+    for (var row = 0; row < 9; row++) {
+        for (var col = 0; col < 9; col++) {
+            if (grid[row][col].selected == true) {
+                ctx.fillStyle = higlightColor;
+                ctx.fillRect(
+                    col * squareSize,
+                    row * squareSize,
+                    squareSize,
+                    squareSize
+                );
+            }
+        }
     }
 }
 
-// Function to highlight the square at the given coordinates
 function SelectSquare(x, y) {
     var row = Math.floor(y / squareSize);
     var col = Math.floor(x / squareSize);
     if (row < 9 && col < 9) {
-        if (selectedSquares.length === 0) {
-            // If it is, add the new square to the array
-            selectedSquares.push({ col, row });
-        } else {
-            // Define a function to check if a square is already selected
-            const isSquareSelected = (square) => {
-                return square.col === col && square.row === row;
-            };
+        grid[row][col].selected = true;
 
-            // Use the find() method to search for the selected square
-            const selectedSquare = selectedSquares.find(isSquareSelected);
-
-            // If the square is not already selected, add it to the array
-            if (!selectedSquare) {
-                selectedSquares.push({ col, row });
-            }
-        }
     } else if (row > 0 && row <= 3 && col > 9) {
+        // Number in toolbox clicked
         selectedNote = 0;
         selectedNumber = (row - 1) * 3 + (col - 9);
+        ToggleNumber();
     } else if (row > 4 && row <= 7 && col > 9) {
+        // Note in toolbox clicked
         selectedNumber = 0;
         selectedNote = (row - 5) * 3 + (col - 9);
+        ToggleNote();
     } else {
-        selectedSquares = [];
+        for (var row = 0; row < 9; row++) {
+            for (var col = 0; col < 9; col++) {
+                grid[row][col].selected = false;
+            }
+        }
         selectedNumber = 0;
         selectedNote = 0;
     }
@@ -134,6 +137,38 @@ function SelectSquare(x, y) {
         `seelctedNumber: ${selectedNumber}, selectedNote: ${selectedNote}, squares: ${selectedSquares}`
     );
     DrawStuff();
+}
+
+function ToggleNote() {
+    if (selectedNote == 0) return;
+
+    for (var row = 0; row < 9; row++) {
+        for (var col = 0; col < 9; col++) {
+            if (grid[row][col].selected == true) {
+                if (!grid[row][col].possibleValues.includes(selectedNote)) {
+                    grid[row][col].possibleValues.push(selectedNote);
+                } else {
+                    let index = grid[row][col].possibleValues.indexOf(selectedNote);
+
+                    if (index >= 0) {
+                        grid[row][col].possibleValues.splice(index, 1);
+                    }
+                }
+            }
+        }
+    }
+}
+
+function ToggleNumber() {
+    if (selectedNumber == 0) return;
+
+    for (var row = 0; row < 9; row++) {
+        for (var col = 0; col < 9; col++) {
+            if (grid[row][col].selected == true) {
+                grid[row][col].value = selectedNumber;
+            }
+        }
+    }
 }
 
 function DrawStuff(drawnumbers = true) {
@@ -183,6 +218,7 @@ $(document).ready(function () {
 
 function PopulateGrid() {
     var numbers = JSON.parse(localStorage.getItem("numbers"));
+    
     grid = Array.from({ length: 9 }, () =>
         Array.from({ length: 9 }, () => new SudokuSquare(0))
     );
@@ -195,6 +231,9 @@ function PopulateGrid() {
 }
 
 function DrawNumbers() {
+    
+    localStorage.setItem("grid", JSON.stringify(grid));
+
     ctx.fillStyle = "#000";
     ctx.font = "bold " + squareSize * 0.6 + "px Arial";
     ctx.textAlign = "center";
@@ -225,7 +264,7 @@ function DrawNumbers() {
                         x = (col + 0.8) * squareSize;
                         y = (row + 0.2) * squareSize;
                         break;
-                        case 4:
+                    case 4:
                         x = (col + 0.2) * squareSize;
                         y = (row + 0.5) * squareSize;
                         break;
@@ -237,7 +276,7 @@ function DrawNumbers() {
                         x = (col + 0.8) * squareSize;
                         y = (row + 0.5) * squareSize;
                         break;
-                        case 7:
+                    case 7:
                         x = (col + 0.2) * squareSize;
                         y = (row + 0.8) * squareSize;
                         break;
