@@ -164,8 +164,12 @@ function ToggleNumber() {
 
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
-            if (grid[row][col].selected == true) {
-                grid[row][col].value = selectedNumber;
+            if (grid[row][col].selected == true && !grid[row][col].fixed) {
+                if (grid[row][col].value == 0) {
+                    grid[row][col].value = selectedNumber;
+                } else {
+                    grid[row][col].value = 0;
+                }
             }
         }
     }
@@ -180,7 +184,30 @@ function DrawStuff(drawnumbers = true) {
 
     if (drawnumbers) {
         DrawNumbers();
+    } else {
+        DrawLoading();
     }
+}
+
+function DrawLoading() {
+    const x = 100;
+    const y = 100;
+    const width = 200;
+    const height = 50;
+
+    // add some styling to make it look like a dialog
+    ctx.fillStyle = '#ffffff';
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 2;
+    ctx.fillRect(x, y, width, height);
+    ctx.strokeRect(x, y, width, height);
+
+    // set the content of the dialog
+    const message = 'Generating Sudoku, Please Wait...';
+    ctx.fillStyle = '#000000';
+    ctx.font = '16px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(message, x + (width / 2), y + (height / 2) + 5);
 }
 
 async function fetchSudokuBoard() {
@@ -205,33 +232,38 @@ $(document).ready(function () {
                 console.log(board);
                 localStorage.setItem("numbers", JSON.stringify(numbers));
                 PopulateGrid();
-                DrawNumbers();
+                DrawStuff();
             })
             .catch((error) => {
                 console.error("Error fetching Sudoku board:", error);
             });
     } else {
         PopulateGrid();
-        DrawNumbers();
+        DrawStuff();
     }
 });
 
 function PopulateGrid() {
     var numbers = JSON.parse(localStorage.getItem("numbers"));
-    
-    grid = Array.from({ length: 9 }, () =>
-        Array.from({ length: 9 }, () => new SudokuSquare(0))
-    );
-    for (row = 0; row < 9; row++) {
-        for (col = 0; col < 9; col++) {
-            var value = numbers[row][col];
-            grid[row][col] = new SudokuSquare(value);
+
+    if (localStorage.getItem("grid") != null) {
+        grid = JSON.parse(localStorage.getItem("grid"));
+    } else {
+
+        grid = Array.from({ length: 9 }, () =>
+            Array.from({ length: 9 }, () => new SudokuSquare(0))
+        );
+        for (row = 0; row < 9; row++) {
+            for (col = 0; col < 9; col++) {
+                var value = numbers[row][col];
+                grid[row][col] = new SudokuSquare(value);
+            }
         }
     }
 }
 
 function DrawNumbers() {
-    
+
     localStorage.setItem("grid", JSON.stringify(grid));
 
     ctx.fillStyle = "#000";
