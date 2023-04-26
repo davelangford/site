@@ -13,7 +13,8 @@ var grid = [{}];
 var selectedSquares = [];
 var selectedNumber = 0;
 var selectedNote = 0;
-var higlightColor = "#f99";
+var selectedCellColor = "#f99";
+var hintCellColor = "#cc9";
 var currentRow, currentCol;
 
 if (canvas.width <= canvas.height) {
@@ -124,7 +125,7 @@ function HighlightSquares() {
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             if (grid[row][col].selected == true) {
-                ctx.fillStyle = higlightColor;
+                ctx.fillStyle = selectedCellColor;
                 ctx.fillRect(
                     col * squareSize,
                     row * squareSize,
@@ -139,7 +140,8 @@ function HighlightSquares() {
         for (var row = 0; row < 9; row++) {
             for (var col = 0; col < 9; col++) {
                 if (grid[row][col].value == selectedNumber) {
-                    ctx.fillStyle = "#cc9";
+                    HighlightNeighbourhood(row, col);
+                    ctx.fillStyle = hintCellColor;
                     ctx.fillRect(
                         col * squareSize,
                         row * squareSize,
@@ -147,9 +149,84 @@ function HighlightSquares() {
                         squareSize
                     );
                 }
+                var x, y;
+                var index = grid[row][col].possibleValues.indexOf(selectedNumber);
+                if (index >= 0 && grid[row][col].value == 0) {
+                    ctx.fillStyle = hintCellColor;
+                    switch (grid[row][col].possibleValues[index]) {
+                        case 1:
+                            x = (col + 0.0) * squareSize;
+                            y = (row + 0.0) * squareSize;
+                            break;
+                        case 2:
+                            x = (col + 0.33) * squareSize;
+                            y = (row + 0.0) * squareSize;
+                            break;
+                        case 3:
+                            x = (col + 0.66) * squareSize;
+                            y = (row + 0.0) * squareSize;
+                            break;
+                        case 4:
+                            x = (col + 0.0) * squareSize;
+                            y = (row + 0.33) * squareSize;
+                            break;
+                        case 5:
+                            x = (col + 0.33) * squareSize;
+                            y = (row + 0.33) * squareSize;
+                            break;
+                        case 6:
+                            x = (col + 0.66) * squareSize;
+                            y = (row + 0.33) * squareSize;
+                            break;
+                        case 7:
+                            x = (col + 0.0) * squareSize;
+                            y = (row + 0.66) * squareSize;
+                            break;
+                        case 8:
+                            x = (col + 0.33) * squareSize;
+                            y = (row + 0.66) * squareSize;
+                            break;
+                        case 9:
+                            x = (col + 0.66) * squareSize;
+                            y = (row + 0.66) * squareSize;
+                            break;
+                        default:
+                            break;
+                    }
+                    ctx.fillRect(
+                        x,
+                        y,
+                        squareSize / 3,
+                        squareSize / 3
+                    );
+                }
             }
         }
     }
+}
+
+function HighlightNeighbourhood(row, col) {
+    ctx.fillStyle = hintCellColor;
+    // for (var i = 0; i < 9; i++) {
+    //     ctx.fillRect(
+    //         i * squareSize,
+    //         row * squareSize,
+    //         squareSize,
+    //         squareSize
+    //     );
+    // }
+    ctx.fillRect(
+        0,
+        row * squareSize,
+        squareSize * 9,
+        squareSize
+    );
+    ctx.fillRect(
+        col + squareSize,
+        0,
+        squareSize,
+        squareSize * 9
+    );
 }
 
 function SelectSquare(x, y) {
@@ -181,16 +258,20 @@ function SelectSquare(x, y) {
         selectedNote = (row - 5) * 3 + (col - 9);
         ToggleNote();
     } else {
-        for (var row = 0; row < 9; row++) {
-            for (var col = 0; col < 9; col++) {
-                grid[row][col].selected = false;
-            }
-        }
+        DeselectCells();
         selectedNumber = 0;
         selectedNote = 0;
     }
 
     DrawStuff();
+}
+
+function DeselectCells() {
+    for (var row = 0; row < 9; row++) {
+        for (var col = 0; col < 9; col++) {
+            grid[row][col].selected = false;
+        }
+    }
 }
 
 function ToggleNote() {
@@ -219,7 +300,7 @@ function ToggleNumber() {
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             if (grid[row][col].selected == true && !grid[row][col].fixed) {
-                if (grid[row][col].value == 0) {
+                if (grid[row][col].value == 0 || grid[row][col].value != selectedNumber) {
                     grid[row][col].value = selectedNumber;
                 } else {
                     grid[row][col].value = 0;
@@ -227,6 +308,7 @@ function ToggleNumber() {
             }
         }
     }
+    DeselectCells();
 }
 
 function DrawStuff(drawnumbers = true) {
@@ -393,6 +475,7 @@ function DrawNumbers() {
 
 function DrawLines() {
     ctx.strokeStyle = "#100";
+    ctx.lineCap = "round";
     for (var i = 0; i <= gridSize; i++) {
         if (i % 3 == 0) {
             ctx.lineWidth = 10;
@@ -429,7 +512,7 @@ function DrawToolboxNumbers() {
             var y = startY + (row + 0.5) * squareSize;
 
             if (value == selectedNumber) {
-                ctx.fillStyle = higlightColor;
+                ctx.fillStyle = selectedCellColor;
                 ctx.fillRect(
                     x - squareSize / 2,
                     y - squareSize / 2,
@@ -474,7 +557,7 @@ function DrawToolboxNotes() {
             var y = startY + (row + 0.5) * squareSize;
 
             if (value == selectedNote) {
-                ctx.fillStyle = higlightColor;
+                ctx.fillStyle = selectedCellColor;
                 ctx.fillRect(
                     x - squareSize / 2,
                     y - squareSize / 2,
