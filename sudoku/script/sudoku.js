@@ -1,20 +1,17 @@
-// Get the canvas element and its context
 var canvas = document.getElementById("sudokucanvas");
 var ctx = canvas.getContext("2d");
 
-// Set the canvas size based on the device's pixel density
 canvas.width = window.innerWidth * window.devicePixelRatio;
 canvas.height = window.innerHeight * window.devicePixelRatio;
 
-// Define the size of the grid and the size of each square
 var gridSize = 9;
 var squareSize = 0;
 var grid = [{}];
 var selectedSquares = [];
 var selectedNumber = 0;
 var selectedNote = 0;
-var selectedCellColor = "#f99";
-var hintCellColor = "#cc9";
+var selectedCellColor = "#b3d9ff";
+var hintCellColor = "#b3d9ff";
 var currentRow, currentCol;
 
 if (canvas.width <= canvas.height) {
@@ -37,36 +34,29 @@ class SudokuSquare {
 }
 
 var isDragging = false;
-let snapshots = []; // Array to store snapshots
+let snapshots = [];
 
 function takeSnapshot() {
-  // Clone the grid object to create a new snapshot
-  let snapshot = JSON.parse(JSON.stringify(grid));
+    let snapshot = JSON.parse(JSON.stringify(grid));
 
-  // Add the snapshot to the beginning of the array
-  snapshots.unshift(snapshot);
+    snapshots.unshift(snapshot);
 
-  // If there are more than 10 snapshots, remove the oldest one
-  if (snapshots.length > 10) {
-    snapshots.pop();
-  }
+    if (snapshots.length > 10) {
+        snapshots.pop();
+    }
 }
 
 function undo() {
-    // If there are no snapshots, return
     if (snapshots.length === 0) {
-      return;
+        return;
     }
-  
-    // Get the most recent snapshot
+
     let snapshot = snapshots.shift();
-  
-    // Restore the game state from the snapshot
+
     grid = snapshot;
 
     DrawStuff();
-  }
-
+}
 
 function NewGame(difficulty) {
     localStorage.removeItem("numbers");
@@ -75,7 +65,6 @@ function NewGame(difficulty) {
     LoadBoard(difficulty);
 }
 function AddListeners() {
-
     easyButton.addEventListener("click", () => {
         NewGame("easy");
     });
@@ -91,7 +80,6 @@ function AddListeners() {
     undoButton.addEventListener("click", () => {
         undo();
     });
-
 
     canvas.addEventListener("touchstart", function (event) {
         event.preventDefault();
@@ -183,7 +171,8 @@ function HighlightSquares() {
                     );
                 }
                 var x, y;
-                var index = grid[row][col].possibleValues.indexOf(selectedNumber);
+                var index =
+                    grid[row][col].possibleValues.indexOf(selectedNumber);
                 if (index >= 0 && grid[row][col].value == 0) {
                     ctx.fillStyle = hintCellColor;
                     switch (grid[row][col].possibleValues[index]) {
@@ -226,12 +215,9 @@ function HighlightSquares() {
                         default:
                             break;
                     }
-                    ctx.fillRect(
-                        x,
-                        y,
-                        squareSize / 3,
-                        squareSize / 3
-                    );
+                    ctx.beginPath();
+                    ctx.roundRect(x, y, squareSize / 3, squareSize / 3, [5]);
+                    ctx.fill();
                 }
             }
         }
@@ -248,22 +234,11 @@ function HighlightNeighbourhood(row, col) {
     //         squareSize
     //     );
     // }
-    ctx.fillRect(
-        0,
-        row * squareSize,
-        squareSize * 9,
-        squareSize
-    );
-    ctx.fillRect(
-        col + squareSize,
-        0,
-        squareSize,
-        squareSize * 9
-    );
+    ctx.fillRect(0, row * squareSize, squareSize * 9, squareSize);
+    ctx.fillRect(col + squareSize, 0, squareSize, squareSize * 9);
 }
 
 function SelectSquare(x, y) {
-
     var row = Math.floor(y / squareSize);
     var col = Math.floor(x / squareSize);
 
@@ -279,16 +254,15 @@ function SelectSquare(x, y) {
         grid[row][col].selected = !grid[row][col].selected;
         selectedNote = 0;
         selectedNumber = 0;
-
     } else if (row > 0 && row <= 3 && col > 9) {
         // Number in toolbox clicked
-        selectedNote = 0;
         selectedNumber = (row - 1) * 3 + (col - 9);
+        selectedNote = selectedNumber;
         ToggleNumber();
     } else if (row > 4 && row <= 7 && col > 9) {
         // Note in toolbox clicked
-        selectedNumber = 0;
         selectedNote = (row - 5) * 3 + (col - 9);
+        selectedNumber = selectedNote;
         ToggleNote();
     } else {
         DeselectCells();
@@ -318,7 +292,8 @@ function ToggleNote() {
                 if (!grid[row][col].possibleValues.includes(selectedNote)) {
                     grid[row][col].possibleValues.push(selectedNote);
                 } else {
-                    let index = grid[row][col].possibleValues.indexOf(selectedNote);
+                    let index =
+                        grid[row][col].possibleValues.indexOf(selectedNote);
 
                     if (index >= 0) {
                         grid[row][col].possibleValues.splice(index, 1);
@@ -327,18 +302,21 @@ function ToggleNote() {
             }
         }
     }
+    DeselectCells();
 }
 
 function ToggleNumber() {
-    
     if (selectedNumber == 0) return;
-    
+
     takeSnapshot();
-    
+
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             if (grid[row][col].selected == true && !grid[row][col].fixed) {
-                if (grid[row][col].value == 0 || grid[row][col].value != selectedNumber) {
+                if (
+                    grid[row][col].value == 0 ||
+                    grid[row][col].value != selectedNumber
+                ) {
                     grid[row][col].value = selectedNumber;
                 } else {
                     grid[row][col].value = 0;
@@ -366,20 +344,20 @@ function DrawStuff(drawnumbers = true) {
 function DrawLoading() {
     const width = 300;
     const height = 100;
-    const x = squareSize * 4.5 - (width / 2);
-    const y = squareSize * 4.5 - (height / 2);
+    const x = squareSize * 4.5 - width / 2;
+    const y = squareSize * 4.5 - height / 2;
 
-    ctx.fillStyle = '#BBDDff';
-    ctx.strokeStyle = '#000000';
+    ctx.fillStyle = "#BBDDff";
+    ctx.strokeStyle = "#000000";
     ctx.lineWidth = 2;
     ctx.fillRect(x, y, width, height);
     ctx.strokeRect(x, y, width, height);
 
-    const message = 'Generating, please wait...';
-    ctx.fillStyle = '#000000';
-    ctx.font = '18px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText(message, x + (width / 2), y + (height / 2) + 1);
+    const message = "Generating, please wait...";
+    ctx.fillStyle = "#000000";
+    ctx.font = "18px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(message, x + width / 2, y + height / 2 + 1);
 }
 
 async function fetchSudokuBoard(difficulty) {
@@ -394,8 +372,7 @@ $(document).ready(function () {
     AddListeners();
     DrawStuff(false);
 
-    LoadBoard('easy');
-
+    LoadBoard("easy");
 });
 
 function LoadBoard(difficulty) {
@@ -425,7 +402,6 @@ function PopulateGrid() {
     if (localStorage.getItem("grid") != null) {
         grid = JSON.parse(localStorage.getItem("grid"));
     } else {
-
         grid = Array.from({ length: 9 }, () =>
             Array.from({ length: 9 }, () => new SudokuSquare(0))
         );
@@ -439,7 +415,6 @@ function PopulateGrid() {
 }
 
 function DrawNumbers() {
-
     localStorage.setItem("grid", JSON.stringify(grid));
 
     ctx.textAlign = "center";
@@ -454,11 +429,12 @@ function DrawNumbers() {
                 ctx.font = squareSize * 0.6 + "px Arial";
                 if (grid[row][col].fixed) {
                     ctx.fillStyle = "#000";
-
+                } else if (ClashExists(row, col)) {
+                    ctx.fillStyle = "#F00";
                 } else {
                     ctx.fillStyle = "#009";
-
                 }
+
                 ctx.fillText(value, x, y);
             } else {
                 ctx.font = squareSize * 0.2 + "px Arial";
@@ -509,6 +485,20 @@ function DrawNumbers() {
             }
         }
     }
+}
+
+function ClashExists(row, col) {
+    for (var i = 0; i < 9; i++) {
+        if (i != col && grid[row][col].value == grid[row][i].value) {
+            return true;
+        }
+    }
+    for (var i = 0; i < 9; i++) {
+        if (i != row && grid[row][col].value == grid[i][col].value) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function DrawLines() {
