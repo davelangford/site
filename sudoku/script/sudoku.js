@@ -37,6 +37,35 @@ class SudokuSquare {
 }
 
 var isDragging = false;
+let snapshots = []; // Array to store snapshots
+
+function takeSnapshot() {
+  // Clone the grid object to create a new snapshot
+  let snapshot = JSON.parse(JSON.stringify(grid));
+
+  // Add the snapshot to the beginning of the array
+  snapshots.unshift(snapshot);
+
+  // If there are more than 10 snapshots, remove the oldest one
+  if (snapshots.length > 10) {
+    snapshots.pop();
+  }
+}
+
+function undo() {
+    // If there are no snapshots, return
+    if (snapshots.length === 0) {
+      return;
+    }
+  
+    // Get the most recent snapshot
+    let snapshot = snapshots.shift();
+  
+    // Restore the game state from the snapshot
+    grid = snapshot;
+
+    DrawStuff();
+  }
 
 
 function NewGame(difficulty) {
@@ -57,6 +86,10 @@ function AddListeners() {
 
     hardButton.addEventListener("click", () => {
         NewGame("hard");
+    });
+
+    undoButton.addEventListener("click", () => {
+        undo();
     });
 
 
@@ -140,7 +173,7 @@ function HighlightSquares() {
         for (var row = 0; row < 9; row++) {
             for (var col = 0; col < 9; col++) {
                 if (grid[row][col].value == selectedNumber) {
-                    HighlightNeighbourhood(row, col);
+                    // HighlightNeighbourhood(row, col);
                     ctx.fillStyle = hintCellColor;
                     ctx.fillRect(
                         col * squareSize,
@@ -277,6 +310,8 @@ function DeselectCells() {
 function ToggleNote() {
     if (selectedNote == 0) return;
 
+    takeSnapshot();
+
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             if (grid[row][col].selected == true) {
@@ -295,8 +330,11 @@ function ToggleNote() {
 }
 
 function ToggleNumber() {
+    
     if (selectedNumber == 0) return;
-
+    
+    takeSnapshot();
+    
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             if (grid[row][col].selected == true && !grid[row][col].fixed) {
