@@ -146,7 +146,7 @@ function HighlightSquares() {
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             if (grid[row][col].selected == true) {
-                ctx.fillStyle = selectedCellColor;
+                ctx.fillStyle = "#BFB";// selectedCellColor;
                 ctx.fillRect(
                     col * squareSize,
                     row * squareSize,
@@ -498,6 +498,17 @@ function ClashExists(row, col) {
             return true;
         }
     }
+
+    var startRow = Math.floor(row / 3) * 3;
+    var startCol = Math.floor(col / 3) * 3;
+
+    for (var i = startRow; i < startRow + 3; i++) {
+        for (var j = startCol; j < startCol + 3; j++) {
+            if ((i != row || j != col) && grid[row][col].value == grid[i][j].value) {
+                return true;
+            }
+        }
+    }
     return false;
 }
 
@@ -551,6 +562,27 @@ function DrawToolboxNumbers() {
 
             ctx.fillStyle = "#000";
             ctx.fillText(value++, x, y);
+            if (1 != 1) {
+                // if (CountOfNumber(value - 1) >= 9) {
+                ctx.beginPath();
+                ctx.moveTo(
+                    x - squareSize / 2,
+                    y - squareSize / 2);
+                ctx.lineTo(
+                    x + squareSize / 2,
+                    y + squareSize / 2
+                );
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(
+                    x + squareSize / 2,
+                    y - squareSize / 2);
+                ctx.lineTo(
+                    x - squareSize / 2,
+                    y + squareSize / 2
+                );
+                ctx.stroke();
+            }
         }
     }
 
@@ -565,6 +597,20 @@ function DrawToolboxNumbers() {
         ctx.lineTo(startX + squareSize * 3, startY + i * squareSize);
         ctx.stroke();
     }
+}
+
+function CountOfNumber(number){
+    if (grid.length != 9) return 0;
+
+    var total = 0;
+    for (row = 0; row < 9; row++) {
+        for (col = 0; col < 9; col++) {
+            if(grid[row][col].value == number){
+                total++;
+            }
+        }
+    }
+    return total;
 }
 
 function DrawToolboxNotes() {
