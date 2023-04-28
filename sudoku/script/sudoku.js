@@ -1,6 +1,9 @@
 var canvas = document.getElementById("sudokucanvas");
 var ctx = canvas.getContext("2d");
 
+const fetch = require('node-fetch');
+const cheerio = require('cheerio');
+
 canvas.width = window.innerWidth * window.devicePixelRatio;
 canvas.height = window.innerHeight * window.devicePixelRatio;
 
@@ -58,7 +61,18 @@ function undo() {
     DrawStuff();
 }
 
+function ClearNotes(){
+    for (var row = 0; row < 9; row++) {
+        for (var col = 0; col < 9; col++) {
+            grid[row][col].possibleValues = [];
+        }
+    }
+    DrawStuff();
+}
+
 function NewGame(difficulty) {
+    if (!confirm("Are you sure you want to start a new game?")) return;
+
     localStorage.removeItem("numbers");
     localStorage.removeItem("grid");
     DrawStuff(false);
@@ -80,6 +94,13 @@ function AddListeners() {
     undoButton.addEventListener("click", () => {
         undo();
     });
+
+    clearNotesButton.addEventListener("click", () => {
+        if (confirm("Are you sure you want to clear the notes?")) {
+            ClearNotes();
+          }
+    });
+    
 
     canvas.addEventListener("touchstart", function (event) {
         event.preventDefault();

@@ -1,39 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Sudoku IIII</title>
-        <link rel="stylesheet" type="text/css" href="sudoku.css" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    </head>
 
-    <body>
-        <div
-            id="buttonsToolbar"
-            style="position: absolute; right: 10px; z-index: 1"
-        >
-            <button id="undoButton" style="height: 50px; width: 100px">
-                Undo
-            </button>
-        </div>
+<head>
+    <title>Sudoku IIII</title>
+    <link rel="stylesheet" type="text/css" href="sudoku.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
 
-        <div
-            id="buttonsNewGame"
-            style="
+<body>
+    <div id="buttonsToolbar" style="position: absolute; right: 10px; z-index: 1">
+        <button id="undoButton" style="height: 50px; width: 100px">
+            Undo
+        </button>
+        <button id="clearNotesButton" style="height: 50px; width: 100px">
+            Clear Notes
+        </button>
+    </div>
+
+    <div id="buttonsNewGame" style="
                 position: absolute;
                 right: 10px;
                 bottom: 10px;
                 z-index: 1;
                 text-align: center;
-            "
-        >
-            New Game<br />
-            <button id="easyButton">Easy</button>
-            <button id="mediumButton">Medium</button>
-            <button id="hardButton">Hard</button>
-        </div>
+            ">
+        New Game<br />
+        <button id="easyButton">Easy</button>
+        <button id="mediumButton">Medium</button>
+        <button id="hardButton">Hard</button>
+    </div>
 
-        <canvas id="sudokucanvas"></canvas>
-        <script src="script/sudoku.js"></script>
-    </body>
+    <canvas id="sudokucanvas"></canvas>
+    <script src="script/sudoku.js"></script>
+</body>
+
 </html>
