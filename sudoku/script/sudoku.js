@@ -1,9 +1,6 @@
 var canvas = document.getElementById("sudokucanvas");
 var ctx = canvas.getContext("2d");
 
-const fetch = require('node-fetch');
-const cheerio = require('cheerio');
-
 canvas.width = window.innerWidth * window.devicePixelRatio;
 canvas.height = window.innerHeight * window.devicePixelRatio;
 
@@ -265,9 +262,9 @@ function SelectSquare(x, y) {
 
     if (currentRow == row && currentCol == col) return;
 
-    console.log(
-        `currentRow: ${currentRow}, currentCol: ${currentCol}, col: ${col}, row: ${row}`
-    );
+    // console.log(
+    //     `currentRow: ${currentRow}, currentCol: ${currentCol}, col: ${col}, row: ${row}`
+    // );
     currentRow = row;
     currentCol = col;
 
@@ -404,7 +401,7 @@ function LoadBoard(difficulty) {
         fetchSudokuBoard(difficulty)
             .then((board) => {
                 numbers = board;
-                console.log(board);
+                // console.log(board);
                 localStorage.setItem("numbers", JSON.stringify(numbers));
                 PopulateGrid();
                 DrawStuff();
