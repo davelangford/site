@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Links</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .link-group {
+            margin-bottom: 40px;
+        }
+
+        .link-group h2 {
+            margin-bottom: 10px;
+        }
+
+        .link-group a {
+            display: block;
+            margin-bottom: 5px;
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .link-group a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Sudoku Sites</h1>
+
+    <div class="link-group">
+        <h2>websudoku.com</h2>
+        <a href="https://www.websudoku.com/?level=4">Websudoku - Evil</a>
+        <a href="https://www.websudoku.com/?level=3">Websudoku - Hard</a>
+        <a href="https://www.websudoku.com/?level=2">Websudoku - Medium</a>
+    </div>
+
+    <div class="link-group">
+        <h2>nytimes.com</h2>
+        <a href="https://www.nytimes.com/puzzles/sudoku/hard">NY Times - Hard</a>
+        <a href="https://www.nytimes.com/puzzles/sudoku/medium">NY Times - Medium</a>
+    </div>
+
+
+    <div class="link-group">
+        <h2>Bookmarklets</h2>
+        <a
+            href="javascript:c=(document.getElementById('cheat')||{}).value||'';m=(document.getElementById('editmask')||{}).value||'';s='';for(i=0; i<81; i++){ s=s+(m[i]==='1' ?%20%270%27%20:%20c[i])%20};d=(new%20URLSearchParams(window.location.search)).get(%27level%27);d=d?(%27&d=%27+d):%27%27;void((s.match(/^[0-9]{81}$/)&&s.replace(/0/g,%27%27).length%3E0)?window.open(%27https://sudokuexchange.com/play/?s=%27+s+d,%20%27_blank%27):alert(%27Failed%20to%20extract%20Sudoku%20digits%20using%20grid.websudoku.com%20scraper%27));">
+            WebSudoku</a>
+        <a
+            href="javascript:b=document.getElementsByClassName('su-board')[0];s=b?[...b.getElementsByClassName(%27su-cell%27)].map(el=%3Eel.classList.contains(%27prefilled%27)?el.getAttribute(%27aria-label%27):%270%27).join(%27%27):%27%27;p=location.pathname;d=p.match(%27/hard$%27)?%27&d=3%27:p.match(%27/medium$%27)?%27&d=2%27:p.match(%27/easy$%27)?%27&d=1%27:%27%27;void((s.match(/^[0-9]{81}$/)&&s.replace(/0/g,%27%27).length%3E0)?window.open(%27https://sudokuexchange.com/play/?s=%27+s+d,%20%27_blank%27):alert(%27Failed%20to%20extract%20Sudoku%20digits%20using%20NYT%20scraper%27));">
+            NY Times</a>
+    </div>
+
+</body>
+
+</html>
