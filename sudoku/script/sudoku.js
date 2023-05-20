@@ -59,7 +59,7 @@ function undo() {
     DrawStuff();
 }
 
-function ClearNotes(){
+function ClearNotes() {
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             grid[row][col].possibleValues = [];
@@ -96,9 +96,9 @@ function AddListeners() {
     clearNotesButton.addEventListener("click", () => {
         if (confirm("Are you sure you want to clear the notes?")) {
             ClearNotes();
-          }
+        }
     });
-    
+
 
     canvas.addEventListener("touchstart", function (event) {
         event.preventDefault();
@@ -106,7 +106,7 @@ function AddListeners() {
         var x =
             (event.touches[0].clientX - rect.left) * window.devicePixelRatio;
         var y = (event.touches[0].clientY - rect.top) * window.devicePixelRatio;
-        if(GetSudokuSquareFromPixelCoordinates(x, y) != undefined){
+        if (GetSudokuSquareFromPixelCoordinates(x, y) != undefined) {
             currentlyDeselecting = GetSudokuSquareFromPixelCoordinates(x, y).selected;
         }
         SelectSquare(x, y);
@@ -118,14 +118,14 @@ function AddListeners() {
         var rect = canvas.getBoundingClientRect();
         var x = (event.clientX - rect.left) * window.devicePixelRatio;
         var y = (event.clientY - rect.top) * window.devicePixelRatio;
-        if(GetSudokuSquareFromPixelCoordinates(x, y) != undefined){
+        if (GetSudokuSquareFromPixelCoordinates(x, y) != undefined) {
             currentlyDeselecting = GetSudokuSquareFromPixelCoordinates(x, y).selected;
         }
         SelectSquare(x, y);
         isDragging = true;
     });
 
-    function GetSudokuSquareFromPixelCoordinates(x, y){
+    function GetSudokuSquareFromPixelCoordinates(x, y) {
 
         var row = Math.floor(y / squareSize);
         var col = Math.floor(x / squareSize);
@@ -284,7 +284,7 @@ function SelectSquare(x, y) {
     currentCol = col;
 
     if (row < 9 && col < 9) {
-        if(currentlyDeselecting){
+        if (currentlyDeselecting) {
             grid[row][col].selected = false;
         } else {
             grid[row][col].selected = true;
@@ -406,11 +406,38 @@ async function fetchSudokuBoard(difficulty) {
 }
 
 $(document).ready(function () {
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('n')) {
+        numbers = numbersTo2DArray(urlParams.get('n'));
+        window.location.replace(window.location.pathname);
+        localStorage.setItem("numbers", JSON.stringify(numbers));
+        localStorage.removeItem("grid");
+        PopulateGrid();
+        DrawStuff();
+    }
     AddListeners();
     DrawStuff(false);
 
     LoadBoard("easy");
 });
+
+function numbersTo2DArray(str) {
+    let array = [];
+    let index = 0;
+
+    for (let i = 0; i < 9; i++) {
+        let row = [];
+
+        for (let j = 0; j < 9; j++) {
+            row.push(parseInt(str.charAt(index)));
+            index++;
+        }
+
+        array.push(row);
+    }
+
+    return array;
+}
 
 function LoadBoard(difficulty) {
     // get localstorage object called numbers, assign it to the numbers variable. If it doesn't exist, create it and call the fetch function
@@ -636,13 +663,13 @@ function DrawToolboxNumbers() {
     }
 }
 
-function CountOfNumber(number){
+function CountOfNumber(number) {
     if (grid.length != 9) return 0;
 
     var total = 0;
     for (row = 0; row < 9; row++) {
         for (col = 0; col < 9; col++) {
-            if(grid[row][col].value == number){
+            if (grid[row][col].value == number) {
                 total++;
             }
         }
@@ -692,3 +719,9 @@ function DrawToolboxNotes() {
         ctx.stroke();
     }
 }
+
+// b = document.getElementsByClassName('su-board')[0];
+// s = b ? [...b.getElementsByClassName('su - cell ')].map(el =% 3Eel.classList.contains('prefilled ') ? el.getAttribute('aria - label ') : '0 ').join(' ') : ' ';
+// p = location.pathname;
+// d = p.match(' / hard$ ') ? ' & d=3 ' : p.match(' / medium$ ') ? ' & d=2 ' : p.match(' / easy$ ') ? ' & d=1 ' : ' ';
+// void ((s.match(/^[0-9]{81}$/) && s.replace(/0/g, ' ').length % 3E0) ? window.open('https://sudokuexchange.com/play/?s=%27+s+d,%20%27_blank') : alert('nope'));
