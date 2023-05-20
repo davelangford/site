@@ -58,13 +58,25 @@ function undo() {
     DrawStuff();
 }
 
-function ClearNotes() {
+function ClearAllNotes() {
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             grid[row][col].possibleValues = [];
         }
     }
     DrawStuff();
+}
+
+function ClearSquares() {
+    takeSnapshot();
+    for (var row = 0; row < 9; row++) {
+        for (var col = 0; col < 9; col++) {
+            if (grid[row][col].selected) {
+                grid[row][col].value = 0;
+                grid[row][col].possibleValues = [];
+            }
+        }
+    }
 }
 
 function NewGame(difficulty) {
@@ -94,7 +106,7 @@ function AddListeners() {
 
     clearNotesButton.addEventListener("click", () => {
         if (confirm("Are you sure you want to clear the notes?")) {
-            ClearNotes();
+            ClearAllNotes();
         }
     });
 
@@ -294,15 +306,23 @@ function SelectSquare(x, y) {
             selectedNumber = GridFlat().filter(square => square.selected == true)[0].value;
         }
     } else if (row > 0 && row <= 3 && col > 9) {
-        // Number in toolbox clicked
+        // Number in toolboxnumbers clicked
         selectedNumber = (row - 1) * 3 + (col - 9);
         selectedNote = selectedNumber;
         ToggleNumber();
     } else if (row > 4 && row <= 7 && col > 9) {
-        // Note in toolbox clicked
+        // Note in toolboxnotes clicked
         selectedNote = (row - 5) * 3 + (col - 9);
         selectedNumber = selectedNote;
         ToggleNote();
+    } else if (row == 4 && col == 10) {
+        // clear clicked
+        ClearSquares();
+    } else if (row == 4 && col == 11) {
+        // middle clicked
+    } else if (row == 4 && col == 12) {
+        // undo clicked
+        undo();
     } else {
         DeselectCells();
         selectedNumber = 0;
@@ -374,6 +394,7 @@ function DrawStuff(drawnumbers = true) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     HighlightSquares();
     CalculateHoles();
+    DrawToolboxExtras();
     DrawToolboxNumbers();
     DrawToolboxNotes();
     DrawLines();
@@ -398,7 +419,7 @@ function GridFlat() {
 }
 
 function CalculateHoles() {
-    document.getElementById("divMissingNumbers").textContent = '';
+    var div = document.getElementById("divMissingNumbers").textContent = '';
 
     if (grid.length != 9) return;
 
@@ -408,8 +429,8 @@ function CalculateHoles() {
     var selectedNumbers = GridFlat().filter(square => square.selected && square.value != 0).map(square => square.value);
     var missingNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(n => !selectedNumbers.includes(n));
 
-    document.getElementById("divMissingNumbers").textContent = missingNumbers.join(',');
-
+    divMissingNumbers.textContent = missingNumbers.join(',');
+    divMissingNumbers.style.left = 10 * squareSize + 'px';
 
 }
 
@@ -649,39 +670,14 @@ function DrawToolboxNumbers() {
             var x = startX + (col + 0.5) * squareSize;
             var y = startY + (row + 0.5) * squareSize;
 
-            if (value == selectedNumber) {
-                ctx.fillStyle = selectedCellColor;
-                ctx.fillRect(
-                    x - squareSize / 2,
-                    y - squareSize / 2,
-                    squareSize,
-                    squareSize
-                );
+            if (GridFlat().filter(n => n.value == value).length >= 9) {
+                ctx.fillStyle = "#FFF";
+            } else {
+                ctx.fillStyle = "#000";
             }
 
-            ctx.fillStyle = "#000";
             ctx.fillText(value++, x, y);
-            if (1 != 1) {
-                // if (CountOfNumber(value - 1) >= 9) {
-                ctx.beginPath();
-                ctx.moveTo(
-                    x - squareSize / 2,
-                    y - squareSize / 2);
-                ctx.lineTo(
-                    x + squareSize / 2,
-                    y + squareSize / 2
-                );
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(
-                    x + squareSize / 2,
-                    y - squareSize / 2);
-                ctx.lineTo(
-                    x - squareSize / 2,
-                    y + squareSize / 2
-                );
-                ctx.stroke();
-            }
+
         }
     }
 
@@ -700,6 +696,7 @@ function DrawToolboxNumbers() {
 
 function CountOfNumber(number) {
     if (grid.length != 9) return 0;
+    if (number == 0) return 0;
 
     var total = 0;
     for (row = 0; row < 9; row++) {
@@ -729,16 +726,20 @@ function DrawToolboxNotes() {
             var x = startX + (col + 0.5) * squareSize;
             var y = startY + (row + 0.5) * squareSize;
 
-            if (value == selectedNote) {
-                ctx.fillStyle = selectedCellColor;
-                ctx.fillRect(
-                    x - squareSize / 2,
-                    y - squareSize / 2,
-                    squareSize,
-                    squareSize
-                );
+            //if (value == selectedNote) {
+            //    ctx.fillStyle = selectedCellColor;
+            //    ctx.fillRect(
+            //        x - squareSize / 2,
+            //        y - squareSize / 2,
+            //        squareSize,
+            //        squareSize
+            //    );
+            //}
+            if (GridFlat().filter(n => n.value == value).length >= 9) {
+                ctx.fillStyle = "#FFF";
+            } else {
+                ctx.fillStyle = "#000";
             }
-            ctx.fillStyle = "#000";
             ctx.fillText(value++, x, y);
         }
     }
@@ -751,6 +752,37 @@ function DrawToolboxNotes() {
         ctx.beginPath();
         ctx.moveTo(startX, startY + i * squareSize);
         ctx.lineTo(startX + squareSize * 3, startY + i * squareSize);
+        ctx.stroke();
+    }
+}
+
+function DrawToolboxExtras() {
+    ctx.strokeStyle = "#BBB";
+    ctx.fillStyle = "#000";
+
+    var buffer = squareSize;
+    var startX = 9 * squareSize + buffer;
+    var startY = 3 * squareSize + buffer;
+
+    ctx.font = squareSize * 0.3 + "px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    var x = startX + 0.5 * squareSize;
+    var y = startY + 0.5 * squareSize;
+    ctx.fillText('Clear', x, y);
+
+    x = startX + 2.5 * squareSize;
+    y = startY + 0.5 * squareSize;
+    ctx.fillStyle = "#000";
+    ctx.fillText('Undo', x, y);
+
+
+    for (var i = 0; i <= 3; i++) {
+        ctx.lineWidth = 10;
+        ctx.beginPath();
+        ctx.moveTo(startX + i * squareSize, startY);
+        ctx.lineTo(startX + i * squareSize, startY + squareSize);
         ctx.stroke();
     }
 }
