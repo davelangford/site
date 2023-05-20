@@ -13,6 +13,7 @@ var selectedNote = 0;
 var selectedCellColor = "#b3d9ff";
 var hintCellColor = "#b3d9ff";
 var currentRow, currentCol;
+var missingNumbers = [];
 
 if (canvas.width <= canvas.height) {
     squareSize = canvas.width / gridSize;
@@ -71,7 +72,7 @@ function ClearSquares() {
     takeSnapshot();
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
-            if (grid[row][col].selected) {
+            if (grid[row][col].selected && !grid[row][col].fixed) {
                 grid[row][col].value = 0;
                 grid[row][col].possibleValues = [];
             }
@@ -419,7 +420,8 @@ function GridFlat() {
 }
 
 function CalculateHoles() {
-    var div = document.getElementById("divMissingNumbers").textContent = '';
+    missingNumbers = [];
+    divMissingNumbers.textContent = '';
 
     if (grid.length != 9) return;
 
@@ -427,7 +429,7 @@ function CalculateHoles() {
     if (GridFlat().filter(square => square.selected == true).length != 9) return;
 
     var selectedNumbers = GridFlat().filter(square => square.selected && square.value != 0).map(square => square.value);
-    var missingNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(n => !selectedNumbers.includes(n));
+    missingNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(n => !selectedNumbers.includes(n));
 
     divMissingNumbers.textContent = missingNumbers.join(',');
     divMissingNumbers.style.left = 10 * squareSize + 'px';
@@ -669,6 +671,16 @@ function DrawToolboxNumbers() {
         for (col = 0; col < 3; col++) {
             var x = startX + (col + 0.5) * squareSize;
             var y = startY + (row + 0.5) * squareSize;
+
+            if (missingNumbers.includes(value)) {
+                ctx.fillStyle = selectedCellColor;
+                ctx.fillRect(
+                    x - squareSize / 2,
+                    y - squareSize / 2,
+                    squareSize,
+                    squareSize
+                );
+            }
 
             if (GridFlat().filter(n => n.value == value).length >= 9) {
                 ctx.fillStyle = "#FFF";
