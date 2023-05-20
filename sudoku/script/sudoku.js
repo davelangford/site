@@ -34,7 +34,6 @@ class SudokuSquare {
 }
 
 var isDragging = false;
-var currentlyDeselecting = false;
 let snapshots = [];
 
 function takeSnapshot() {
@@ -106,11 +105,7 @@ function AddListeners() {
         var x =
             (event.touches[0].clientX - rect.left) * window.devicePixelRatio;
         var y = (event.touches[0].clientY - rect.top) * window.devicePixelRatio;
-        if (GetSudokuSquareFromPixelCoordinates(x, y) != undefined) {
-            currentlyDeselecting = GetSudokuSquareFromPixelCoordinates(x, y).selected;
-        }
-        SelectSquare(x, y);
-        isDragging = true;
+        MouseTouchDown(x, y);
     });
 
     canvas.addEventListener("mousedown", function (event) {
@@ -118,20 +113,10 @@ function AddListeners() {
         var rect = canvas.getBoundingClientRect();
         var x = (event.clientX - rect.left) * window.devicePixelRatio;
         var y = (event.clientY - rect.top) * window.devicePixelRatio;
-        if (GetSudokuSquareFromPixelCoordinates(x, y) != undefined) {
-            currentlyDeselecting = GetSudokuSquareFromPixelCoordinates(x, y).selected;
-        }
-        SelectSquare(x, y);
-        isDragging = true;
+        MouseTouchDown(x, y);
     });
 
-    function GetSudokuSquareFromPixelCoordinates(x, y) {
 
-        var row = Math.floor(y / squareSize);
-        var col = Math.floor(x / squareSize);
-
-        return grid[row][col];
-    }
 
     canvas.addEventListener("touchmove", function (event) {
         event.preventDefault();
@@ -157,18 +142,35 @@ function AddListeners() {
     });
 
     canvas.addEventListener("touchend", function (event) {
-        event.preventDefault();
-        isDragging = false;
-        currentRow = 0;
-        currentCol = 0;
+        MouseUpTouchEnd(event);
     });
 
     canvas.addEventListener("mouseup", function (event) {
-        event.preventDefault();
-        isDragging = false;
-        currentRow = 0;
-        currentCol = 0;
+        MouseUpTouchEnd(event);
     });
+}
+
+function MouseTouchDown(x, y) {
+    if (GetSudokuSquareFromPixelCoordinates(x, y) != undefined) {
+        DeselectCells();
+    }
+    SelectSquare(x, y);
+    isDragging = true;
+}
+
+function GetSudokuSquareFromPixelCoordinates(x, y) {
+
+    var row = Math.floor(y / squareSize);
+    var col = Math.floor(x / squareSize);
+
+    return grid[row][col];
+}
+
+function MouseUpTouchEnd(event) {
+    event.preventDefault();
+    isDragging = false;
+    currentRow = 0;
+    currentCol = 0;
 }
 
 function HighlightSquares() {
@@ -176,21 +178,8 @@ function HighlightSquares() {
 
     var anySelected = false;
 
-    for (var row = 0; row < 9; row++) {
-        for (var col = 0; col < 9; col++) {
-            if (grid[row][col].selected == true) {
-                ctx.fillStyle = "#BFB";// selectedCellColor;
-                ctx.fillRect(
-                    col * squareSize,
-                    row * squareSize,
-                    squareSize,
-                    squareSize
-                );
-                anySelected = true;
-            }
-        }
-    }
-    if (!anySelected && selectedNumber != 0) {
+
+    if (selectedNumber != 0) {
         for (var row = 0; row < 9; row++) {
             for (var col = 0; col < 9; col++) {
                 if (grid[row][col].value == selectedNumber) {
@@ -255,6 +244,20 @@ function HighlightSquares() {
             }
         }
     }
+    for (var row = 0; row < 9; row++) {
+        for (var col = 0; col < 9; col++) {
+            if (grid[row][col].selected == true) {
+                ctx.fillStyle = "#BFB";// selectedCellColor;
+                ctx.fillRect(
+                    col * squareSize,
+                    row * squareSize,
+                    squareSize,
+                    squareSize
+                );
+                anySelected = true;
+            }
+        }
+    }
 }
 
 function HighlightNeighbourhood(row, col) {
@@ -284,13 +287,12 @@ function SelectSquare(x, y) {
     currentCol = col;
 
     if (row < 9 && col < 9) {
-        if (currentlyDeselecting) {
-            grid[row][col].selected = false;
-        } else {
-            grid[row][col].selected = true;
-        }
+        grid[row][col].selected = true;
         selectedNote = 0;
         selectedNumber = 0;
+        if (GridFlat().filter(square => square.selected == true).length == 1) {
+            selectedNumber = GridFlat().filter(square => square.selected == true)[0].value;
+        }
     } else if (row > 0 && row <= 3 && col > 9) {
         // Number in toolbox clicked
         selectedNumber = (row - 1) * 3 + (col - 9);
@@ -339,12 +341,16 @@ function ToggleNote() {
             }
         }
     }
-    DeselectCells();
+    //DeselectCells();
 }
 
 function ToggleNumber() {
     if (selectedNumber == 0) return;
 
+    if (GridFlat().filter(square => square.selected == true).length > 1) {
+        ToggleNote();
+        return;
+    }
     takeSnapshot();
 
     for (var row = 0; row < 9; row++) {
@@ -361,7 +367,7 @@ function ToggleNumber() {
             }
         }
     }
-    DeselectCells();
+    //DeselectCells();
 }
 
 function DrawStuff(drawnumbers = true) {
@@ -379,10 +385,7 @@ function DrawStuff(drawnumbers = true) {
     }
 }
 
-function CalculateHoles() {
-    document.getElementById("divMissingNumbers").textContent = '';
-
-    if (grid.length != 9) return;
+function GridFlat() {
     var array1D = [];
 
     for (let i = 0; i < grid.length; i++) {
@@ -391,11 +394,19 @@ function CalculateHoles() {
         }
     }
 
-    
-    if (array1D.filter(square => square.selected == true).length != 9) return;
+    return array1D;
+}
 
-    var selectedNumbers = array1D.filter(square => square.selected && square.value != 0).map(square => square.value);
-    var missingNumbers = [1,2,3,4,5,6,7,8,9].filter(n => !selectedNumbers.includes(n));
+function CalculateHoles() {
+    document.getElementById("divMissingNumbers").textContent = '';
+
+    if (grid.length != 9) return;
+
+
+    if (GridFlat().filter(square => square.selected == true).length != 9) return;
+
+    var selectedNumbers = GridFlat().filter(square => square.selected && square.value != 0).map(square => square.value);
+    var missingNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(n => !selectedNumbers.includes(n));
 
     document.getElementById("divMissingNumbers").textContent = missingNumbers.join(',');
 
