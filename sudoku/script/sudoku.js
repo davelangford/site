@@ -34,6 +34,7 @@ class SudokuSquare {
 }
 
 var isDragging = false;
+var currentlyDeselecting = false;
 let snapshots = [];
 
 function takeSnapshot() {
@@ -105,6 +106,9 @@ function AddListeners() {
         var x =
             (event.touches[0].clientX - rect.left) * window.devicePixelRatio;
         var y = (event.touches[0].clientY - rect.top) * window.devicePixelRatio;
+        if(GetSudokuSquareFromPixelCoordinates(x, y) != undefined){
+            currentlyDeselecting = GetSudokuSquareFromPixelCoordinates(x, y).selected;
+        }
         SelectSquare(x, y);
         isDragging = true;
     });
@@ -114,9 +118,20 @@ function AddListeners() {
         var rect = canvas.getBoundingClientRect();
         var x = (event.clientX - rect.left) * window.devicePixelRatio;
         var y = (event.clientY - rect.top) * window.devicePixelRatio;
+        if(GetSudokuSquareFromPixelCoordinates(x, y) != undefined){
+            currentlyDeselecting = GetSudokuSquareFromPixelCoordinates(x, y).selected;
+        }
         SelectSquare(x, y);
         isDragging = true;
     });
+
+    function GetSudokuSquareFromPixelCoordinates(x, y){
+
+        var row = Math.floor(y / squareSize);
+        var col = Math.floor(x / squareSize);
+
+        return grid[row][col];
+    }
 
     canvas.addEventListener("touchmove", function (event) {
         event.preventDefault();
@@ -269,7 +284,11 @@ function SelectSquare(x, y) {
     currentCol = col;
 
     if (row < 9 && col < 9) {
-        grid[row][col].selected = !grid[row][col].selected;
+        if(currentlyDeselecting){
+            grid[row][col].selected = false;
+        } else {
+            grid[row][col].selected = true;
+        }
         selectedNote = 0;
         selectedNumber = 0;
     } else if (row > 0 && row <= 3 && col > 9) {
