@@ -755,8 +755,3 @@ function DrawToolboxNotes() {
     }
 }
 
-// b = document.getElementsByClassName('su-board')[0];
-// s = b ? [...b.getElementsByClassName('su - cell ')].map(el =% 3Eel.classList.contains('prefilled ') ? el.getAttribute('aria - label ') : '0 ').join(' ') : ' ';
-// p = location.pathname;
-// d = p.match(' / hard$ ') ? ' & d=3 ' : p.match(' / medium$ ') ? ' & d=2 ' : p.match(' / easy$ ') ? ' & d=1 ' : ' ';
-// void ((s.match(/^[0-9]{81}$/) && s.replace(/0/g, ' ').length % 3E0) ? window.open('https://sudokuexchange.com/play/?s=%27+s+d,%20%27_blank') : alert('nope'));
