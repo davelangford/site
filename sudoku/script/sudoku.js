@@ -367,6 +367,7 @@ function ToggleNumber() {
 function DrawStuff(drawnumbers = true) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     HighlightSquares();
+    CalculateHoles();
     DrawToolboxNumbers();
     DrawToolboxNotes();
     DrawLines();
@@ -376,6 +377,29 @@ function DrawStuff(drawnumbers = true) {
     } else {
         DrawLoading();
     }
+}
+
+function CalculateHoles() {
+    document.getElementById("divMissingNumbers").textContent = '';
+
+    if (grid.length != 9) return;
+    var array1D = [];
+
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+            array1D.push(grid[i][j]);
+        }
+    }
+
+    
+    if (array1D.filter(square => square.selected == true).length != 9) return;
+
+    var selectedNumbers = array1D.filter(square => square.selected && square.value != 0).map(square => square.value);
+    var missingNumbers = [1,2,3,4,5,6,7,8,9].filter(n => !selectedNumbers.includes(n));
+
+    document.getElementById("divMissingNumbers").textContent = missingNumbers.join(',');
+
+
 }
 
 function DrawLoading() {
