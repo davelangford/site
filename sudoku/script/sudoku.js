@@ -182,8 +182,8 @@ function GetSudokuSquareFromPixelCoordinates(x, y) {
 function MouseUpTouchEnd(event) {
     event.preventDefault();
     isDragging = false;
-    currentRow = 0;
-    currentCol = 0;
+    currentRow = -1;
+    currentCol = -1;
 }
 
 function HighlightSquares() {
@@ -421,7 +421,6 @@ function GridFlat() {
 
 function CalculateHoles() {
     missingNumbers = [];
-    divMissingNumbers.textContent = '';
 
     if (grid.length != 9) return;
 
@@ -430,9 +429,6 @@ function CalculateHoles() {
 
     var selectedNumbers = GridFlat().filter(square => square.selected && square.value != 0).map(square => square.value);
     missingNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(n => !selectedNumbers.includes(n));
-
-    divMissingNumbers.textContent = missingNumbers.join(',');
-    divMissingNumbers.style.left = 10 * squareSize + 'px';
 
 }
 

@@ -36,6 +36,18 @@
         .link-group a:hover {
             text-decoration: underline;
         }
+
+        .bookmarklet {
+            display: -moz-inline-box;
+            display: inline-block;
+            padding: 1px 6px;
+            height: 18px;
+            color: #fff;
+            background: #32a0eb;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
@@ -44,9 +56,9 @@
 
     <div class="link-group">
         <h2>websudoku.com</h2>
-        <a href="https://www.websudoku.com/?level=4">Websudoku - Evil</a>
-        <a href="https://www.websudoku.com/?level=3">Websudoku - Hard</a>
-        <a href="https://www.websudoku.com/?level=2">Websudoku - Medium</a>
+        <a href="https://five.websudoku.com/?level=4">Websudoku - Evil</a>
+        <a href="https://five.websudoku.com/?level=3">Websudoku - Hard</a>
+        <a href="https://five.websudoku.com/?level=2">Websudoku - Medium</a>
     </div>
 
     <div class="link-group">
@@ -55,8 +67,10 @@
         <a href="https://www.nytimes.com/puzzles/sudoku/medium">NY Times - Medium</a>
     </div>
 
+    <a class="bookmarklet" href="javascript:(function()%7Bvar%20cells%20%3D%20document.querySelectorAll(%22.su-cell%5Baria-label%5D%22)%3Bvar%20labels%20%3D%20Array.prototype.map.call(cells%2C%20function(cell)%20%7B%20return%20cell.getAttribute(%22aria-label%22)%3B%20%7D)%3Bvar%20s%20%3D%20''%3Bfor(i%20%3D%200%3B%20i%20%3C%2081%3B%20i%2B%2B)%7Bif(labels%5Bi%5D%20%3D%3D%20'empty')%7Bs%20%2B%3D%20'0'%3B%7D%20else%20%7Bs%20%2B%3D%20labels%5Bi%5D%3B%7D%7Dwindow.location.href%20%3D%20'https%3A%2F%2Fdavelangford.github.io%2Fsite%2Fsudoku%2F%3Fn%3D'%2Bs%7D)()">NYT</a>
+    <a class="bookmarklet" href="javascript:(function()%7Bvar%20s%20%3D%20''%3Bvar%20puzzleInputs%20%3D%20document.querySelectorAll('%23puzzle_grid%20input')%3Bfor%20(var%20i%20%3D%200%3B%20i%20%3C%2081%3B%20i%2B%2B)%20%7Bif%20(puzzleInputs%5Bi%5D.value%20%3D%3D%20'')%20%7Bs%20%2B%3D%20'0'%3B%7D%20else%20%7Bs%20%2B%3D%20puzzleInputs%5Bi%5D.value%3B%7D%7Dwindow.location.href%20%3D%20'https%3A%2F%2Fdavelangford.github.io%2Fsite%2Fsudoku%2F%3Fn%3D'%2Bs%7D)()">WebSudoku</a>
 
-
+    <div><a href="sudoku/index.html">Sudoku III</a></div>
 </body>
 
 </html>
