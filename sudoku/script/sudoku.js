@@ -668,8 +668,8 @@ function DrawToolboxNumbers() {
             var x = startX + (col + 0.5) * squareSize;
             var y = startY + (row + 0.5) * squareSize;
 
-            if (missingNumbers.includes(value)) {
-                ctx.fillStyle = selectedCellColor;
+            if (missingNumbers.length > 0 && !missingNumbers.includes(value)) {
+                ctx.fillStyle = "#888";
                 ctx.fillRect(
                     x - squareSize / 2,
                     y - squareSize / 2,
@@ -679,11 +679,18 @@ function DrawToolboxNumbers() {
             }
 
             if (GridFlat().filter(n => n.value == value).length >= 9) {
-                ctx.fillStyle = "#FFF";
-            } else {
+                ctx.fillStyle = "#777";
+                ctx.fillRect(
+                    x - squareSize / 2,
+                    y - squareSize / 2,
+                    squareSize,
+                    squareSize
+                );
+            } else { 
                 ctx.fillStyle = "#000";
             }
 
+            ctx.fillStyle = "#000";
             ctx.fillText(value++, x, y);
 
         }
