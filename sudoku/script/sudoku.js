@@ -193,78 +193,78 @@ function HighlightSquares() {
 
 
     //if (selectedNumber != 0) {
-        for (var row = 0; row < 9; row++) {
-            for (var col = 0; col < 9; col++) {
-                if (grid[row][col].fixed) {
-                    // HighlightNeighbourhood(row, col);
-                    ctx.fillStyle = "#DDD";
-                    ctx.fillRect(
-                        col * squareSize,
-                        row * squareSize,
-                        squareSize,
-                        squareSize
-                    );
-                }
-                if (selectedNumber != 0 && grid[row][col].value == selectedNumber) {
-                    // HighlightNeighbourhood(row, col);
-                    ctx.fillStyle = hintCellColor;
-                    ctx.fillRect(
-                        col * squareSize,
-                        row * squareSize,
-                        squareSize,
-                        squareSize
-                    );
-                }
-                var x, y;
-                var index =
-                    grid[row][col].possibleValues.indexOf(selectedNumber);
-                if (index >= 0 && grid[row][col].value == 0) {
-                    ctx.fillStyle = hintCellColor;
-                    switch (grid[row][col].possibleValues[index]) {
-                        case 1:
-                            x = (col + 0.0) * squareSize;
-                            y = (row + 0.0) * squareSize;
-                            break;
-                        case 2:
-                            x = (col + 0.33) * squareSize;
-                            y = (row + 0.0) * squareSize;
-                            break;
-                        case 3:
-                            x = (col + 0.66) * squareSize;
-                            y = (row + 0.0) * squareSize;
-                            break;
-                        case 4:
-                            x = (col + 0.0) * squareSize;
-                            y = (row + 0.33) * squareSize;
-                            break;
-                        case 5:
-                            x = (col + 0.33) * squareSize;
-                            y = (row + 0.33) * squareSize;
-                            break;
-                        case 6:
-                            x = (col + 0.66) * squareSize;
-                            y = (row + 0.33) * squareSize;
-                            break;
-                        case 7:
-                            x = (col + 0.0) * squareSize;
-                            y = (row + 0.66) * squareSize;
-                            break;
-                        case 8:
-                            x = (col + 0.33) * squareSize;
-                            y = (row + 0.66) * squareSize;
-                            break;
-                        case 9:
-                            x = (col + 0.66) * squareSize;
-                            y = (row + 0.66) * squareSize;
-                            break;
-                        default:
-                            break;
-                    }
-                    ctx.beginPath();
-                    ctx.roundRect(x, y, squareSize / 3, squareSize / 3, [5]);
-                    ctx.fill();
-                }
+    for (var row = 0; row < 9; row++) {
+        for (var col = 0; col < 9; col++) {
+            if (grid[row][col].fixed) {
+                // HighlightNeighbourhood(row, col);
+                ctx.fillStyle = "#DDD";
+                ctx.fillRect(
+                    col * squareSize,
+                    row * squareSize,
+                    squareSize,
+                    squareSize
+                );
             }
+            if (selectedNumber != 0 && grid[row][col].value == selectedNumber) {
+                // HighlightNeighbourhood(row, col);
+                ctx.fillStyle = hintCellColor;
+                ctx.fillRect(
+                    col * squareSize,
+                    row * squareSize,
+                    squareSize,
+                    squareSize
+                );
+            }
+            var x, y;
+            var index =
+                grid[row][col].possibleValues.indexOf(selectedNumber);
+            if (index >= 0 && grid[row][col].value == 0) {
+                ctx.fillStyle = hintCellColor;
+                switch (grid[row][col].possibleValues[index]) {
+                    case 1:
+                        x = (col + 0.0) * squareSize;
+                        y = (row + 0.0) * squareSize;
+                        break;
+                    case 2:
+                        x = (col + 0.33) * squareSize;
+                        y = (row + 0.0) * squareSize;
+                        break;
+                    case 3:
+                        x = (col + 0.66) * squareSize;
+                        y = (row + 0.0) * squareSize;
+                        break;
+                    case 4:
+                        x = (col + 0.0) * squareSize;
+                        y = (row + 0.33) * squareSize;
+                        break;
+                    case 5:
+                        x = (col + 0.33) * squareSize;
+                        y = (row + 0.33) * squareSize;
+                        break;
+                    case 6:
+                        x = (col + 0.66) * squareSize;
+                        y = (row + 0.33) * squareSize;
+                        break;
+                    case 7:
+                        x = (col + 0.0) * squareSize;
+                        y = (row + 0.66) * squareSize;
+                        break;
+                    case 8:
+                        x = (col + 0.33) * squareSize;
+                        y = (row + 0.66) * squareSize;
+                        break;
+                    case 9:
+                        x = (col + 0.66) * squareSize;
+                        y = (row + 0.66) * squareSize;
+                        break;
+                    default:
+                        break;
+                }
+                ctx.beginPath();
+                ctx.roundRect(x, y, squareSize / 3, squareSize / 3, [5]);
+                ctx.fill();
+            }
+        }
         //}
     }
     for (var row = 0; row < 9; row++) {
@@ -283,18 +283,34 @@ function HighlightSquares() {
     }
 }
 
-function HighlightNeighbourhood(row, col) {
-    ctx.fillStyle = hintCellColor;
-    // for (var i = 0; i < 9; i++) {
-    //     ctx.fillRect(
-    //         i * squareSize,
-    //         row * squareSize,
-    //         squareSize,
-    //         squareSize
-    //     );
-    // }
-    ctx.fillRect(0, row * squareSize, squareSize * 9, squareSize);
-    ctx.fillRect(col + squareSize, 0, squareSize, squareSize * 9);
+function ShowHint() {
+    selectedNote = 0;
+    selectedNumber = 0;
+    if (GridFlat().filter(square => square.selected == true).length != 1) return;
+    var row, col;
+    for (var x = 0; x < 9; x++) {
+        for (var y = 0; y < 9; y++) {
+            if (grid[y][x].selected == true) {
+                row = y;
+                col = x;
+            }
+        }
+    }
+    for (var x = 0; x < 9; x++) {
+        grid[row][x].selected = true;
+    }
+    for (var y = 0; y < 9; y++) {
+        grid[y][col].selected = true;
+    }
+    row = Math.floor(row / 3) * 3;
+    col = Math.floor(col / 3) * 3;
+
+    for (var i = row; i < row + 3; i++) {
+        for (var j = col; j < col + 3; j++) {
+            grid[i][j].selected = true;
+        }
+    }
+    DrawStuff();
 }
 
 function SelectSquare(x, y) {
@@ -331,6 +347,7 @@ function SelectSquare(x, y) {
         ClearSquares();
     } else if (row == 4 && col == 11) {
         // middle clicked
+        ShowHint();
     } else if (row == 4 && col == 12) {
         // undo clicked
         undo();
@@ -381,7 +398,7 @@ function ToggleNumber() {
     var fillingOnlyOne = missingNumbers.length == 1;
 
     if (GridFlat().filter(square => square.selected == true).length > 1 &&
-        !fillingOnlyOne ) {
+        !fillingOnlyOne) {
         ToggleNote();
         return;
     }
@@ -702,7 +719,7 @@ function DrawToolboxNumbers() {
                     squareSize,
                     squareSize
                 );
-            } else { 
+            } else {
                 ctx.fillStyle = "#000";
             }
 
@@ -803,9 +820,12 @@ function DrawToolboxExtras() {
     var y = startY + 0.5 * squareSize;
     ctx.fillText('Clear', x, y);
 
+    x = startX + 1.5 * squareSize;
+    y = startY + 0.5 * squareSize;
+    ctx.fillText('Hint', x, y);
+
     x = startX + 2.5 * squareSize;
     y = startY + 0.5 * squareSize;
-    ctx.fillStyle = "#000";
     ctx.fillText('Undo', x, y);
 
 
