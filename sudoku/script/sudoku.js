@@ -192,10 +192,20 @@ function HighlightSquares() {
     var anySelected = false;
 
 
-    if (selectedNumber != 0) {
+    //if (selectedNumber != 0) {
         for (var row = 0; row < 9; row++) {
             for (var col = 0; col < 9; col++) {
-                if (grid[row][col].value == selectedNumber) {
+                if (grid[row][col].fixed) {
+                    // HighlightNeighbourhood(row, col);
+                    ctx.fillStyle = "#DDD";
+                    ctx.fillRect(
+                        col * squareSize,
+                        row * squareSize,
+                        squareSize,
+                        squareSize
+                    );
+                }
+                if (selectedNumber != 0 && grid[row][col].value == selectedNumber) {
                     // HighlightNeighbourhood(row, col);
                     ctx.fillStyle = hintCellColor;
                     ctx.fillRect(
@@ -255,7 +265,7 @@ function HighlightSquares() {
                     ctx.fill();
                 }
             }
-        }
+        //}
     }
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
@@ -368,7 +378,10 @@ function ToggleNote() {
 function ToggleNumber() {
     if (selectedNumber == 0) return;
 
-    if (GridFlat().filter(square => square.selected == true).length > 1) {
+    var fillingOnlyOne = missingNumbers.length == 1;
+
+    if (GridFlat().filter(square => square.selected == true).length > 1 &&
+        !fillingOnlyOne ) {
         ToggleNote();
         return;
     }
@@ -376,6 +389,9 @@ function ToggleNumber() {
 
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
+            if (fillingOnlyOne && grid[row][col].value != 0) {
+                grid[row][col].selected = false;
+            }
             if (grid[row][col].selected == true && !grid[row][col].fixed) {
                 if (
                     grid[row][col].value == 0 ||
