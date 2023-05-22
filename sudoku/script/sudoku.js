@@ -302,11 +302,12 @@ function ShowHint() {
     for (var y = 0; y < 9; y++) {
         grid[y][col].selected = true;
     }
-    row = Math.floor(row / 3) * 3;
-    col = Math.floor(col / 3) * 3;
 
-    for (var i = row; i < row + 3; i++) {
-        for (var j = col; j < col + 3; j++) {
+    var newRow = Math.floor(row / 3) * 3;
+    var newCol = Math.floor(col / 3) * 3;
+
+    for (var i = newRow; i < newRow + 3; i++) {
+        for (var j = newCol; j < newCol + 3; j++) {
             grid[i][j].selected = true;
         }
     }
