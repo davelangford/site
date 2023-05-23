@@ -22,10 +22,14 @@ if (canvas.width <= canvas.height) {
 }
 
 class SudokuSquare {
-    constructor(value) {
+    constructor(value, row, col) {
         this.value = value;
         this.possibleValues = [];
         this.selected = false;
+        this.row = row;
+        this.col = col;
+        this.hint = false;
+
         if (this.value != 0) {
             this.fixed = true;
         } else {
@@ -189,15 +193,22 @@ function MouseUpTouchEnd(event) {
 function HighlightSquares() {
     if (grid.length != 9) return;
 
-    var anySelected = false;
-
-
     //if (selectedNumber != 0) {
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             if (grid[row][col].fixed) {
                 // HighlightNeighbourhood(row, col);
                 ctx.fillStyle = "#DDD";
+                ctx.fillRect(
+                    col * squareSize,
+                    row * squareSize,
+                    squareSize,
+                    squareSize
+                );
+            }
+            if (grid[row][col].hint) {
+                // HighlightNeighbourhood(row, col);
+                ctx.fillStyle = "#770";
                 ctx.fillRect(
                     col * squareSize,
                     row * squareSize,
@@ -284,8 +295,11 @@ function HighlightSquares() {
 }
 
 function ShowHint() {
+
     selectedNote = 0;
     selectedNumber = 0;
+    var possibilities = [1,2,3,4,5,6,7,8,9];
+
     if (GridFlat().filter(square => square.selected == true).length != 1) return;
     var row, col;
     for (var x = 0; x < 9; x++) {
@@ -298,9 +312,15 @@ function ShowHint() {
     }
     for (var x = 0; x < 9; x++) {
         grid[row][x].selected = true;
+        if (possibilities.length > 0) {
+            possibilities = possibilities.filter(item => item !== grid[row][x].value);
+        }
     }
     for (var y = 0; y < 9; y++) {
         grid[y][col].selected = true;
+        if (possibilities.length > 0) {
+            possibilities = possibilities.filter(item => item !== grid[y][col].value);
+        }
     }
 
     var newRow = Math.floor(row / 3) * 3;
@@ -309,8 +329,16 @@ function ShowHint() {
     for (var i = newRow; i < newRow + 3; i++) {
         for (var j = newCol; j < newCol + 3; j++) {
             grid[i][j].selected = true;
+            if (possibilities.length > 0) {
+                possibilities = possibilities.filter(item => item !== grid[i][j].value);
+            }
         }
     }
+    if (possibilities.length == 1) {
+        grid[row][col].hint = true;
+    }
+    DeselectCells();
+    alert(possibilities.join(','));
     DrawStuff();
 }
 
@@ -555,12 +583,12 @@ function PopulateGrid() {
         grid = JSON.parse(localStorage.getItem("grid"));
     } else {
         grid = Array.from({ length: 9 }, () =>
-            Array.from({ length: 9 }, () => new SudokuSquare(0))
+            Array.from({ length: 9 }, () => new SudokuSquare(0, 0, 0))
         );
         for (row = 0; row < 9; row++) {
             for (col = 0; col < 9; col++) {
                 var value = numbers[row][col];
-                grid[row][col] = new SudokuSquare(value);
+                grid[row][col] = new SudokuSquare(value, row, col);
             }
         }
     }
