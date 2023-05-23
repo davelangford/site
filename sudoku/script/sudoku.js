@@ -188,6 +188,10 @@ function MouseUpTouchEnd(event) {
     isDragging = false;
     currentRow = -1;
     currentCol = -1;
+    if (GridFlat().filter(square => square.selected == true && square.fixed).length == 1) {
+        DeselectCells();
+        DrawStuff();
+    }
 }
 
 function HighlightSquares() {
@@ -208,7 +212,7 @@ function HighlightSquares() {
             }
             if (grid[row][col].hint) {
                 // HighlightNeighbourhood(row, col);
-                ctx.fillStyle = "#770";
+                ctx.fillStyle = "#FFEB54";
                 ctx.fillRect(
                     col * squareSize,
                     row * squareSize,
@@ -298,47 +302,57 @@ function ShowHint() {
 
     selectedNote = 0;
     selectedNumber = 0;
-    var possibilities = [1,2,3,4,5,6,7,8,9];
 
-    if (GridFlat().filter(square => square.selected == true).length != 1) return;
-    var row, col;
-    for (var x = 0; x < 9; x++) {
-        for (var y = 0; y < 9; y++) {
-            if (grid[y][x].selected == true) {
-                row = y;
-                col = x;
+    //if (GridFlat().filter(square => square.selected == true).length != 1) return;
+    //var row, col;
+    //for (var x = 0; x < 9; x++) {
+    //    for (var y = 0; y < 9; y++) {
+    //        if (grid[y][x].selected == true) {
+    //            row = y;
+    //            col = x;
+    //        }
+    //    }
+    //}
+    for (var row = 0; row < 9; row++) {
+        for (var col = 0; col < 9; col++) {
+
+            if (grid[row][col].value != 0) continue;
+
+            var possibilities = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            for (var x = 0; x < 9; x++) {
+                grid[row][x].selected = true;
+                if (possibilities.length > 0) {
+                    possibilities = possibilities.filter(item => item !== grid[row][x].value);
+                }
             }
-        }
-    }
-    for (var x = 0; x < 9; x++) {
-        grid[row][x].selected = true;
-        if (possibilities.length > 0) {
-            possibilities = possibilities.filter(item => item !== grid[row][x].value);
-        }
-    }
-    for (var y = 0; y < 9; y++) {
-        grid[y][col].selected = true;
-        if (possibilities.length > 0) {
-            possibilities = possibilities.filter(item => item !== grid[y][col].value);
-        }
-    }
-
-    var newRow = Math.floor(row / 3) * 3;
-    var newCol = Math.floor(col / 3) * 3;
-
-    for (var i = newRow; i < newRow + 3; i++) {
-        for (var j = newCol; j < newCol + 3; j++) {
-            grid[i][j].selected = true;
-            if (possibilities.length > 0) {
-                possibilities = possibilities.filter(item => item !== grid[i][j].value);
+            for (var y = 0; y < 9; y++) {
+                grid[y][col].selected = true;
+                if (possibilities.length > 0) {
+                    possibilities = possibilities.filter(item => item !== grid[y][col].value);
+                }
             }
+
+            var newRow = Math.floor(row / 3) * 3;
+            var newCol = Math.floor(col / 3) * 3;
+
+            for (var i = newRow; i < newRow + 3; i++) {
+                for (var j = newCol; j < newCol + 3; j++) {
+                    grid[i][j].selected = true;
+                    if (possibilities.length > 0) {
+                        possibilities = possibilities.filter(item => item !== grid[i][j].value);
+                    }
+                }
+            }
+            if (possibilities.length == 1) {
+                grid[row][col].hint = true;
+            } else {
+                grid[row][col].hint = false;
+            }
+            //DrawStuff();
+            DeselectCells(false);
+            //alert(possibilities.join(','));
         }
     }
-    if (possibilities.length == 1) {
-        grid[row][col].hint = true;
-    }
-    DeselectCells();
-    alert(possibilities.join(','));
     DrawStuff();
 }
 
@@ -389,10 +403,13 @@ function SelectSquare(x, y) {
     DrawStuff();
 }
 
-function DeselectCells() {
+function DeselectCells(deselectHints = true) {
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             grid[row][col].selected = false;
+            if (deselectHints) {
+                grid[row][col].hint = false;
+            }
         }
     }
 }
