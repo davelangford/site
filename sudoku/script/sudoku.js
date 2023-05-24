@@ -189,7 +189,7 @@ function MouseUpTouchEnd(event) {
     currentRow = -1;
     currentCol = -1;
     if (GridFlat().filter(square => square.selected == true && square.fixed).length == 1) {
-        DeselectCells();
+        //DeselectCells();
         DrawStuff();
     }
 }
