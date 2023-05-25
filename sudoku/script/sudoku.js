@@ -300,16 +300,8 @@ function ShowHint() {
     selectedNote = 0;
     selectedNumber = 0;
 
-    //if (GridFlat().filter(square => square.selected == true).length != 1) return;
-    //var row, col;
-    //for (var x = 0; x < 9; x++) {
-    //    for (var y = 0; y < 9; y++) {
-    //        if (grid[y][x].selected == true) {
-    //            row = y;
-    //            col = x;
-    //        }
-    //    }
-    //}
+    var foundUniqueOne = false;
+
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
 
@@ -342,6 +334,7 @@ function ShowHint() {
             }
             if (possibilities.length == 1) {
                 grid[row][col].hint = true;
+                foundUniqueOne = true;
             } else {
                 grid[row][col].hint = false;
             }
@@ -349,6 +342,10 @@ function ShowHint() {
             DeselectCells(false);
             //alert(possibilities.join(','));
         }
+    }
+    if (!foundUniqueOne) {
+        var s = solveSudoku(GridFlat().map(obj => obj.value).join(''));
+        console.log(s);
     }
     DrawStuff();
 }
@@ -361,6 +358,7 @@ function SelectSquare(x, y) {
     if (row % 1 < 0.2 || row % 1 > 0.8 || col % 1 < 0.2 || col % 1 > 0.8) {
         return;
     }
+
     row = Math.floor(y / squareSize);
     col = Math.floor(x / squareSize);
 
