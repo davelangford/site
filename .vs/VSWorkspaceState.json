@@ -1,17 +1,17 @@
 {
   "ExpandedNodes": [
     "",
+    "\\colorSnap",
+    "\\colorSnap\\script",
     "\\dkjr",
-    "\\dkjr23",
-    "\\dkjr23\\script",
-    "\\dkjr\\css",
-    "\\dkjr\\images",
     "\\dkjr\\script",
     "\\frank6_mobile",
     "\\gravity",
     "\\gravity\\script",
+    "\\sudoku",
+    "\\sudoku\\script",
     "\\test"
   ],
-  "SelectedNode": "\\gravity\\script\\planet.js",
+  "SelectedNode": "\\sudoku\\index.html",
   "PreviewInSolutionExplorer": false
 }

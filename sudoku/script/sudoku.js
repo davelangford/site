@@ -46,7 +46,7 @@ function takeSnapshot() {
 
     snapshots.unshift(snapshot);
 
-    if (snapshots.length > 10) {
+    if (snapshots.length > 40) {
         snapshots.pop();
     }
 }
@@ -105,9 +105,6 @@ function AddListeners() {
         NewGame("hard");
     });
 
-    undoButton.addEventListener("click", () => {
-        undo();
-    });
 
     clearNotesButton.addEventListener("click", () => {
         if (confirm("Are you sure you want to clear the notes?")) {
@@ -357,8 +354,15 @@ function ShowHint() {
 }
 
 function SelectSquare(x, y) {
-    var row = Math.floor(y / squareSize);
-    var col = Math.floor(x / squareSize);
+
+    var row = y / squareSize;
+    var col = x / squareSize;
+
+    if (row % 1 < 0.2 || row % 1 > 0.8 || col % 1 < 0.2 || col % 1 > 0.8) {
+        return;
+    }
+    row = Math.floor(y / squareSize);
+    col = Math.floor(x / squareSize);
 
     if (currentRow == row && currentCol == col) return;
 
@@ -391,6 +395,9 @@ function SelectSquare(x, y) {
     } else if (row == 4 && col == 11) {
         // middle clicked
         ShowHint();
+        const puzzle = '530070000600195000098000060800060003400803001700020006060000280000419005000080079';
+        const solution = solveSudoku(puzzle);
+        console.log(solution);
     } else if (row == 4 && col == 12) {
         // undo clicked
         undo();
