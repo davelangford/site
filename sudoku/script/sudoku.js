@@ -517,7 +517,7 @@ function DrawStuff(drawnumbers = true) {
     }
 
     if (GridFlat().filter(square => square.value != 0).length == 81) {
-        alert("Done!");
+         alert("Done!");
     };
 }
 
