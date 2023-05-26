@@ -357,7 +357,7 @@ function ShowHint() {
                 var col = getRandomInt(0, 8);
 
                 if (grid[row][col].value == 0) {
-                    grid[row][col].value = s[row*9+col];
+                    grid[row][col].value = parseInt(s[row*9+col]);
                     grid[row][col].selected = true;
                     hintFound = true;
                 }
