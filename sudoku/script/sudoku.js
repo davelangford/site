@@ -344,10 +344,32 @@ function ShowHint() {
         }
     }
     if (!foundUniqueOne) {
+    //if (true) {
+        DeselectCells();
         var s = solveSudoku(GridFlat().map(obj => obj.value).join(''));
-        console.log(s);
+        if (s.includes('0')) {
+            alert('Could not work out a hint');
+        } else {
+            var hintFound = false;
+            while (!hintFound) {
+
+                var row = getRandomInt(0, 8);
+                var col = getRandomInt(0, 8);
+
+                if (grid[row][col].value == 0) {
+                    grid[row][col].value = s[row*9+col];
+                    grid[row][col].selected = true;
+                    hintFound = true;
+                }
+            }
+            console.log(s);
+        }
     }
     DrawStuff();
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function SelectSquare(x, y) {
@@ -393,9 +415,6 @@ function SelectSquare(x, y) {
     } else if (row == 4 && col == 11) {
         // middle clicked
         ShowHint();
-        const puzzle = '530070000600195000098000060800060003400803001700020006060000280000419005000080079';
-        const solution = solveSudoku(puzzle);
-        console.log(solution);
     } else if (row == 4 && col == 12) {
         // undo clicked
         undo();
