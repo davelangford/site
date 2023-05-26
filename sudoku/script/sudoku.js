@@ -14,6 +14,7 @@ var selectedCellColor = "#b3d9ff";
 var hintCellColor = "#b3d9ff";
 var currentRow, currentCol;
 var missingNumbers = [];
+var notesMode = false;
 
 if (canvas.width <= canvas.height) {
     squareSize = canvas.width / gridSize;
@@ -295,12 +296,10 @@ function HighlightSquares() {
     }
 }
 
-function ShowHint() {
+function ShowHintSmall() {
 
     selectedNote = 0;
     selectedNumber = 0;
-
-    var foundUniqueOne = false;
 
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
@@ -343,28 +342,34 @@ function ShowHint() {
             //alert(possibilities.join(','));
         }
     }
-    if (!foundUniqueOne) {
-    //if (true) {
-        DeselectCells();
-        var s = solveSudoku(GridFlat().map(obj => obj.value).join(''));
-        if (s.includes('0')) {
-            alert('Could not find a hint...is the puzzle broken?');
-        } else {
-            var hintFound = false;
-            while (!hintFound) {
 
-                var row = getRandomInt(0, 8);
-                var col = getRandomInt(0, 8);
+    DrawStuff();
+}
 
-                if (grid[row][col].value == 0) {
-                    grid[row][col].value = parseInt(s[row*9+col]);
-                    grid[row][col].selected = true;
-                    selectedNumber = parseInt(s[row*9+col]);
-                    hintFound = true;
-                }
+function ShowHintBig() {
+
+    selectedNote = 0;
+    selectedNumber = 0;
+
+    DeselectCells();
+    var s = solveSudoku(GridFlat().map(obj => obj.value).join(''));
+    if (s.includes('0')) {
+        alert('Could not find a hint...is the puzzle broken?');
+    } else {
+        var hintFound = false;
+        while (!hintFound) {
+
+            var row = getRandomInt(0, 8);
+            var col = getRandomInt(0, 8);
+
+            if (grid[row][col].value == 0) {
+                grid[row][col].value = parseInt(s[row * 9 + col]);
+                grid[row][col].selected = true;
+                selectedNumber = parseInt(s[row * 9 + col]);
+                hintFound = true;
             }
-            console.log(s);
         }
+        console.log(s);
     }
     DrawStuff();
 }
@@ -378,7 +383,7 @@ function SelectSquare(x, y) {
     var row = y / squareSize;
     var col = x / squareSize;
 
-    if (x <= 9*squareSize) {
+    if (x <= 9 * squareSize) {
         if (row % 1 < 0.15 || row % 1 > 0.85 || col % 1 < 0.15 || col % 1 > 0.85) {
             return;
         }
@@ -410,21 +415,25 @@ function SelectSquare(x, y) {
         // Number in toolboxnumbers clicked
         selectedNumber = (row - 1) * 3 + (col - 9);
         selectedNote = selectedNumber;
-        ToggleNumber();
-    } else if (row > 4 && row <= 7 && col > 9) {
-        // Note in toolboxnotes clicked
-        selectedNote = (row - 5) * 3 + (col - 9);
-        selectedNumber = selectedNote;
-        ToggleNote();
+        notesMode ? ToggleNote() : ToggleNumber();
     } else if (row == 4 && col == 10) {
         // clear clicked
         ClearSquares();
     } else if (row == 4 && col == 11) {
-        // middle clicked
-        ShowHint();
+        // undo clicked
+        ShowHintSmall();
     } else if (row == 4 && col == 12) {
         // undo clicked
         undo();
+    } else if (row == 5 && col == 10) {
+        // toggle clicked
+        ToggleNotesMode();
+    } else if (row == 5 && col == 11) {
+        // hintB clicked
+        ShowHintBig();
+    } else if (row == 5 && col == 12) {
+        // redo clicked
+        // undo();
     } else {
         DeselectCells();
         selectedNumber = 0;
@@ -443,6 +452,10 @@ function DeselectCells(deselectHints = true) {
             }
         }
     }
+}
+function ToggleNotesMode() {
+    notesMode = !notesMode;
+    DrawStuff();
 }
 
 function ToggleNote() {
@@ -506,8 +519,11 @@ function DrawStuff(drawnumbers = true) {
     HighlightSquares();
     CalculateHoles();
     DrawToolboxExtras();
-    DrawToolboxNumbers();
-    DrawToolboxNotes();
+    if(notesMode){
+        DrawToolboxNotes();
+    } else {
+        DrawToolboxNumbers();
+    }
     DrawLines();
 
     if (drawnumbers) {
@@ -517,7 +533,7 @@ function DrawStuff(drawnumbers = true) {
     }
 
     if (GridFlat().filter(square => square.value != 0).length == 81) {
-         alert("Done!");
+        alert("Done!");
     };
 }
 
@@ -843,7 +859,7 @@ function DrawToolboxNotes() {
 
     var buffer = squareSize;
     var startX = 9 * squareSize + buffer;
-    var startY = 4 * squareSize + buffer;
+    var startY = buffer;
 
     ctx.font = squareSize * 0.3 + "px Arial";
     ctx.textAlign = "center";
@@ -855,21 +871,24 @@ function DrawToolboxNotes() {
             var x = startX + (col + 0.5) * squareSize;
             var y = startY + (row + 0.5) * squareSize;
 
-            //if (value == selectedNote) {
-            //    ctx.fillStyle = selectedCellColor;
-            //    ctx.fillRect(
-            //        x - squareSize / 2,
-            //        y - squareSize / 2,
-            //        squareSize,
-            //        squareSize
-            //    );
-            //}
+            // if (GridFlat().filter(n => n.value == value).length >= 9) {
+            //     ctx.fillStyle = "#FFF";
+            // } else {
+            //     ctx.fillStyle = "#000";
+            // }
             if (GridFlat().filter(n => n.value == value).length >= 9) {
-                ctx.fillStyle = "#FFF";
+                ctx.fillStyle = "#777";
+                ctx.fillRect(
+                    x - squareSize / 2,
+                    y - squareSize / 2,
+                    squareSize,
+                    squareSize
+                );
             } else {
                 ctx.fillStyle = "#000";
             }
-            ctx.fillText(value++, x, y);
+                ctx.fillStyle = "#000";
+                ctx.fillText(value++, x, y);
         }
     }
     for (var i = 0; i <= 3; i++) {
@@ -903,19 +922,48 @@ function DrawToolboxExtras() {
 
     x = startX + 1.5 * squareSize;
     y = startY + 0.5 * squareSize;
-    ctx.fillText('Hint', x, y);
+    ctx.fillText('HintS', x, y);
 
     x = startX + 2.5 * squareSize;
     y = startY + 0.5 * squareSize;
     ctx.fillText('Undo', x, y);
+
+    if (notesMode) {
+        ctx.fillStyle = "#888";
+        ctx.fillRect(
+            startX,
+            startY + squareSize,
+            squareSize,
+            squareSize
+        );
+        ctx.fillStyle = "#000";
+    }
+
+    x = startX + 0.5 * squareSize;
+    y = startY + 1.5 * squareSize;
+    ctx.fillText('Notes', x, y);
+
+    x = startX + 1.5 * squareSize;
+    y = startY + 1.5 * squareSize;
+    ctx.fillText('HintB', x, y);
+
+    x = startX + 2.5 * squareSize;
+    y = startY + 1.5 * squareSize;
+    ctx.fillText('Redo', x, y);
 
 
     for (var i = 0; i <= 3; i++) {
         ctx.lineWidth = 10;
         ctx.beginPath();
         ctx.moveTo(startX + i * squareSize, startY);
-        ctx.lineTo(startX + i * squareSize, startY + squareSize);
+        ctx.lineTo(startX + i * squareSize, startY + squareSize * 2);
+        ctx.stroke();
+    }
+    for (var i = 0; i <= 2; i++) {
+        ctx.lineWidth = 10;
+        ctx.beginPath();
+        ctx.moveTo(startX, startY + squareSize * i);
+        ctx.lineTo(startX + 3 * squareSize, startY + squareSize * i);
         ctx.stroke();
     }
 }
-
