@@ -384,6 +384,10 @@ function SelectSquare(x, y) {
         }
     }
 
+    if (isDragging && x > 9 * squareSize) {
+        return;
+    }
+
     row = Math.floor(y / squareSize);
     col = Math.floor(x / squareSize);
 
@@ -511,6 +515,10 @@ function DrawStuff(drawnumbers = true) {
     } else {
         DrawLoading();
     }
+
+    if (GridFlat().filter(square => square.value != 0).length == 81) {
+        alert("Done!");
+    };
 }
 
 function GridFlat() {
