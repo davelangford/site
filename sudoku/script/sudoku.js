@@ -15,6 +15,7 @@ var hintCellColor = "#b3d9ff";
 var currentRow, currentCol;
 var missingNumbers = [];
 var notesMode = false;
+var solution = '';
 
 if (canvas.width <= canvas.height) {
     squareSize = canvas.width / gridSize;
@@ -61,6 +62,7 @@ function undo() {
 
     grid = snapshot;
 
+    DeselectCells();
     DrawStuff();
 }
 
@@ -352,24 +354,19 @@ function ShowHintBig() {
     selectedNumber = 0;
 
     DeselectCells();
-    var s = solveSudoku(GridFlat().map(obj => obj.value).join(''));
-    if (s.includes('0')) {
-        alert('Could not find a hint...is the puzzle broken?');
-    } else {
-        var hintFound = false;
-        while (!hintFound) {
+    takeSnapshot();
+    var hintFound = false;
+    while (!hintFound) {
 
-            var row = getRandomInt(0, 8);
-            var col = getRandomInt(0, 8);
+        var row = getRandomInt(0, 8);
+        var col = getRandomInt(0, 8);
 
-            if (grid[row][col].value == 0) {
-                grid[row][col].value = parseInt(s[row * 9 + col]);
-                grid[row][col].selected = true;
-                selectedNumber = parseInt(s[row * 9 + col]);
-                hintFound = true;
-            }
+        if (grid[row][col].value == 0) {
+            grid[row][col].value = parseInt(solution[row * 9 + col]);
+            grid[row][col].selected = true;
+            selectedNumber = parseInt(solution[row * 9 + col]);
+            hintFound = true;
         }
-        console.log(s);
     }
     DrawStuff();
 }
@@ -444,6 +441,9 @@ function SelectSquare(x, y) {
 }
 
 function DeselectCells(deselectHints = true) {
+    selectedNumber = 0;
+    selectedNote = 0;
+    
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             grid[row][col].selected = false;
@@ -519,7 +519,7 @@ function DrawStuff(drawnumbers = true) {
     HighlightSquares();
     CalculateHoles();
     DrawToolboxExtras();
-    if(notesMode){
+    if (notesMode) {
         DrawToolboxNotes();
     } else {
         DrawToolboxNumbers();
@@ -659,6 +659,11 @@ function PopulateGrid() {
                 grid[row][col] = new SudokuSquare(value, row, col);
             }
         }
+    }
+
+    solution = solveSudoku(GridFlat().map(obj => obj.value).join(''));
+    if (solution.includes('0')) {
+        alert('Doesn\'t look like this puzzle is solvable using logic...is the puzzle broken?');
     }
 }
 
@@ -887,8 +892,8 @@ function DrawToolboxNotes() {
             } else {
                 ctx.fillStyle = "#000";
             }
-                ctx.fillStyle = "#000";
-                ctx.fillText(value++, x, y);
+            ctx.fillStyle = "#000";
+            ctx.fillText(value++, x, y);
         }
     }
     for (var i = 0; i <= 3; i++) {
