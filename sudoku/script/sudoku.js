@@ -348,7 +348,7 @@ function ShowHint() {
         DeselectCells();
         var s = solveSudoku(GridFlat().map(obj => obj.value).join(''));
         if (s.includes('0')) {
-            alert('Could not work out a hint');
+            alert('Could not find a hint...is the puzzle broken?');
         } else {
             var hintFound = false;
             while (!hintFound) {
@@ -359,6 +359,7 @@ function ShowHint() {
                 if (grid[row][col].value == 0) {
                     grid[row][col].value = parseInt(s[row*9+col]);
                     grid[row][col].selected = true;
+                    selectedNumber = parseInt(s[row*9+col]);
                     hintFound = true;
                 }
             }
@@ -377,8 +378,10 @@ function SelectSquare(x, y) {
     var row = y / squareSize;
     var col = x / squareSize;
 
-    if (row % 1 < 0.2 || row % 1 > 0.8 || col % 1 < 0.2 || col % 1 > 0.8) {
-        return;
+    if (x <= 9*squareSize) {
+        if (row % 1 < 0.15 || row % 1 > 0.85 || col % 1 < 0.15 || col % 1 > 0.85) {
+            return;
+        }
     }
 
     row = Math.floor(y / squareSize);
