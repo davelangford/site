@@ -30,7 +30,6 @@ class SudokuSquare {
         this.selected = false;
         this.row = row;
         this.col = col;
-        this.hint = false;
 
         if (this.value != 0) {
             this.fixed = true;
@@ -210,16 +209,6 @@ function HighlightSquares() {
                     squareSize
                 );
             }
-            if (grid[row][col].hint) {
-                // HighlightNeighbourhood(row, col);
-                ctx.fillStyle = "#FFEB54";
-                ctx.fillRect(
-                    col * squareSize,
-                    row * squareSize,
-                    squareSize,
-                    squareSize
-                );
-            }
             if (selectedNumber != 0 && grid[row][col].value == selectedNumber) {
                 // HighlightNeighbourhood(row, col);
                 ctx.fillStyle = hintCellColor;
@@ -302,45 +291,51 @@ function ShowHintSmall() {
 
     selectedNote = 0;
     selectedNumber = 0;
+    var foundOne = false;
+    const array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+    // Fisher-Yates shuffle algorithm
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+
+    DeselectCells(true);
 
     for (var row = 0; row < 9; row++) {
+        if(foundOne) break;
         for (var col = 0; col < 9; col++) {
+            if(foundOne) break;
 
-            if (grid[row][col].value != 0) continue;
+            if (grid[array[row]][array[col]].value != 0) continue;
 
             var possibilities = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             for (var x = 0; x < 9; x++) {
-                grid[row][x].selected = true;
                 if (possibilities.length > 0) {
-                    possibilities = possibilities.filter(item => item !== grid[row][x].value);
+                    possibilities = possibilities.filter(item => item !== grid[array[row]][array[x]].value);
                 }
             }
             for (var y = 0; y < 9; y++) {
-                grid[y][col].selected = true;
                 if (possibilities.length > 0) {
-                    possibilities = possibilities.filter(item => item !== grid[y][col].value);
+                    possibilities = possibilities.filter(item => item !== grid[array[y]][array[col]].value);
                 }
             }
 
-            var newRow = Math.floor(row / 3) * 3;
-            var newCol = Math.floor(col / 3) * 3;
+            var newRow = Math.floor(array[row] / 3) * 3;
+            var newCol = Math.floor(array[col] / 3) * 3;
 
             for (var i = newRow; i < newRow + 3; i++) {
                 for (var j = newCol; j < newCol + 3; j++) {
-                    grid[i][j].selected = true;
                     if (possibilities.length > 0) {
                         possibilities = possibilities.filter(item => item !== grid[i][j].value);
                     }
                 }
             }
             if (possibilities.length == 1) {
-                grid[row][col].hint = true;
-                foundUniqueOne = true;
-            } else {
-                grid[row][col].hint = false;
+                grid[array[row]][array[col]].selected = true;
+                DrawStuff();
+                return;
             }
-            //DrawStuff();
-            DeselectCells(false);
             //alert(possibilities.join(','));
         }
     }
@@ -440,16 +435,13 @@ function SelectSquare(x, y) {
     DrawStuff();
 }
 
-function DeselectCells(deselectHints = true) {
+function DeselectCells() {
     selectedNumber = 0;
     selectedNote = 0;
-    
+
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             grid[row][col].selected = false;
-            if (deselectHints) {
-                grid[row][col].hint = false;
-            }
         }
     }
 }
