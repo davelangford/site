@@ -524,7 +524,7 @@ function DrawStuff(drawnumbers = true) {
         DrawLoading();
     }
 
-    if (GridFlat().filter(square => square.value != 0).length == 81) {
+    if (GridFlat().map(square => square.value).join('') == solution) {
         alert("Done!");
     };
 }
@@ -753,6 +753,9 @@ function ClashExists(row, col) {
                 return true;
             }
         }
+    }
+    if(solution[row*9+col] != grid[row][col].value){
+        return true;
     }
     return false;
 }
