@@ -16,6 +16,7 @@ var currentRow, currentCol;
 var missingNumbers = [];
 var notesMode = false;
 var solution = '';
+var gameOver = false;
 
 if (canvas.width <= canvas.height) {
     squareSize = canvas.width / gridSize;
@@ -303,9 +304,9 @@ function ShowHintSmall() {
     DeselectCells(true);
 
     for (var row = 0; row < 9; row++) {
-        if(foundOne) break;
+        if (foundOne) break;
         for (var col = 0; col < 9; col++) {
-            if(foundOne) break;
+            if (foundOne) break;
 
             if (grid[array[row]][array[col]].value != 0) continue;
 
@@ -524,9 +525,28 @@ function DrawStuff(drawnumbers = true) {
         DrawLoading();
     }
 
-    if (GridFlat().map(square => square.value).join('') == solution) {
-        alert("Done!");
-    };
+    if(GridFlat().map(square => square.value).join('').includes(0)){
+        gameOver = false;
+    }
+    if (!gameOver && solution != "" && GridFlat().map(square => square.value).join('') == solution) {
+        isDragging = false;
+        gameOver = true;
+        if (confirm("Done! Do you want to clear the board and start again?")) {
+            selectedNumber = 0;
+            selectedNote = 0;
+
+            for (var row = 0; row < 9; row++) {
+                for (var col = 0; col < 9; col++) {
+                    grid[row][col].selected = false;
+                    grid[row][col].possibilities = false;
+                    if (!grid[row][col].fixed) {
+                        grid[row][col].value = 0;
+                    }
+                }
+            }
+        }
+        DrawStuff();
+    }
 }
 
 function GridFlat() {
@@ -754,7 +774,7 @@ function ClashExists(row, col) {
             }
         }
     }
-    if(solution[row*9+col] != grid[row][col].value){
+    if (solution[row * 9 + col] != grid[row][col].value) {
         return true;
     }
     return false;
