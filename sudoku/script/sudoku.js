@@ -109,9 +109,13 @@ function AddListeners() {
     });
 
 
-    animateButton.addEventListener("click", () => {
-        Animate();
-    });
+    // playButton.addEventListener("click", () => {
+    //     Animate(true);
+    // });
+
+    // pauseButton.addEventListener("click", () => {
+    //     Animate();
+    // });
 
     canvas.addEventListener("touchstart", function (event) {
         event.preventDefault();
@@ -1012,22 +1016,3 @@ function mapRange(value, sourceMin, sourceMax, targetMin, targetMax) {
     return mappedValue;
 }
 
-function Animate() {
-    var currentlyAnimating = true;
-    const frameRate = 60;
-    const interval = 1000 / frameRate;
-    var max = 200;
-
-    // Start the drawing loop
-    const loopId = setInterval(() => {
-        DrawStuff();
-        currentlyAnimating = max-- > 0;
-        squareSize = squareSize*(200/max);
-        // Check if the variable 'shouldDraw' is still true
-        if (!currentlyAnimating) {
-            // Stop the drawing loop
-            clearInterval(loopId);
-            alert('d');
-        }
-    }, interval);
-}
