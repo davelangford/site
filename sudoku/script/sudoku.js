@@ -113,13 +113,6 @@ function AddListeners() {
         Animate();
     });
 
-    anima.addEventListener("click", () => {
-        if (confirm("Are you sure you want to clear the notes?")) {
-            ClearAllNotes();
-        }
-    });
-
-
     canvas.addEventListener("touchstart", function (event) {
         event.preventDefault();
         var rect = canvas.getBoundingClientRect();
@@ -1019,6 +1012,6 @@ function mapRange(value, sourceMin, sourceMax, targetMin, targetMax) {
     return mappedValue;
 }
 
-function Animate(){
+function Animate() {
     alert('a');
 }
