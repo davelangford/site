@@ -1013,5 +1013,21 @@ function mapRange(value, sourceMin, sourceMax, targetMin, targetMax) {
 }
 
 function Animate() {
-    alert('a');
+    var currentlyAnimating = true;
+    const frameRate = 60;
+    const interval = 1000 / frameRate;
+    var max = 200;
+
+    // Start the drawing loop
+    const loopId = setInterval(() => {
+        DrawStuff();
+        currentlyAnimating = max-- > 0;
+        squareSize = squareSize*(200/max);
+        // Check if the variable 'shouldDraw' is still true
+        if (!currentlyAnimating) {
+            // Stop the drawing loop
+            clearInterval(loopId);
+            alert('d');
+        }
+    }, interval);
 }
