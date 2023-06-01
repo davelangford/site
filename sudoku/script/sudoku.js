@@ -109,7 +109,11 @@ function AddListeners() {
     });
 
 
-    clearNotesButton.addEventListener("click", () => {
+    animateButton.addEventListener("click", () => {
+        Animate();
+    });
+
+    anima.addEventListener("click", () => {
         if (confirm("Are you sure you want to clear the notes?")) {
             ClearAllNotes();
         }
@@ -525,13 +529,17 @@ function DrawStuff(drawnumbers = true) {
         DrawLoading();
     }
 
-    if(GridFlat().map(square => square.value).join('').includes(0)){
+    DrawProgress();
+
+    if (GridFlat().map(square => square.value).join('').includes(0)) {
         gameOver = false;
     }
     if (!gameOver && solution != "" && GridFlat().map(square => square.value).join('') == solution) {
         isDragging = false;
         gameOver = true;
         if (confirm("Done! Do you want to clear the board and start again?")) {
+            ClearAllNotes();
+            DeselectCells();
             selectedNumber = 0;
             selectedNote = 0;
 
@@ -986,4 +994,31 @@ function DrawToolboxExtras() {
         ctx.lineTo(startX + 3 * squareSize, startY + squareSize * i);
         ctx.stroke();
     }
+}
+
+function DrawProgress() {
+    var percentComplete = GridFlat().filter(square => square.value != 0).length / 81 * 100;
+    ctx.strokeStyle = "#9bff84";
+
+    ctx.lineWidth = 10;
+    ctx.beginPath();
+    ctx.moveTo(0, canvas.height);
+    ctx.lineTo(mapRange(percentComplete, 0, 100, 0, canvas.width), canvas.height);
+    ctx.stroke();
+}
+
+function mapRange(value, sourceMin, sourceMax, targetMin, targetMax) {
+    // Calculate the ratio between the source range and the target range
+    const sourceRange = sourceMax - sourceMin;
+    const targetRange = targetMax - targetMin;
+    const ratio = targetRange / sourceRange;
+
+    // Map the value to the target range
+    const mappedValue = (value - sourceMin) * ratio + targetMin;
+
+    return mappedValue;
+}
+
+function Animate(){
+    alert('a');
 }
