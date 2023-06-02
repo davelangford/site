@@ -1030,66 +1030,63 @@ function mapRange(value, sourceMin, sourceMax, targetMin, targetMax) {
     return mappedValue;
 }
 
-var squareAnimationLength = 30;
-var positionX = 0;
+var squareAnimationLength = 50;
+var positionY = 0;
 
 function AnimateCurrentSquare() {
     var col = currentSquareAnimating % 9;
     var row = Math.floor(currentSquareAnimating / 9);
+    var totalDropHeight = (9 - row) * squareSize;
+    var dropStep = totalDropHeight / squareAnimationLength;
 
-    ctx.fillStyle = "#0D0";
+    ctx.fillStyle = "#000";
     ctx.fillRect(
-        col * squareSize + positionX,
-        bounceObject(currentSquareStep / squareAnimationLength, row * squareSize),
+        col * squareSize,
+        row * squareSize,
         squareSize,
         squareSize
     );
-    positionX += 10;
 
-    var x = (col + 0.5) * squareSize;
-    var y = (row + 0.5) * squareSize;
-    ctx.font = squareSize * 0.6 + "px Arial";
-    if (grid[row][col].fixed) {
-        ctx.fillStyle = "#000";
-    } else if (ClashExists(row, col)) {
-        ctx.fillStyle = "#F00";
-    } else {
-        ctx.fillStyle = "#009";
-    }
-    ctx.fillText(grid[row][col].value, x, y);
+    ctx.fillStyle = "#FFF";
+    ctx.fillRect(
+        col * squareSize,
+        row * squareSize + positionY,
+        squareSize,
+        squareSize
+    );
 
-}
-//const maxHeight = canvas.height - startY - squareSize; // Maximum height for bouncing
+    ctx.strokeStyle = "#000"
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(col * squareSize, row * squareSize + positionY);
+    ctx.lineTo(col * squareSize+squareSize, row * squareSize + positionY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(col * squareSize, row * squareSize + positionY + squareSize);
+    ctx.lineTo(col * squareSize+squareSize, row * squareSize + positionY + squareSize);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(col * squareSize, row * squareSize + positionY);
+    ctx.lineTo(col * squareSize, row * squareSize + positionY+squareSize);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(col * squareSize + squareSize, row * squareSize + positionY);
+    ctx.lineTo(col * squareSize + squareSize, row * squareSize + positionY+squareSize);
+    ctx.stroke();
+    positionY += dropStep;
 
-function bounceObject(percent, startY) {
-    const maxHeight = canvas.height - startY - squareSize; // Maximum height for bouncing
-    const initialAmplitude = 100; // Initial bouncing amplitude
-    const ground = 0; // Ground level
-    const numBounces = 3; // Number of bounces
-
-    // Calculate the current position based on the animation completion percentage
-    const currentPosition = maxHeight * (1 - Math.abs(percent - 0.5) * 2);
-
-    // Calculate the bounce period based on the number of bounces
-    const bouncePeriod = 1 / numBounces;
-
-    // Calculate the current bounce index
-    const bounceIndex = Math.floor(percent / bouncePeriod);
-
-    // Calculate the amplitude for the current bounce
-    const amplitude = initialAmplitude * (1 - bounceIndex / numBounces);
-
-    // Calculate the bounce offset using the current amplitude
-    const bounceOffset = amplitude * Math.sin(percent * Math.PI / bouncePeriod);
-
-    // Calculate the new y value by adding the bounce offset to the current position
-    const newY = startY + currentPosition + bounceOffset;
-
-    // Check if the new y value is below the ground level
-    if (newY < ground) {
-        return ground; // Object has hit the ground, return the ground level
+    if (grid[row][col].value != 0) {
+        var x = (col + 0.5) * squareSize;
+        var y = (row + 0.5) * squareSize + positionY;
+        ctx.font = squareSize * 0.6 + "px Arial";
+        if (grid[row][col].fixed) {
+            ctx.fillStyle = "#000";
+        } else if (ClashExists(row, col)) {
+            ctx.fillStyle = "#F00";
+        } else {
+            ctx.fillStyle = "#009";
+        }
+        ctx.fillText(grid[row][col].value, x, y);
     }
 
-    return newY;
 }
-
