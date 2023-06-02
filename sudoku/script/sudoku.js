@@ -111,17 +111,17 @@ function AddListeners() {
     playButton.addEventListener("click", function () {
         // Stop the animation (if it's running)
         pauseAnimation();
-    
+
         // Start the animation from scratch
         startAnimation(true);
     });
-    
+
     clearNotesButton.addEventListener("click", function () {
         if (confirm("Are you sure you want to clear all notes?")) {
             ClearAllNotes();
         }
     });
-    
+
     pauseButton.addEventListener("click", function () {
         // Pause or continue the animation
         if (animationFrameId) {
@@ -1030,7 +1030,8 @@ function mapRange(value, sourceMin, sourceMax, targetMin, targetMax) {
     return mappedValue;
 }
 
-var squareAnimationLength = 6;
+var squareAnimationLength = 30;
+var positionX = 0;
 
 function AnimateCurrentSquare() {
     var col = currentSquareAnimating % 9;
@@ -1038,9 +1039,57 @@ function AnimateCurrentSquare() {
 
     ctx.fillStyle = "#0D0";
     ctx.fillRect(
-        col * squareSize ,
-        row * squareSize,
-        squareSize - (currentSquareStep/60),
-        squareSize- (currentSquareStep/60)
+        col * squareSize + positionX,
+        bounceObject(currentSquareStep / squareAnimationLength, row * squareSize),
+        squareSize,
+        squareSize
     );
+    positionX += 10;
+
+    var x = (col + 0.5) * squareSize;
+    var y = (row + 0.5) * squareSize;
+    ctx.font = squareSize * 0.6 + "px Arial";
+    if (grid[row][col].fixed) {
+        ctx.fillStyle = "#000";
+    } else if (ClashExists(row, col)) {
+        ctx.fillStyle = "#F00";
+    } else {
+        ctx.fillStyle = "#009";
+    }
+    ctx.fillText(grid[row][col].value, x, y);
+
 }
+//const maxHeight = canvas.height - startY - squareSize; // Maximum height for bouncing
+
+function bounceObject(percent, startY) {
+    const maxHeight = canvas.height - startY - squareSize; // Maximum height for bouncing
+    const initialAmplitude = 100; // Initial bouncing amplitude
+    const ground = 0; // Ground level
+    const numBounces = 3; // Number of bounces
+
+    // Calculate the current position based on the animation completion percentage
+    const currentPosition = maxHeight * (1 - Math.abs(percent - 0.5) * 2);
+
+    // Calculate the bounce period based on the number of bounces
+    const bouncePeriod = 1 / numBounces;
+
+    // Calculate the current bounce index
+    const bounceIndex = Math.floor(percent / bouncePeriod);
+
+    // Calculate the amplitude for the current bounce
+    const amplitude = initialAmplitude * (1 - bounceIndex / numBounces);
+
+    // Calculate the bounce offset using the current amplitude
+    const bounceOffset = amplitude * Math.sin(percent * Math.PI / bouncePeriod);
+
+    // Calculate the new y value by adding the bounce offset to the current position
+    const newY = startY + currentPosition + bounceOffset;
+
+    // Check if the new y value is below the ground level
+    if (newY < ground) {
+        return ground; // Object has hit the ground, return the ground level
+    }
+
+    return newY;
+}
+

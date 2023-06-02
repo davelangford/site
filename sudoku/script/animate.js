@@ -16,6 +16,7 @@ function updateCanvas() {
     } else {
         currentSquareStep = 0;
         currentSquareAnimating++;
+        positionX = 0;
     }
     if (currentSquareAnimating >= 81) {
         stopAnimation();
