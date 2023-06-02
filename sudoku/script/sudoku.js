@@ -108,14 +108,28 @@ function AddListeners() {
         NewGame("hard");
     });
 
-
-    // playButton.addEventListener("click", () => {
-    //     Animate(true);
-    // });
-
-    // pauseButton.addEventListener("click", () => {
-    //     Animate();
-    // });
+    playButton.addEventListener("click", function () {
+        // Stop the animation (if it's running)
+        pauseAnimation();
+    
+        // Start the animation from scratch
+        startAnimation(true);
+    });
+    
+    clearNotesButton.addEventListener("click", function () {
+        if (confirm("Are you sure you want to clear all notes?")) {
+            ClearAllNotes();
+        }
+    });
+    
+    pauseButton.addEventListener("click", function () {
+        // Pause or continue the animation
+        if (animationFrameId) {
+            pauseAnimation();
+        } else {
+            startAnimation(false);
+        }
+    });
 
     canvas.addEventListener("touchstart", function (event) {
         event.preventDefault();
@@ -1016,3 +1030,17 @@ function mapRange(value, sourceMin, sourceMax, targetMin, targetMax) {
     return mappedValue;
 }
 
+var squareAnimationLength = 6;
+
+function AnimateCurrentSquare() {
+    var col = currentSquareAnimating % 9;
+    var row = Math.floor(currentSquareAnimating / 9);
+
+    ctx.fillStyle = "#0D0";
+    ctx.fillRect(
+        col * squareSize ,
+        row * squareSize,
+        squareSize - (currentSquareStep/60),
+        squareSize- (currentSquareStep/60)
+    );
+}
