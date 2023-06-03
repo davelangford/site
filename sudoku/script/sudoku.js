@@ -31,12 +31,16 @@ class SudokuSquare {
         this.selected = false;
         this.row = row;
         this.col = col;
+        this.animationStartFrame = getRandomInt(0,100);
 
         if (this.value != 0) {
             this.fixed = true;
         } else {
             this.fixed = false;
         }
+    }
+    update = function(){
+
     }
 }
 
@@ -129,6 +133,10 @@ function AddListeners() {
         } else {
             startAnimation(false);
         }
+    });
+
+    stopButton.addEventListener("click", function () {
+        stopAnimation();
     });
 
     canvas.addEventListener("touchstart", function (event) {
