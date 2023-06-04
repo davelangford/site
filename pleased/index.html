@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .highlight {
+            color: yellow;
+        }
+
+        p {
+            font-size: 85px;
+            line-height: 84px;
+            font-family: sans-serif;
+            text-align: center;
+            color: white;
+        }
+
+        body {
+
+            background-color: black;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <p>You're not always easy to share space with.</p>
+        <p>Some days you wake up ten times bigger than you are.</p>
+        <p>I can't get my arms around you</p>
+        <p>And we are silent worlds apart.</p>
+        <p>Should I introduce myself?</p>
+        <p>I'm pleased to meet you</p>
+        <p>You don't seem to recognise me</p>
+        <p>But you know... you look... just like someone</p>
+        <p>That I used to know.</p>
+        <p>(I'm pleased to meet you)</p>
+        <p>I'm pleased to meet you</p>
+        <p>You know I think you used to love me</p>
+        <p>But now... it seems... like that was a whole lifetime ago.</p>
+        <p>---</p>
+        <p>If you don't look at me do I disappear?</p>
+        <p>And all you say these days are things I don't wanna hear.</p>
+        <p>I don't think that you remember</p>
+        <p>It was always you and me against the world.</p>
+        <p>Should I introduce myself</p>
+        <p>I'm pleased to meet you</p>
+        <p>You don't seem to recognise me</p>
+        <p>But you know... you look... just like someone</p>
+        <p>That I used to know.</p>
+        <p>I'm pleased to meet you</p>
+        <p>You know I think you used to love me</p>
+        <p>But now... it seems... like that was a whole lifetime ago.</p>
+        <p>So I guess I'll see you round sometime</p>
+        <p>And one day you might</p>
+        <p>Think we've met before</p>
+        <p>You'll turn to me and say,</p>
+        <p>I'm pleased to meet you</p>
+        <p>You don't seem to recognise me</p>
+        <p>But you know... you look... just like someone that I used to know…</p>
+        <p>I'm pleased to meet you</p>
+        <p>You know I think you used to love me</p>
+        <p>But now... it seems... like that was a whole lifetime ago.</p>
+        <p>I'm pleased to meet you</p>
+        <p>You know I think you used to love me</p>
+        <p>But now... it seems... like that was a whole lifetime ago.</p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var paragraphs = document.querySelectorAll("#content p");
+            var currentIndex = 0;
+            var words = [];
+            var currentWordIndex = 0;
+
+            paragraphs.forEach(function (paragraph) {
+                var paragraphWords = paragraph.textContent.split(" ");
+                words = words.concat(paragraphWords);
+                paragraph.innerHTML = paragraphWords.map(function (word) {
+                    return "<span>" + word + "</span>";
+                }).join(" ");
+            });
+
+            var currentParagraph = paragraphs[currentIndex];
+            var currentWords = currentParagraph.querySelectorAll("span");
+            currentWords[currentWordIndex].classList.add("highlight");
+            currentWords[currentWordIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            document.addEventListener("keydown", function (event) {
+                var currentParagraph = paragraphs[currentIndex];
+                var currentWords = currentParagraph.querySelectorAll("span");
+
+                currentWords[currentWordIndex].classList.remove("highlight");
+
+                currentWordIndex = (currentWordIndex + 1) % currentWords.length;
+
+                if (currentWordIndex === 0) {
+                    currentWords[currentWords.length - 1].classList.remove("highlight");
+
+                    currentIndex = (currentIndex + 1) % paragraphs.length;
+                    currentParagraph = paragraphs[currentIndex];
+                    currentWords = currentParagraph.querySelectorAll("span");
+                }
+
+                currentWords[currentWordIndex].classList.add("highlight");
+                currentWords[currentWordIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -31,16 +31,14 @@ class SudokuSquare {
         this.selected = false;
         this.row = row;
         this.col = col;
-        this.animationStartFrame = getRandomInt(0,100);
+        this.animationStartFrame = getRandomInt(0, 100);
+        this.currentFrame = 0;
 
         if (this.value != 0) {
             this.fixed = true;
         } else {
             this.fixed = false;
         }
-    }
-    update = function(){
-
     }
 }
 
@@ -1067,19 +1065,19 @@ function AnimateCurrentSquare() {
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(col * squareSize, row * squareSize + positionY);
-    ctx.lineTo(col * squareSize+squareSize, row * squareSize + positionY);
+    ctx.lineTo(col * squareSize + squareSize, row * squareSize + positionY);
     ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(col * squareSize, row * squareSize + positionY + squareSize);
-    ctx.lineTo(col * squareSize+squareSize, row * squareSize + positionY + squareSize);
+    ctx.lineTo(col * squareSize + squareSize, row * squareSize + positionY + squareSize);
     ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(col * squareSize, row * squareSize + positionY);
-    ctx.lineTo(col * squareSize, row * squareSize + positionY+squareSize);
+    ctx.lineTo(col * squareSize, row * squareSize + positionY + squareSize);
     ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(col * squareSize + squareSize, row * squareSize + positionY);
-    ctx.lineTo(col * squareSize + squareSize, row * squareSize + positionY+squareSize);
+    ctx.lineTo(col * squareSize + squareSize, row * squareSize + positionY + squareSize);
     ctx.stroke();
     positionY += dropStep;
 

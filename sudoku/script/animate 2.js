@@ -8,6 +8,7 @@ let animationFrameId = null;
 function updateCanvas() {
     DrawStuff();
     UpdateSquares();
+    DrawAnimatedSquares();
     frameCount++;
 
     if (animationComplete) {
@@ -16,18 +17,45 @@ function updateCanvas() {
     animationFrameId = requestAnimationFrame(updateCanvas);
 }
 
-function UpdateSquares() {
-    for (var i = 0; i < 81; i++) {
-        GridFlat()[i].value++;
+function DrawAnimatedSquares() {
+    for (var row = 0; row < 9; row++) {
+        for (var col = 0; col < 9; col++) {
+            var s = grid[row][col];
+            var x = col * squareSize;
+            var y = row * squareSize;
+            var r = s.currentFrame * 4;
+            if (s.currentFrame > 1 && s.currentFrame < 120) {
+                ctx.fillStyle = "rgba(0000)";
+                // ctx.fillStyle = "#9DD";
+                ctx.fillRect(
+                    x,
+                    y,
+                    squareSize,
+                    squareSize
+                );
+            }
+            
+        }
+        // if (GridFlat().filter(square => square.row * squareSize + s.currentFrame * 5 < squareSize*9).length == 0) {
+        //      animationComplete = true;
+        // }
     }
-    //
+}
+
+function UpdateSquares() {
+    for (var row = 0; row < 9; row++) {
+        for (var col = 0; col < 9; col++) {
+            if (grid[row][col].animationStartFrame <= frameCount) {
+                grid[row][col].currentFrame++;
+            }
+        }
+    }
 }
 
 function ResetSquares() {
     for (var i = 0; i < 81; i++) {
-        GridFlat()[i].value = getRandomInt(0,8);
+        GridFlat()[i].currentFrame = 0;
     }
-    //
 }
 function stopAnimation() {
     ResetSquares();
