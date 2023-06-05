@@ -17,6 +17,9 @@ var missingNumbers = [];
 var notesMode = false;
 var solution = '';
 var gameOver = false;
+var color1 = "#ffc9f7";
+var color2 = "#cfffc9";
+var color3 = "#fbff9e";
 
 if (canvas.width <= canvas.height) {
     squareSize = canvas.width / gridSize;
@@ -33,6 +36,7 @@ class SudokuSquare {
         this.col = col;
         this.animationStartFrame = getRandomInt(0, 100);
         this.currentFrame = 0;
+        this.color = 0;
 
         if (this.value != 0) {
             this.fixed = true;
@@ -221,16 +225,7 @@ function HighlightSquares() {
     //if (selectedNumber != 0) {
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
-            if (grid[row][col].fixed) {
-                // HighlightNeighbourhood(row, col);
-                ctx.fillStyle = "#DDD";
-                ctx.fillRect(
-                    col * squareSize,
-                    row * squareSize,
-                    squareSize,
-                    squareSize
-                );
-            }
+
             if (selectedNumber != 0 && grid[row][col].value == selectedNumber) {
                 // HighlightNeighbourhood(row, col);
                 ctx.fillStyle = hintCellColor;
@@ -293,18 +288,38 @@ function HighlightSquares() {
         }
         //}
     }
+
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
+            switch (grid[row][col].color) {
+                case 0:
+                    ctx.fillStyle = "#FFF";// selectedCellColor;
+                    break;
+                case 1:
+                    ctx.fillStyle = color1;// selectedCellColor;
+                    break;
+                case 2:
+                    ctx.fillStyle = color2;// selectedCellColor;
+                    break;
+                case 3:
+                    ctx.fillStyle = color3;// selectedCellColor;
+                    break;
+            }
+            if (grid[row][col].fixed) {
+                // HighlightNeighbourhood(row, col);
+                ctx.fillStyle = "#DDD";
+            }
             if (grid[row][col].selected == true) {
                 ctx.fillStyle = "#BFB";// selectedCellColor;
-                ctx.fillRect(
-                    col * squareSize,
-                    row * squareSize,
-                    squareSize,
-                    squareSize
-                );
                 anySelected = true;
             }
+            ctx.fillRect(
+                col * squareSize,
+                row * squareSize,
+                squareSize,
+                squareSize
+            );
+
         }
     }
 }
@@ -448,6 +463,15 @@ function SelectSquare(x, y) {
     } else if (row == 6 && col == 12) {
         // redo clicked
         // undo();
+    } else if (row == 7 && col == 10) {
+        // pink clicked
+        ToggleColor(1);
+    } else if (row == 8 && col == 11) {
+        // green clicked
+        ToggleColor(2);
+    } else if (row == 9 && col == 12) {
+        // yellow clicked
+        ToggleColor(3);
     } else {
         DeselectCells();
         selectedNumber = 0;
@@ -455,6 +479,22 @@ function SelectSquare(x, y) {
     }
 
     DrawStuff();
+}
+
+
+function ToggleColor(color) {
+    for (var row = 0; row < 9; row++) {
+        for (var col = 0; col < 9; col++) {
+            if (grid[row][col].selected) {
+                if (grid[row][col].color != color) {
+                    grid[row][col].color = color;
+                } else {
+                    grid[row][col].color = 0;
+                }
+            }
+        }
+    }
+
 }
 
 function DeselectCells() {
@@ -999,21 +1039,21 @@ function DrawToolboxExtras() {
     ctx.fillStyle = "#ffc9f7";
     ctx.fillRect(
         startX,
-        startY + squareSize*2,
+        startY + squareSize * 2,
         squareSize,
         squareSize
     );
     ctx.fillStyle = "#cfffc9";
     ctx.fillRect(
         startX + squareSize,
-        startY + squareSize*2,
+        startY + squareSize * 2,
         squareSize,
         squareSize
     );
     ctx.fillStyle = "#fbff9e";
     ctx.fillRect(
-        startX + squareSize*2,
-        startY + squareSize*2,
+        startX + squareSize * 2,
+        startY + squareSize * 2,
         squareSize,
         squareSize
     );
