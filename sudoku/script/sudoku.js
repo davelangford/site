@@ -430,22 +430,22 @@ function SelectSquare(x, y) {
         selectedNumber = (row - 1) * 3 + (col - 9);
         selectedNote = selectedNumber;
         notesMode ? ToggleNote() : ToggleNumber();
-    } else if (row == 4 && col == 10) {
+    } else if (row == 5 && col == 10) {
         // clear clicked
         ClearSquares();
-    } else if (row == 4 && col == 11) {
+    } else if (row == 5 && col == 11) {
         // undo clicked
         ShowHintSmall();
-    } else if (row == 4 && col == 12) {
+    } else if (row == 5 && col == 12) {
         // undo clicked
         undo();
-    } else if (row == 5 && col == 10) {
+    } else if (row == 6 && col == 10) {
         // toggle clicked
         ToggleNotesMode();
-    } else if (row == 5 && col == 11) {
+    } else if (row == 6 && col == 11) {
         // hintB clicked
         ShowHintBig();
-    } else if (row == 5 && col == 12) {
+    } else if (row == 6 && col == 12) {
         // redo clicked
         // undo();
     } else {
@@ -955,7 +955,7 @@ function DrawToolboxExtras() {
 
     var buffer = squareSize;
     var startX = 9 * squareSize + buffer;
-    var startY = 3 * squareSize + buffer;
+    var startY = 4 * squareSize + buffer;
 
     ctx.font = squareSize * 0.3 + "px Arial";
     ctx.textAlign = "center";
@@ -996,15 +996,37 @@ function DrawToolboxExtras() {
     y = startY + 1.5 * squareSize;
     ctx.fillText('Redo', x, y);
 
+    ctx.fillStyle = "#ffc9f7";
+    ctx.fillRect(
+        startX,
+        startY + squareSize*2,
+        squareSize,
+        squareSize
+    );
+    ctx.fillStyle = "#cfffc9";
+    ctx.fillRect(
+        startX + squareSize,
+        startY + squareSize*2,
+        squareSize,
+        squareSize
+    );
+    ctx.fillStyle = "#fbff9e";
+    ctx.fillRect(
+        startX + squareSize*2,
+        startY + squareSize*2,
+        squareSize,
+        squareSize
+    );
+    ctx.fillStyle = "#000";
 
     for (var i = 0; i <= 3; i++) {
         ctx.lineWidth = 10;
         ctx.beginPath();
         ctx.moveTo(startX + i * squareSize, startY);
-        ctx.lineTo(startX + i * squareSize, startY + squareSize * 2);
+        ctx.lineTo(startX + i * squareSize, startY + squareSize * 3);
         ctx.stroke();
     }
-    for (var i = 0; i <= 2; i++) {
+    for (var i = 0; i <= 3; i++) {
         ctx.lineWidth = 10;
         ctx.beginPath();
         ctx.moveTo(startX, startY + squareSize * i);
@@ -1014,7 +1036,7 @@ function DrawToolboxExtras() {
 }
 
 function DrawProgress() {
-    var percentComplete = GridFlat().filter(square => square.value != 0).length / 81 * 100;
+    var percentComplete = GridFlat().filter(square => square.value != 0 && !square.fixed).length / GridFlat().filter(square => !square.fixed).length * 100;
     ctx.strokeStyle = "#9bff84";
 
     ctx.lineWidth = 10;

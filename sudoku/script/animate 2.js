@@ -67,8 +67,7 @@ function stopAnimation() {
 function startAnimation(resetAnimation) {
 
     if (resetAnimation) {
-        // currentSquareAnimating = 0;
-        // currentSquareStep = 0;
+        ResetSquares();
         frameCount = 0;
     }
     // Check if the animation loop is already running
