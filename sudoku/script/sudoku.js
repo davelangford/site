@@ -247,8 +247,8 @@ function HighlightSquares() {
                 ctx.fillStyle = hintCellColor;
                 switch (grid[row][col].possibleValues[index]) {
                     case 1:
-                        x = (col + 0.0) * squareSize;
-                        y = (row + 0.0) * squareSize;
+                        x = (col + 0.2) * squareSize;
+                        y = (row + 0.2) * squareSize;
                         break;
                     case 2:
                         x = (col + 0.33) * squareSize;
@@ -286,7 +286,7 @@ function HighlightSquares() {
                         break;
                 }
                 ctx.beginPath();
-                ctx.roundRect(x, y, squareSize / 3, squareSize / 3, [5]);
+                ctx.roundRect(x, y, squareSize / 5, squareSize / 5, [5]);
                 ctx.fill();
             }
         }
@@ -295,20 +295,21 @@ function HighlightSquares() {
 
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
-            switch (grid[row][col].color) {
-                case 0:
-                    ctx.fillStyle = "#FFF";// selectedCellColor;
-                    break;
-                case 1:
-                    ctx.fillStyle = color1;// selectedCellColor;
-                    break;
-                case 2:
-                    ctx.fillStyle = color2;// selectedCellColor;
-                    break;
-                case 3:
-                    ctx.fillStyle = color3;// selectedCellColor;
-                    break;
-            }
+            // switch (grid[row][col].color) {
+            //     case 0:
+            //         ctx.fillStyle = "#FFF";// selectedCellColor;
+            //         break;
+            //     case 1:
+            //         ctx.fillStyle = color1;// selectedCellColor;
+            //         break;
+            //     case 2:
+            //         ctx.fillStyle = color2;// selectedCellColor;
+            //         break;
+            //     case 3:
+            //         ctx.fillStyle = color3;// selectedCellColor;
+            //         break;
+            // }
+            ctx.fillStyle = "#FFF";// selectedCellColor;
             if (grid[row][col].fixed) {
                 // HighlightNeighbourhood(row, col);
                 ctx.fillStyle = "#DDD";
@@ -913,7 +914,7 @@ function DrawKiller() {
             if (!hasRight) {
                 DrawKillerBorder(cages[i][j], "right");
             }
-            if (!hasLeft)  {
+            if (!hasLeft) {
                 DrawKillerBorder(cages[i][j], "left");
             }
             if (!hasTop) {
@@ -992,20 +993,20 @@ function DrawKillerCageTotal(cage) {
         squareValue = eval(squareValue);
         cageTotal += squareValue;
     }
-    ctx.font = squareSize * 0.3 + "px Arial";
+    ctx.font = squareSize * 0.2 + "px Arial";
     ctx.fillStyle = "black";
     // ctx.textAlign = "right";
     ctx.fillText(cageTotal, row * squareSize + (squareSize * 0.2), col * squareSize + (squareSize * 0.2));
 }
 
 
-function DrawTotalHighlighted(){
+function DrawTotalHighlighted() {
     var total = 0;
     var row, col;
     var solutionIndex;
 
     var highlightedSquares = GridFlat().filter(square => square.selected);
-    for(var i = 0; i < highlightedSquares.length; i++){
+    for (var i = 0; i < highlightedSquares.length; i++) {
         row = highlightedSquares[i].row;
         col = highlightedSquares[i].col;
         solutionIndex = row * 9 + col;
@@ -1013,7 +1014,7 @@ function DrawTotalHighlighted(){
     }
     ctx.font = squareSize * 0.4 + "px Arial";
     ctx.fillStyle = "black";
-    ctx.fillText(total, 11 * squareSize + (squareSize/2), 4 * squareSize+(squareSize/2));
+    ctx.fillText(total, 11 * squareSize + (squareSize / 2), 4 * squareSize + (squareSize / 2));
 }
 function DrawToolboxNumbers() {
     ctx.strokeStyle = "#100";
