@@ -114,6 +114,10 @@ function AddListeners() {
         NewGame("hard");
     });
 
+    drawKiller.addEventListener("click", () => {
+        DrawKiller();
+    });
+
     playButton.addEventListener("click", function () {
         // Stop the animation (if it's running)
         pauseAnimation();
@@ -465,13 +469,13 @@ function SelectSquare(x, y) {
         // undo();
     } else if (row == 7 && col == 10) {
         // pink clicked
-        ToggleColor(1);
+        // ToggleColor(1);
     } else if (row == 8 && col == 11) {
         // green clicked
-        ToggleColor(2);
+        // ToggleColor(2);
     } else if (row == 9 && col == 12) {
         // yellow clicked
-        ToggleColor(3);
+        // ToggleColor(3);
     } else {
         DeselectCells();
         selectedNumber = 0;
@@ -585,7 +589,9 @@ function DrawStuff(drawnumbers = true) {
     } else {
         DrawLoading();
     }
-
+    if (JSON.parse(localStorage.getItem("cages"))) {
+        // DrawKiller();
+    }
     DrawProgress();
 
     if (GridFlat().map(square => square.value).join('').includes(0)) {
@@ -613,6 +619,9 @@ function DrawStuff(drawnumbers = true) {
         DrawStuff();
     }
 }
+
+
+
 
 function GridFlat() {
     var array1D = [];
@@ -672,6 +681,12 @@ $(document).ready(function () {
         numbers = numbersTo2DArray(urlParams.get('n'));
         window.location.replace(window.location.pathname);
         localStorage.setItem("numbers", JSON.stringify(numbers));
+        if (urlParams.has('c')) {
+            var cages = urlParams.get('c');
+            localStorage.setItem("cages", JSON.stringify(cages));
+        } else {
+            localStorage.removeItem("cages");
+        }
         localStorage.removeItem("grid");
         PopulateGrid();
         DrawStuff();
@@ -850,9 +865,9 @@ function DrawLines() {
     ctx.lineCap = "round";
     for (var i = 0; i <= gridSize; i++) {
         if (i % 3 == 0) {
-            ctx.lineWidth = 10;
+            ctx.lineWidth = 5;
         } else {
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 1;
         }
         ctx.beginPath();
         ctx.moveTo(i * squareSize, 0);
@@ -863,6 +878,83 @@ function DrawLines() {
         ctx.lineTo(squareSize * 9, i * squareSize);
         ctx.stroke();
     }
+}
+
+function DrawKiller() {
+    if (JSON.parse(localStorage.getItem("cages")) == null) {
+        return;
+    }
+    var cages = JSON.parse(localStorage.getItem("cages"));
+    cages = eval(cages);
+    console.log(cages);
+
+    var counter = 0;
+    for (var col = 0; col < 9; col++) {
+        for (var row = 0; row < 9; row++) {
+            ctx.font = "12px Arial";
+            ctx.fillStyle = "black";
+            // ctx.textAlign = "right";
+            ctx.fillText(counter, row * squareSize + (squareSize * 0.8), col * squareSize + (squareSize * 0.8));
+            counter++;
+        }
+    }
+
+    for (var i = 0; i < cages.length; i++) {
+        var topleft = cages[i][0];
+        DrawKillerBorder(topleft, "top");
+        DrawKillerBorder(topleft, "left");
+        // for (var j = 1; j < cages[i].length; j++) {
+        //     if (cages[i][j] == cages[i][j - 1] ) {
+        //         DrawKillerBorder(cages[i][j], "top");
+        //     }
+        //     if (cages[i][j] == cages[i][j - 1] + 9) {
+        //         DrawKillerBorder(cages[i][j], "left");
+        //     }
+        // }
+    }
+
+}
+
+function DrawKillerBorder(squareIndex, side) {
+    ctx.strokeStyle = "#100";
+    ctx.lineCap = "round";
+    ctx.lineWidth = 1;
+    ctx.setLineDash([5, 5]);
+
+    for (var i = 0; i <= gridSize; i++) {
+        var row = squareIndex % 9;
+        var col = Math.floor(squareIndex / 9);
+        var x = row * squareSize + (squareSize * 0.08);
+        var y = col * squareSize + (squareSize * 0.08);
+        var x2 = (row + 1) * squareSize - (squareSize * 0.08);
+        var y2 = (col + 1) * squareSize - (squareSize * 0.08);
+        if (side == "top") {
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x2, y);
+            ctx.stroke();
+        }
+        if (side == "left") {
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x, y2);
+            ctx.stroke();
+        }
+        if (side == "bottom") {
+            ctx.beginPath();
+            ctx.moveTo(x, y2);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+        if (side == "right") {
+
+            ctx.beginPath();
+            ctx.moveTo(x2, y);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+    }
+    ctx.setLineDash([]);
 }
 
 function DrawToolboxNumbers() {
