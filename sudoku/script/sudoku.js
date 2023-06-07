@@ -226,7 +226,6 @@ function MouseUpTouchEnd(event) {
 function HighlightSquares() {
     if (grid.length != 9) return;
 
-    //if (selectedNumber != 0) {
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
 
@@ -242,36 +241,36 @@ function HighlightSquares() {
                         y = (row + 0.2) * squareSize;
                         break;
                     case 2:
-                        x = (col + 0.33) * squareSize;
-                        y = (row + 0.0) * squareSize;
+                        x = (col + 0.4) * squareSize;
+                        y = (row + 0.2) * squareSize;
                         break;
                     case 3:
-                        x = (col + 0.66) * squareSize;
-                        y = (row + 0.0) * squareSize;
+                        x = (col + 0.6) * squareSize;
+                        y = (row + 0.2) * squareSize;
                         break;
                     case 4:
-                        x = (col + 0.0) * squareSize;
-                        y = (row + 0.33) * squareSize;
+                        x = (col + 0.2) * squareSize;
+                        y = (row + 0.4) * squareSize;
                         break;
                     case 5:
-                        x = (col + 0.33) * squareSize;
-                        y = (row + 0.33) * squareSize;
+                        x = (col + 0.4) * squareSize;
+                        y = (row + 0.4) * squareSize;
                         break;
                     case 6:
-                        x = (col + 0.66) * squareSize;
-                        y = (row + 0.33) * squareSize;
+                        x = (col + 0.6) * squareSize;
+                        y = (row + 0.4) * squareSize;
                         break;
                     case 7:
-                        x = (col + 0.0) * squareSize;
-                        y = (row + 0.66) * squareSize;
+                        x = (col + 0.2) * squareSize;
+                        y = (row + 0.6) * squareSize;
                         break;
                     case 8:
-                        x = (col + 0.33) * squareSize;
-                        y = (row + 0.66) * squareSize;
+                        x = (col + 0.4) * squareSize;
+                        y = (row + 0.6) * squareSize;
                         break;
                     case 9:
-                        x = (col + 0.66) * squareSize;
-                        y = (row + 0.66) * squareSize;
+                        x = (col + 0.6) * squareSize;
+                        y = (row + 0.6) * squareSize;
                         break;
                     default:
                         break;
@@ -279,32 +278,25 @@ function HighlightSquares() {
                 ctx.beginPath();
                 ctx.roundRect(x, y, squareSize / 5, squareSize / 5, [5]);
                 ctx.fill();
+            } else {
+                ctx.fillStyle = "#FFF";;
+                if (grid[row][col].fixed) {
+                    ctx.fillStyle = "#DDD";
+                }
+                if (grid[row][col].selected == true) {
+                    ctx.fillStyle = "#BFB";
+                    anySelected = true;
+                }
+                if (selectedNumber != 0 && grid[row][col].value == selectedNumber) {
+                    ctx.fillStyle = hintCellColor;
+                }
+                ctx.fillRect(
+                    col * squareSize,
+                    row * squareSize,
+                    squareSize,
+                    squareSize
+                );
             }
-        }
-        //}
-    }
-
-    for (var row = 0; row < 9; row++) {
-        for (var col = 0; col < 9; col++) {
-            ctx.fillStyle = "#FFF";;
-            if (grid[row][col].fixed) {
-                ctx.fillStyle = "#DDD";
-            }
-            if (grid[row][col].selected == true) {
-                ctx.fillStyle = "#BFB";
-                anySelected = true;
-            }
-            if (selectedNumber != 0 && grid[row][col].value == selectedNumber) {
-                ctx.fillStyle = hintCellColor;
-            }
-            ctx.fillRect(
-                col * squareSize,
-                row * squareSize,
-                squareSize,
-                squareSize
-            );
-
-
         }
     }
 }
