@@ -992,7 +992,7 @@ function DrawKillerCageTotal(cage) {
         squareValue = eval(squareValue);
         cageTotal += squareValue;
     }
-    ctx.font = squareSize * 0.2 + "px Arial";
+    ctx.font = squareSize * 0.3 + "px Arial";
     ctx.fillStyle = "black";
     // ctx.textAlign = "right";
     ctx.fillText(cageTotal, row * squareSize + (squareSize * 0.2), col * squareSize + (squareSize * 0.2));
@@ -1011,7 +1011,7 @@ function DrawTotalHighlighted(){
         solutionIndex = row * 9 + col;
         total += eval(solution[solutionIndex]);
     }
-    ctx.font = squareSize * 0.3 + "px Arial";
+    ctx.font = squareSize * 0.4 + "px Arial";
     ctx.fillStyle = "black";
     ctx.fillText(total, 11 * squareSize + (squareSize/2), 4 * squareSize+(squareSize/2));
 }
