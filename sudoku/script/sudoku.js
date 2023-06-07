@@ -900,17 +900,44 @@ function DrawKiller() {
     }
 
     for (var i = 0; i < cages.length; i++) {
-        var topleft = cages[i][0];
-        DrawKillerBorder(topleft, "top");
-        DrawKillerBorder(topleft, "left");
-        // for (var j = 1; j < cages[i].length; j++) {
-        //     if (cages[i][j] == cages[i][j - 1] ) {
-        //         DrawKillerBorder(cages[i][j], "top");
+        for (var j = 0; j < cages[i].length; j++) {
+            if(!cages[i].includes(cages[i][j] + 1)) {
+                DrawKillerBorder(cages[i][j], "right");
+            }
+            if(!cages[i].includes(cages[i][j] - 1)) {
+                DrawKillerBorder(cages[i][j], "left");
+            }
+            if(!cages[i].includes(cages[i][j] - 9)) {
+                DrawKillerBorder(cages[i][j], "top");
+            }
+            if(!cages[i].includes(cages[i][j] + 9)) {
+                DrawKillerBorder(cages[i][j], "bottom");
+            }
+        }
+        // if (cages[i].length == 1) {
+        //     var cageIndex = cages[i][0];
+        //     DrawKillerBorder(cageIndex, "top");
+        //     DrawKillerBorder(cageIndex, "bottom");
+        //     DrawKillerBorder(cageIndex, "left");
+        //     DrawKillerBorder(cageIndex, "right");
+        // } else {
+        //     // for each remaining item in the current cage, draw the remaining borders
+        //     var cageIndex = cages[i][0];
+        //     DrawKillerBorder(cageIndex, "top");
+        //     DrawKillerBorder(cageIndex, "left");
+            
+        //     if(cages[i].includes(cageIndex + 1)) {
+        //         DrawKillerBorder(cageIndex + 1, "top");
+        //     } else {
+        //         DrawKillerBorder(cageIndex, "right");
         //     }
-        //     if (cages[i][j] == cages[i][j - 1] + 9) {
-        //         DrawKillerBorder(cages[i][j], "left");
-        //     }
+
+            // if the next item in the cage is not in the same row, draw the right border
+            // if (cages[i][1] != cages[i][0] ) {
+            //     DrawKillerBorder(cageIndex, "right");
+            // }
         // }
+
     }
 
 }
@@ -924,10 +951,10 @@ function DrawKillerBorder(squareIndex, side) {
     for (var i = 0; i <= gridSize; i++) {
         var row = squareIndex % 9;
         var col = Math.floor(squareIndex / 9);
-        var x = row * squareSize + (squareSize * 0.08);
-        var y = col * squareSize + (squareSize * 0.08);
-        var x2 = (row + 1) * squareSize - (squareSize * 0.08);
-        var y2 = (col + 1) * squareSize - (squareSize * 0.08);
+        var x = row * squareSize + (squareSize * 0.06);
+        var y = col * squareSize + (squareSize * 0.06);
+        var x2 = (row + 1) * squareSize - (squareSize * 0.06);
+        var y2 = (col + 1) * squareSize - (squareSize * 0.06);
         if (side == "top") {
             ctx.beginPath();
             ctx.moveTo(x, y);
