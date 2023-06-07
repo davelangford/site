@@ -929,15 +929,16 @@ function DrawKiller() {
 function DrawKillerBorder(squareIndex, side) {
     ctx.strokeStyle = "#100";
     //ctx.lineCap = "round";
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = 3;
     ctx.setLineDash([5, 5]);
 
+    var buffer = squareSize * 0.05;
     var row = squareIndex % 9;
     var col = Math.floor(squareIndex / 9);
-    var x = row * squareSize + (squareSize * 0.06);
-    var y = col * squareSize + (squareSize * 0.06);
-    var x2 = (row + 1) * squareSize - (squareSize * 0.06);
-    var y2 = (col + 1) * squareSize - (squareSize * 0.06);
+    var x = row * squareSize + buffer;
+    var y = col * squareSize + buffer;
+    var x2 = (row + 1) * squareSize - buffer;
+    var y2 = (col + 1) * squareSize - buffer;
 
     if (side == "top") {
         ctx.beginPath();
@@ -991,7 +992,7 @@ function DrawKillerCageTotal(cage) {
         squareValue = eval(squareValue);
         cageTotal += squareValue;
     }
-    ctx.font = "12px Arial";
+    ctx.font = squareSize * 0.2 + "px Arial";
     ctx.fillStyle = "black";
     // ctx.textAlign = "right";
     ctx.fillText(cageTotal, row * squareSize + (squareSize * 0.2), col * squareSize + (squareSize * 0.2));
@@ -1010,7 +1011,7 @@ function DrawTotalHighlighted(){
         solutionIndex = row * 9 + col;
         total += eval(solution[solutionIndex]);
     }
-    ctx.font = "20px Arial";
+    ctx.font = squareSize * 0.3 + "px Arial";
     ctx.fillStyle = "black";
     ctx.fillText(total, 11 * squareSize + (squareSize/2), 4 * squareSize+(squareSize/2));
 }
