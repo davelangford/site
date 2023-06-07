@@ -230,16 +230,7 @@ function HighlightSquares() {
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
 
-            if (selectedNumber != 0 && grid[row][col].value == selectedNumber) {
-                // HighlightNeighbourhood(row, col);
-                ctx.fillStyle = hintCellColor;
-                ctx.fillRect(
-                    col * squareSize,
-                    row * squareSize,
-                    squareSize,
-                    squareSize
-                );
-            }
+
             var x, y;
             var index =
                 grid[row][col].possibleValues.indexOf(selectedNumber);
@@ -295,28 +286,16 @@ function HighlightSquares() {
 
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
-            // switch (grid[row][col].color) {
-            //     case 0:
-            //         ctx.fillStyle = "#FFF";// selectedCellColor;
-            //         break;
-            //     case 1:
-            //         ctx.fillStyle = color1;// selectedCellColor;
-            //         break;
-            //     case 2:
-            //         ctx.fillStyle = color2;// selectedCellColor;
-            //         break;
-            //     case 3:
-            //         ctx.fillStyle = color3;// selectedCellColor;
-            //         break;
-            // }
-            ctx.fillStyle = "#FFF";// selectedCellColor;
+            ctx.fillStyle = "#FFF";;
             if (grid[row][col].fixed) {
-                // HighlightNeighbourhood(row, col);
                 ctx.fillStyle = "#DDD";
             }
             if (grid[row][col].selected == true) {
-                ctx.fillStyle = "#BFB";// selectedCellColor;
+                ctx.fillStyle = "#BFB";
                 anySelected = true;
+            }
+            if (selectedNumber != 0 && grid[row][col].value == selectedNumber) {
+                ctx.fillStyle = hintCellColor;
             }
             ctx.fillRect(
                 col * squareSize,
@@ -324,6 +303,7 @@ function HighlightSquares() {
                 squareSize,
                 squareSize
             );
+
 
         }
     }
