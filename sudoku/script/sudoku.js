@@ -582,6 +582,7 @@ function DrawStuff(drawnumbers = true) {
     } else {
         DrawToolboxNumbers();
     }
+    DrawTotalHighlighted();
     DrawLines();
 
     if (drawnumbers) {
@@ -590,7 +591,7 @@ function DrawStuff(drawnumbers = true) {
         DrawLoading();
     }
     if (JSON.parse(localStorage.getItem("cages"))) {
-        // DrawKiller();
+        DrawKiller();
     }
     DrawProgress();
 
@@ -682,10 +683,14 @@ $(document).ready(function () {
         window.location.replace(window.location.pathname);
         localStorage.setItem("numbers", JSON.stringify(numbers));
         if (urlParams.has('c')) {
-            var cages = urlParams.get('c');
-            localStorage.setItem("cages", JSON.stringify(cages));
+            localStorage.setItem("cages", JSON.stringify(urlParams.get('c')));
         } else {
             localStorage.removeItem("cages");
+        }
+        if (urlParams.has('s')) {
+            localStorage.setItem("solution", JSON.stringify(urlParams.get('s')));
+        } else {
+            localStorage.removeItem("solution");
         }
         localStorage.removeItem("grid");
         PopulateGrid();
@@ -753,7 +758,12 @@ function PopulateGrid() {
         }
     }
 
-    solution = solveSudoku(GridFlat().map(obj => obj.value).join(''));
+    if (localStorage.getItem("solution") != null) {
+        solution = JSON.parse(localStorage.getItem("solution"));
+        solution = solution.split(',');
+    } else {
+        solution = solveSudoku(GridFlat().map(obj => obj.value).join(''));
+    }
     if (solution.includes('0')) {
         alert('Doesn\'t look like this puzzle is solvable using logic...is the puzzle broken?');
     }
@@ -783,23 +793,23 @@ function DrawNumbers() {
                 ctx.fillText(value, x, y);
             } else {
                 ctx.font = squareSize * 0.2 + "px Arial";
-                ctx.fillStyle = "#000";
+                ctx.fillStyle = "#006";
                 for (i = 0; i < grid[row][col].possibleValues.length; i++) {
                     switch (grid[row][col].possibleValues[i]) {
                         case 1:
-                            x = (col + 0.2) * squareSize;
-                            y = (row + 0.2) * squareSize;
+                            x = (col + 0.32) * squareSize;
+                            y = (row + 0.32) * squareSize;
                             break;
                         case 2:
                             x = (col + 0.5) * squareSize;
-                            y = (row + 0.2) * squareSize;
+                            y = (row + 0.32) * squareSize;
                             break;
                         case 3:
-                            x = (col + 0.8) * squareSize;
-                            y = (row + 0.2) * squareSize;
+                            x = (col + 0.68) * squareSize;
+                            y = (row + 0.32) * squareSize;
                             break;
                         case 4:
-                            x = (col + 0.2) * squareSize;
+                            x = (col + 0.32) * squareSize;
                             y = (row + 0.5) * squareSize;
                             break;
                         case 5:
@@ -807,20 +817,20 @@ function DrawNumbers() {
                             y = (row + 0.5) * squareSize;
                             break;
                         case 6:
-                            x = (col + 0.8) * squareSize;
+                            x = (col + 0.68) * squareSize;
                             y = (row + 0.5) * squareSize;
                             break;
                         case 7:
-                            x = (col + 0.2) * squareSize;
-                            y = (row + 0.8) * squareSize;
+                            x = (col + 0.32) * squareSize;
+                            y = (row + 0.68) * squareSize;
                             break;
                         case 8:
                             x = (col + 0.5) * squareSize;
-                            y = (row + 0.8) * squareSize;
+                            y = (row + 0.68) * squareSize;
                             break;
                         case 9:
-                            x = (col + 0.8) * squareSize;
-                            y = (row + 0.8) * squareSize;
+                            x = (col + 0.68) * squareSize;
+                            y = (row + 0.68) * squareSize;
                             break;
                         default:
                             break;
@@ -888,29 +898,23 @@ function DrawKiller() {
     cages = eval(cages);
     console.log(cages);
 
-    var counter = 0;
-    for (var col = 0; col < 9; col++) {
-        for (var row = 0; row < 9; row++) {
-            ctx.font = "12px Arial";
-            ctx.fillStyle = "black";
-            // ctx.textAlign = "right";
-            ctx.fillText(counter, row * squareSize + (squareSize * 0.8), col * squareSize + (squareSize * 0.8));
-            counter++;
-        }
-    }
+    //DrawSquareIndexes();
 
     for (var i = 0; i < cages.length; i++) {
         for (var j = 0; j < cages[i].length; j++) {
-            if(!cages[i].includes(cages[i][j] + 1)) {
+            if (j == 0) {
+                DrawKillerCageTotal(cages[i]);
+            }
+            if (!cages[i].includes(cages[i][j] + 1)) {
                 DrawKillerBorder(cages[i][j], "right");
             }
-            if(!cages[i].includes(cages[i][j] - 1)) {
+            if (!cages[i].includes(cages[i][j] - 1)) {
                 DrawKillerBorder(cages[i][j], "left");
             }
-            if(!cages[i].includes(cages[i][j] - 9)) {
+            if (!cages[i].includes(cages[i][j] - 9)) {
                 DrawKillerBorder(cages[i][j], "top");
             }
-            if(!cages[i].includes(cages[i][j] + 9)) {
+            if (!cages[i].includes(cages[i][j] + 9)) {
                 DrawKillerBorder(cages[i][j], "bottom");
             }
         }
@@ -925,21 +929,51 @@ function DrawKiller() {
         //     var cageIndex = cages[i][0];
         //     DrawKillerBorder(cageIndex, "top");
         //     DrawKillerBorder(cageIndex, "left");
-            
+
         //     if(cages[i].includes(cageIndex + 1)) {
         //         DrawKillerBorder(cageIndex + 1, "top");
         //     } else {
         //         DrawKillerBorder(cageIndex, "right");
         //     }
 
-            // if the next item in the cage is not in the same row, draw the right border
-            // if (cages[i][1] != cages[i][0] ) {
-            //     DrawKillerBorder(cageIndex, "right");
-            // }
+        // if the next item in the cage is not in the same row, draw the right border
+        // if (cages[i][1] != cages[i][0] ) {
+        //     DrawKillerBorder(cageIndex, "right");
+        // }
         // }
 
     }
 
+}
+
+function DrawSquareIndexes() {
+    var counter = 0;
+    for (var col = 0; col < 9; col++) {
+        for (var row = 0; row < 9; row++) {
+            ctx.font = "12px Arial";
+            ctx.fillStyle = "black";
+            // ctx.textAlign = "right";
+            ctx.fillText(counter, row * squareSize + (squareSize * 0.8), col * squareSize + (squareSize * 0.8));
+            counter++;
+        }
+    }
+}
+
+function DrawKillerCageTotal(cage) {
+    var row = cage[0] % 9;
+    var col = Math.floor(cage[0] / 9);
+
+    var cageTotal = 0;
+    for (let i = 0; i < cage.length; i++) {
+        var squareValue = cage[i];
+        squareValue = solution[squareValue];
+        squareValue = eval(squareValue);
+        cageTotal += squareValue;
+    }
+    ctx.font = "12px Arial";
+    ctx.fillStyle = "black";
+    // ctx.textAlign = "right";
+    ctx.fillText(cageTotal, row * squareSize + (squareSize * 0.2), col * squareSize + (squareSize * 0.2));
 }
 
 function DrawKillerBorder(squareIndex, side) {
@@ -948,42 +982,55 @@ function DrawKillerBorder(squareIndex, side) {
     ctx.lineWidth = 1;
     ctx.setLineDash([5, 5]);
 
-    for (var i = 0; i <= gridSize; i++) {
-        var row = squareIndex % 9;
-        var col = Math.floor(squareIndex / 9);
-        var x = row * squareSize + (squareSize * 0.06);
-        var y = col * squareSize + (squareSize * 0.06);
-        var x2 = (row + 1) * squareSize - (squareSize * 0.06);
-        var y2 = (col + 1) * squareSize - (squareSize * 0.06);
-        if (side == "top") {
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x2, y);
-            ctx.stroke();
-        }
-        if (side == "left") {
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x, y2);
-            ctx.stroke();
-        }
-        if (side == "bottom") {
-            ctx.beginPath();
-            ctx.moveTo(x, y2);
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
-        }
-        if (side == "right") {
+    var row = squareIndex % 9;
+    var col = Math.floor(squareIndex / 9);
+    var x = row * squareSize + (squareSize * 0.06);
+    var y = col * squareSize + (squareSize * 0.06);
+    var x2 = (row + 1) * squareSize - (squareSize * 0.06);
+    var y2 = (col + 1) * squareSize - (squareSize * 0.06);
+    if (side == "top") {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x2, y);
+        ctx.stroke();
+    }
+    if (side == "left") {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x, y2);
+        ctx.stroke();
+    }
+    if (side == "bottom") {
+        ctx.beginPath();
+        ctx.moveTo(x, y2);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    }
+    if (side == "right") {
 
-            ctx.beginPath();
-            ctx.moveTo(x2, y);
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
-        }
+        ctx.beginPath();
+        ctx.moveTo(x2, y);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
     }
     ctx.setLineDash([]);
 }
+function DrawTotalHighlighted(){
+    var total = 0;
+    var row, col;
+    var solutionIndex;
 
+    var highlightedSquares = GridFlat().filter(square => square.selected);
+    for(var i = 0; i < highlightedSquares.length; i++){
+        row = highlightedSquares[i].row;
+        col = highlightedSquares[i].col;
+        solutionIndex = row * 9 + col;
+        total += eval(solution[solutionIndex]);
+    }
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "black";
+    ctx.fillText(total, 11 * squareSize + (squareSize/2), 4 * squareSize+(squareSize/2));
+}
 function DrawToolboxNumbers() {
     ctx.strokeStyle = "#100";
 
