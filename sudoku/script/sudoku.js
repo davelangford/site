@@ -905,45 +905,66 @@ function DrawKiller() {
             if (j == 0) {
                 DrawKillerCageTotal(cages[i]);
             }
-            if (!cages[i].includes(cages[i][j] + 1)) {
+            var hasRight = cages[i].includes(cages[i][j] + 1);
+            var hasLeft = cages[i].includes(cages[i][j] - 1);
+            var hasTop = cages[i].includes(cages[i][j] - 9);
+            var hasBottom = cages[i].includes(cages[i][j] + 9);
+
+            if (!hasRight) {
                 DrawKillerBorder(cages[i][j], "right");
             }
-            if (!cages[i].includes(cages[i][j] - 1)) {
+            if (!hasLeft)  {
                 DrawKillerBorder(cages[i][j], "left");
             }
-            if (!cages[i].includes(cages[i][j] - 9)) {
+            if (!hasTop) {
                 DrawKillerBorder(cages[i][j], "top");
             }
-            if (!cages[i].includes(cages[i][j] + 9)) {
+            if (!hasBottom) {
                 DrawKillerBorder(cages[i][j], "bottom");
             }
         }
-        // if (cages[i].length == 1) {
-        //     var cageIndex = cages[i][0];
-        //     DrawKillerBorder(cageIndex, "top");
-        //     DrawKillerBorder(cageIndex, "bottom");
-        //     DrawKillerBorder(cageIndex, "left");
-        //     DrawKillerBorder(cageIndex, "right");
-        // } else {
-        //     // for each remaining item in the current cage, draw the remaining borders
-        //     var cageIndex = cages[i][0];
-        //     DrawKillerBorder(cageIndex, "top");
-        //     DrawKillerBorder(cageIndex, "left");
-
-        //     if(cages[i].includes(cageIndex + 1)) {
-        //         DrawKillerBorder(cageIndex + 1, "top");
-        //     } else {
-        //         DrawKillerBorder(cageIndex, "right");
-        //     }
-
-        // if the next item in the cage is not in the same row, draw the right border
-        // if (cages[i][1] != cages[i][0] ) {
-        //     DrawKillerBorder(cageIndex, "right");
-        // }
-        // }
-
     }
+}
 
+function DrawKillerBorder(squareIndex, side) {
+    ctx.strokeStyle = "#100";
+    //ctx.lineCap = "round";
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 5]);
+
+    var row = squareIndex % 9;
+    var col = Math.floor(squareIndex / 9);
+    var x = row * squareSize + (squareSize * 0.06);
+    var y = col * squareSize + (squareSize * 0.06);
+    var x2 = (row + 1) * squareSize - (squareSize * 0.06);
+    var y2 = (col + 1) * squareSize - (squareSize * 0.06);
+
+    if (side == "top") {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x2, y);
+        ctx.stroke();
+    }
+    if (side == "left") {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x, y2);
+        ctx.stroke();
+    }
+    if (side == "bottom") {
+        ctx.beginPath();
+        ctx.moveTo(x, y2);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    }
+    if (side == "right") {
+
+        ctx.beginPath();
+        ctx.moveTo(x2, y);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    }
+    ctx.setLineDash([]);
 }
 
 function DrawSquareIndexes() {
@@ -976,45 +997,7 @@ function DrawKillerCageTotal(cage) {
     ctx.fillText(cageTotal, row * squareSize + (squareSize * 0.2), col * squareSize + (squareSize * 0.2));
 }
 
-function DrawKillerBorder(squareIndex, side) {
-    ctx.strokeStyle = "#100";
-    ctx.lineCap = "round";
-    ctx.lineWidth = 1;
-    ctx.setLineDash([5, 5]);
 
-    var row = squareIndex % 9;
-    var col = Math.floor(squareIndex / 9);
-    var x = row * squareSize + (squareSize * 0.06);
-    var y = col * squareSize + (squareSize * 0.06);
-    var x2 = (row + 1) * squareSize - (squareSize * 0.06);
-    var y2 = (col + 1) * squareSize - (squareSize * 0.06);
-    if (side == "top") {
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x2, y);
-        ctx.stroke();
-    }
-    if (side == "left") {
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x, y2);
-        ctx.stroke();
-    }
-    if (side == "bottom") {
-        ctx.beginPath();
-        ctx.moveTo(x, y2);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-    }
-    if (side == "right") {
-
-        ctx.beginPath();
-        ctx.moveTo(x2, y);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-    }
-    ctx.setLineDash([]);
-}
 function DrawTotalHighlighted(){
     var total = 0;
     var row, col;
