@@ -556,6 +556,7 @@ function DrawStuff(drawnumbers = true) {
         DrawToolboxNumbers();
     }
     DrawTotalHighlighted();
+    DrawCageCombinations();
     DrawLines();
 
     if (drawnumbers) {
@@ -974,20 +975,20 @@ function DrawKillerCageTotal(cage) {
 function DrawTotalHighlighted() {
     var total = 0;
     var row, col;
-    var solutionIndex;
     var cages = JSON.parse(localStorage.getItem("cages"));
     cages = eval(cages);
     var highlightedSquares = GridFlat().filter(square => square.selected);
     for (var i = 0; i < highlightedSquares.length; i++) {
         row = highlightedSquares[i].row;
         col = highlightedSquares[i].col;
-        // loop through each cge and see if it contains the square
+
         for (var j = 0; j < cages.length; j++) {
             if (cages[j].includes(row * 9 + col)) {
                 if (allCagesSelected(cages[j])) {
                     total += GetCageTotal(cages[j]);
+                } else {
+                    return;
                 }
-
             }
         }
     }
@@ -995,6 +996,28 @@ function DrawTotalHighlighted() {
         ctx.font = squareSize * 0.4 + "px Arial";
         ctx.fillStyle = "black";
         ctx.fillText(total, 11 * squareSize + (squareSize / 2), 4 * squareSize + (squareSize / 2));
+    }
+}
+
+function DrawCageCombinations() {
+    var total = 0;
+    var row, col;
+    var cages = JSON.parse(localStorage.getItem("cages"));
+    cages = eval(cages);
+    var highlightedSquares = GridFlat().filter(square => square.selected);
+    for (var i = 0; i < highlightedSquares.length; i++) {
+        row = highlightedSquares[i].row;
+        col = highlightedSquares[i].col;
+
+        for (var j = 0; j < cages.length; j++) {
+            if (cages[j].includes(row * 9 + col)) {
+                total = GetCageTotal(cages[j])*cages[j].length;
+                ctx.font = squareSize * 0.4 + "px Arial";
+                ctx.fillStyle = "black";
+                ctx.fillText(total, 11 * squareSize + (squareSize / 2), 7 * squareSize + (squareSize / 2));
+                return;
+            }
+        }
     }
 }
 
@@ -1193,37 +1216,16 @@ function DrawToolboxExtras() {
     y = startY + 1.5 * squareSize;
     ctx.fillText('Redo', x, y);
 
-    ctx.fillStyle = "#ffc9f7";
-    ctx.fillRect(
-        startX,
-        startY + squareSize * 2,
-        squareSize,
-        squareSize
-    );
-    ctx.fillStyle = "#cfffc9";
-    ctx.fillRect(
-        startX + squareSize,
-        startY + squareSize * 2,
-        squareSize,
-        squareSize
-    );
-    ctx.fillStyle = "#fbff9e";
-    ctx.fillRect(
-        startX + squareSize * 2,
-        startY + squareSize * 2,
-        squareSize,
-        squareSize
-    );
     ctx.fillStyle = "#000";
 
     for (var i = 0; i <= 3; i++) {
         ctx.lineWidth = 10;
         ctx.beginPath();
         ctx.moveTo(startX + i * squareSize, startY);
-        ctx.lineTo(startX + i * squareSize, startY + squareSize * 3);
+        ctx.lineTo(startX + i * squareSize, startY + squareSize * 2);
         ctx.stroke();
     }
-    for (var i = 0; i <= 3; i++) {
+    for (var i = 0; i <= 2; i++) {
         ctx.lineWidth = 10;
         ctx.beginPath();
         ctx.moveTo(startX, startY + squareSize * i);
