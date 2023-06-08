@@ -971,22 +971,56 @@ function DrawKillerCageTotal(cage) {
     ctx.fillText(cageTotal, row * squareSize + (squareSize * 0.2), col * squareSize + (squareSize * 0.2));
 }
 
-
 function DrawTotalHighlighted() {
     var total = 0;
     var row, col;
     var solutionIndex;
-
+    var cages = JSON.parse(localStorage.getItem("cages"));
+    cages = eval(cages);
     var highlightedSquares = GridFlat().filter(square => square.selected);
     for (var i = 0; i < highlightedSquares.length; i++) {
         row = highlightedSquares[i].row;
         col = highlightedSquares[i].col;
-        solutionIndex = row * 9 + col;
-        total += eval(solution[solutionIndex]);
+        // loop through each cge and see if it contains the square
+        for (var j = 0; j < cages.length; j++) {
+            if (cages[j].includes(row * 9 + col)) {
+                if (allCagesSelected(cages[j])) {
+                    total += GetCageTotal(cages[j]);
+                }
+
+            }
+        }
     }
-    ctx.font = squareSize * 0.4 + "px Arial";
-    ctx.fillStyle = "black";
-    ctx.fillText(total, 11 * squareSize + (squareSize / 2), 4 * squareSize + (squareSize / 2));
+    if (total > 0) {
+        ctx.font = squareSize * 0.4 + "px Arial";
+        ctx.fillStyle = "black";
+        ctx.fillText(total, 11 * squareSize + (squareSize / 2), 4 * squareSize + (squareSize / 2));
+    }
+}
+
+function allCagesSelected(cage) {
+    var allCagesSelected = true;
+    for (var k = 0; k < cage.length; k++) {
+        var squareIndex = cage[k];
+        var row = Math.floor(squareIndex / 9);
+        var col = squareIndex % 9;
+        if (!grid[row][col].selected) {
+            allCagesSelected = false;
+        }
+    }
+    return allCagesSelected;
+}
+
+function GetCageTotal(cage) {
+    var total = 0;
+    for (var k = 0; k < cage.length; k++) {
+        var squareIndex = cage[k];
+        var row = Math.floor(squareIndex / 9);
+        var col = squareIndex % 9;
+        solutionIndex = row * 9 + col;
+        total += eval(solution[solutionIndex] / cage.length);
+    }
+    return total;
 }
 function DrawToolboxNumbers() {
     ctx.strokeStyle = "#100";
