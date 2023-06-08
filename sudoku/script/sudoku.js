@@ -1003,22 +1003,35 @@ function DrawCageCombinations() {
     var total = 0;
     var row, col;
     var cages = JSON.parse(localStorage.getItem("cages"));
-    cages = eval(cages);
     var highlightedSquares = GridFlat().filter(square => square.selected);
+    var combos = [];
+    cages = eval(cages);
     for (var i = 0; i < highlightedSquares.length; i++) {
         row = highlightedSquares[i].row;
         col = highlightedSquares[i].col;
 
         for (var j = 0; j < cages.length; j++) {
             if (cages[j].includes(row * 9 + col)) {
-                total = GetCageTotal(cages[j])*cages[j].length;
+                total = GetCageTotal(cages[j]) * cages[j].length;
                 ctx.font = squareSize * 0.4 + "px Arial";
                 ctx.fillStyle = "black";
-                ctx.fillText(total, 11 * squareSize + (squareSize / 2), 7 * squareSize + (squareSize / 2));
+                combos = GetKillerCombos(total, cages[j].length);
+                //drawTextArray(combos, 10 * squareSize, 7 * squareSize , 12 * squareSize, 8 * squareSize);
+                 ctx.fillText(combos, 11 * squareSize + (squareSize / 2), 7 * squareSize + (squareSize / 2));
                 return;
             }
         }
     }
+}
+
+function GetKillerCombos(total, cageSize) {
+    var result = [];
+    total = Math.round(total);
+    var combos = killerCombos.filter(c => c[0].toString().startsWith(total) && c[1].toString().length == cageSize);
+    for (var i = 0; i < combos.length; i++) {
+        result.push(combos[i][1]);
+    }
+    return result;
 }
 
 function allCagesSelected(cage) {
