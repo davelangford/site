@@ -7,6 +7,7 @@ canvas.height = window.innerHeight * window.devicePixelRatio;
 var gridSize = 9;
 var squareSize = 0;
 var grid = [{}];
+var cages = [];
 var selectedSquares = [];
 var selectedNumber = 0;
 var selectedNote = 0;
@@ -42,6 +43,23 @@ class SudokuSquare {
             this.fixed = true;
         } else {
             this.fixed = false;
+        }
+    }
+}
+
+class Cage {
+    constructor(squares) {
+        this.id = squares[0];
+        this.total = 0;
+        this.squares = squares;
+        this.possibleValues = [];
+
+        for (var i = 0; i < squares.length; i++) {
+            this.total += parseInt(solution[squares[i]]);
+        }
+        var combos = killerCombos.filter(c => c[0].toString().startsWith(this.total) && c[1].toString().length == squares.length);
+        for (var i = 0; i < combos.length; i++) {
+            this.possibleValues.push(combos[i][1]);
         }
     }
 }
@@ -741,6 +759,20 @@ function PopulateGrid() {
     if (solution.includes('0')) {
         alert('Doesn\'t look like this puzzle is solvable using logic...is the puzzle broken?');
     }
+
+    if (localStorage.getItem("cages") != null) {
+        var c = localStorage.getItem("cages");
+        c = JSON.parse(c);
+        c = eval(c);
+        cages = [];
+        for (let i = 0; i < c.length; i++) {
+            var newCage = new Cage(c[i]);
+
+            cages.push(newCage);
+        }
+    }
+        
+    
 }
 
 function DrawNumbers() {
@@ -870,7 +902,6 @@ function DrawKiller() {
     }
     var cages = JSON.parse(localStorage.getItem("cages"));
     cages = eval(cages);
-    console.log(cages);
 
     //DrawSquareIndexes();
 
