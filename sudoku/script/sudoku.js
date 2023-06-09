@@ -582,7 +582,7 @@ function DrawStuff(drawnumbers = true) {
     } else {
         DrawLoading();
     }
-    if (JSON.parse(localStorage.getItem("cages"))) {
+    if (cages.length > 0) {
         DrawKiller();
     }
     DrawProgress();
