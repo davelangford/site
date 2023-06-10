@@ -655,7 +655,7 @@ $(document).ready(function () {
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('n')) {
         numbers = numbersTo2DArray(urlParams.get('n'));
-        //window.location.replace(window.location.pathname);
+        window.location.replace(window.location.pathname);
         localStorage.setItem("numbers", JSON.stringify(numbers));
         if (urlParams.has('s')) {
             localStorage.setItem("solution", JSON.stringify(urlParams.get('s')));
