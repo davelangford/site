@@ -244,24 +244,24 @@ function HighlightSquares() {
         for (var col = 0; col < 9; col++) {
             var x, y;
 
-                ctx.fillStyle = "#FFF";;
-                if (grid[row][col].fixed) {
-                    ctx.fillStyle = "#DDD";
-                }
-                if (selectedNumber != 0 && grid[row][col].value == selectedNumber) {
-                    ctx.fillStyle = hintCellColor;
-                }
-                if (grid[row][col].selected == true) {
-                    ctx.fillStyle = "#BFB";
-                    anySelected = true;
-                }
-                ctx.fillRect(
-                    col * squareSize,
-                    row * squareSize,
-                    squareSize,
-                    squareSize
-                );
-                var index =
+            ctx.fillStyle = "#FFF";;
+            if (grid[row][col].fixed) {
+                ctx.fillStyle = "#DDD";
+            }
+            if (selectedNumber != 0 && grid[row][col].value == selectedNumber) {
+                ctx.fillStyle = hintCellColor;
+            }
+            if (grid[row][col].selected == true) {
+                ctx.fillStyle = "#BFB";
+                anySelected = true;
+            }
+            ctx.fillRect(
+                col * squareSize,
+                row * squareSize,
+                squareSize,
+                squareSize
+            );
+            var index =
                 grid[row][col].possibleValues.indexOf(selectedNumber);
             if (index >= 0 && grid[row][col].value == 0) {
                 ctx.fillStyle = hintCellColor;
@@ -308,8 +308,8 @@ function HighlightSquares() {
                 ctx.beginPath();
                 ctx.roundRect(x, y, squareSize / 5, squareSize / 5, [5]);
                 ctx.fill();
-            } 
-            
+            }
+
         }
     }
 }
@@ -655,13 +655,8 @@ $(document).ready(function () {
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('n')) {
         numbers = numbersTo2DArray(urlParams.get('n'));
-        window.location.replace(window.location.pathname);
+        //window.location.replace(window.location.pathname);
         localStorage.setItem("numbers", JSON.stringify(numbers));
-        if (urlParams.has('c')) {
-            localStorage.setItem("cages", JSON.stringify(urlParams.get('c')));
-        } else {
-            localStorage.removeItem("cages");
-        }
         if (urlParams.has('s')) {
             localStorage.setItem("solution", JSON.stringify(urlParams.get('s')));
         } else {
@@ -669,6 +664,11 @@ $(document).ready(function () {
         }
         localStorage.removeItem("grid");
         PopulateGrid();
+        if (urlParams.has('c')) {
+            CreateCages(urlParams.get('c'));
+        } else {
+            localStorage.removeItem("cages");
+        }
         DrawStuff();
     }
     AddListeners();
@@ -676,6 +676,8 @@ $(document).ready(function () {
 
     LoadBoard("easy");
 });
+
+
 
 function numbersTo2DArray(str) {
     let array = [];
@@ -732,6 +734,10 @@ function PopulateGrid() {
             }
         }
     }
+    if (localStorage.getItem("cages") != null) {
+        cages = JSON.parse(localStorage.getItem("cages"));
+    } 
+
 
     if (localStorage.getItem("solution") != null) {
         solution = JSON.parse(localStorage.getItem("solution"));
@@ -742,20 +748,18 @@ function PopulateGrid() {
     if (solution.includes('0')) {
         alert('Doesn\'t look like this puzzle is solvable using logic...is the puzzle broken?');
     }
+}
 
-    if (localStorage.getItem("cages") != null) {
-        var c = localStorage.getItem("cages");
-        c = JSON.parse(c);
-        c = eval(c);
-        cages = [];
-        for (let i = 0; i < c.length; i++) {
-            var newCage = new Cage(c[i]);
-
-            cages.push(newCage);
-        }
+function CreateCages(cagesString) {
+    c = JSON.parse(cagesString);
+    c = eval(c);
+    cages = [];
+    for (let i = 0; i < c.length; i++) {
+        var newCage = new Cage(c[i]);
+        newCage.possibleValues = killerCombos[newCage.total][newCage.squares.length];
+        cages.push(newCage);
     }
-        
-    
+    localStorage.setItem("cages", JSON.stringify(cages));
 }
 
 function DrawNumbers() {
@@ -880,35 +884,32 @@ function DrawLines() {
 }
 
 function DrawKiller() {
-    if (JSON.parse(localStorage.getItem("cages")) == null) {
-        return;
-    }
-    var cages = JSON.parse(localStorage.getItem("cages"));
-    cages = eval(cages);
+
 
     //DrawSquareIndexes();
 
     for (var i = 0; i < cages.length; i++) {
-        for (var j = 0; j < cages[i].length; j++) {
+        var currentCage = cages[i];
+        for (var j = 0; j < currentCage.squares.length; j++) {
             if (j == 0) {
-                DrawKillerCageTotal(cages[i]);
+                DrawKillerCageTotal(currentCage);
             }
-            var hasRight = cages[i].includes(cages[i][j] + 1);
-            var hasLeft = cages[i].includes(cages[i][j] - 1);
-            var hasTop = cages[i].includes(cages[i][j] - 9);
-            var hasBottom = cages[i].includes(cages[i][j] + 9);
+            var hasRight = currentCage.squares.includes(currentCage.squares[j] + 1);
+            var hasLeft = currentCage.squares.includes(currentCage.squares[j] - 1);
+            var hasTop = currentCage.squares.includes(currentCage.squares[j] - 9);
+            var hasBottom = currentCage.squares.includes(currentCage.squares[j] + 9);
 
             if (!hasRight) {
-                DrawKillerBorder(cages[i][j], "right");
+                DrawKillerBorder(currentCage.squares[j], "right");
             }
             if (!hasLeft) {
-                DrawKillerBorder(cages[i][j], "left");
+                DrawKillerBorder(currentCage.squares[j], "left");
             }
             if (!hasTop) {
-                DrawKillerBorder(cages[i][j], "top");
+                DrawKillerBorder(currentCage.squares[j], "top");
             }
             if (!hasBottom) {
-                DrawKillerBorder(cages[i][j], "bottom");
+                DrawKillerBorder(currentCage.squares[j], "bottom");
             }
         }
     }
@@ -970,41 +971,37 @@ function DrawSquareIndexes() {
 }
 
 function DrawKillerCageTotal(cage) {
-    var row = cage[0] % 9;
-    var col = Math.floor(cage[0] / 9);
+    var row = cage.squares[0] % 9;
+    var col = Math.floor(cage.squares[0] / 9);
 
-    var cageTotal = 0;
-    for (let i = 0; i < cage.length; i++) {
-        var squareValue = cage[i];
-        squareValue = solution[squareValue];
-        squareValue = eval(squareValue);
-        cageTotal += squareValue;
-    }
     ctx.font = squareSize * 0.2 + "px Arial";
     ctx.fillStyle = "black";
-    // ctx.textAlign = "right";
-    ctx.fillText(cageTotal, row * squareSize + (squareSize * 0.2), col * squareSize + (squareSize * 0.2));
+    ctx.fillText(cage.total, row * squareSize + (squareSize * 0.2), col * squareSize + (squareSize * 0.2));
 }
 
 function DrawTotalHighlighted() {
     var total = 0;
     var row, col;
-    var cages = JSON.parse(localStorage.getItem("cages"));
-    cages = eval(cages);
+
     var highlightedSquares = GridFlat().filter(square => square.selected);
+    var cageIDsSelected = [];
     for (var i = 0; i < highlightedSquares.length; i++) {
         row = highlightedSquares[i].row;
         col = highlightedSquares[i].col;
-
         for (var j = 0; j < cages.length; j++) {
-            if (cages[j].includes(row * 9 + col)) {
+            if (cages[j].squares.includes(row * 9 + col)) {
                 if (allCagesSelected(cages[j])) {
-                    total += GetCageTotal(cages[j]);
+                    if (!cageIDsSelected.includes(cages[j].id)) {
+                        cageIDsSelected.push(cages[j].id);
+                    }
                 } else {
                     return;
                 }
             }
         }
+    }
+    for (var i = 0; i < cageIDsSelected.length; i++) {
+        total += cages.find(cage => cage.id == cageIDsSelected[i]).total;
     }
     if (total > 0) {
         ctx.font = squareSize * 0.4 + "px Arial";
@@ -1014,28 +1011,21 @@ function DrawTotalHighlighted() {
 }
 
 function DrawCageCombinations() {
-    // var total = 0;
-    // var row, col;
-    // var cages = JSON.parse(localStorage.getItem("cages"));
-    // var highlightedSquares = GridFlat().filter(square => square.selected);
-    // var combos = [];
-    // cages = eval(cages);
-    // for (var i = 0; i < highlightedSquares.length; i++) {
-    //     row = highlightedSquares[i].row;
-    //     col = highlightedSquares[i].col;
+    var row, col;
+    var highlightedSquares = GridFlat().filter(square => square.selected);
+    for (var i = 0; i < highlightedSquares.length; i++) {
+        row = highlightedSquares[i].row;
+        col = highlightedSquares[i].col;
 
-    //     for (var j = 0; j < cages.length; j++) {
-    //         if (cages[j].includes(row * 9 + col)) {
-    //             total = GetCageTotal(cages[j]) * cages[j].length;
-    //             ctx.font = squareSize * 0.4 + "px Arial";
-    //             ctx.fillStyle = "black";
-    //             combos = GetKillerCombos(total, cages[j].length);
-    //             //drawTextArray(combos, 10 * squareSize, 7 * squareSize , 12 * squareSize, 8 * squareSize);
-    //              ctx.fillText(combos, 11 * squareSize + (squareSize / 2), 7 * squareSize + (squareSize / 2));
-    //             return;
-    //         }
-    //     }
-    // }
+        for (var j = 0; j < cages.length; j++) {
+            if (cages[j].squares.includes(row * 9 + col)) {
+                ctx.font = squareSize * 0.4 + "px Arial";
+                ctx.fillStyle = "black";
+                ctx.fillText(cages[j].possibleValues, 11 * squareSize + (squareSize / 2), 7 * squareSize + (squareSize / 2));
+                return;
+            }
+        }
+    }
 }
 
 function GetKillerCombos(total, cageSize) {
@@ -1050,8 +1040,8 @@ function GetKillerCombos(total, cageSize) {
 
 function allCagesSelected(cage) {
     var allCagesSelected = true;
-    for (var k = 0; k < cage.length; k++) {
-        var squareIndex = cage[k];
+    for (var k = 0; k < cage.squares.length; k++) {
+        var squareIndex = cage.squares[k];
         var row = Math.floor(squareIndex / 9);
         var col = squareIndex % 9;
         if (!grid[row][col].selected) {
@@ -1061,17 +1051,17 @@ function allCagesSelected(cage) {
     return allCagesSelected;
 }
 
-function GetCageTotal(cage) {
-    var total = 0;
-    for (var k = 0; k < cage.length; k++) {
-        var squareIndex = cage[k];
-        var row = Math.floor(squareIndex / 9);
-        var col = squareIndex % 9;
-        solutionIndex = row * 9 + col;
-        total += eval(solution[solutionIndex] / cage.length);
-    }
-    return total;
-}
+// function GetCageTotal(cage) {
+//     var total = 0;
+//     for (var k = 0; k < cage.length; k++) {
+//         var squareIndex = cage[k];
+//         var row = Math.floor(squareIndex / 9);
+//         var col = squareIndex % 9;
+//         solutionIndex = row * 9 + col;
+//         total += eval(solution[solutionIndex] / cage.length);
+//     }
+//     return total;
+// }
 function DrawToolboxNumbers() {
     ctx.strokeStyle = "#100";
 
@@ -1209,7 +1199,7 @@ function DrawToolboxExtras() {
     ctx.textBaseline = "middle";
 
     var x = startX + 0.5 * squareSize;
-    var y = startY -0.5 * squareSize;
+    var y = startY - 0.5 * squareSize;
     ctx.fillText('Clear', x, y);
 
     x = startX + 0.5 * squareSize;
@@ -1224,7 +1214,7 @@ function DrawToolboxExtras() {
         ctx.fillStyle = "#888";
         ctx.fillRect(
             startX,
-            startY - squareSize*5,
+            startY - squareSize * 5,
             squareSize,
             squareSize
         );
@@ -1244,15 +1234,15 @@ function DrawToolboxExtras() {
     for (var i = 0; i < 2; i++) {
         ctx.lineWidth = 10;
         ctx.beginPath();
-        ctx.moveTo(startX + i * squareSize, startY- squareSize*5);
+        ctx.moveTo(startX + i * squareSize, startY - squareSize * 5);
         ctx.lineTo(startX + i * squareSize, startY + squareSize * 3);
         ctx.stroke();
     }
     for (var i = 0; i <= 9; i++) {
         ctx.lineWidth = 10;
         ctx.beginPath();
-        ctx.moveTo(startX, startY - (squareSize*6) + squareSize * i);
-        ctx.lineTo(startX +  squareSize, startY - (squareSize*6)+ squareSize * i);
+        ctx.moveTo(startX, startY - (squareSize * 6) + squareSize * i);
+        ctx.lineTo(startX + squareSize, startY - (squareSize * 6) + squareSize * i);
         ctx.stroke();
     }
 }

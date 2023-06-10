@@ -3,15 +3,15 @@ for (var i = 1; i <= 45; i++) {
     killerCombos[i] = [];
 }        
 
-killerCombos[1][2] = '1';
-killerCombos[2][2] = '2';
-killerCombos[3][2] = '3';
-killerCombos[4][2] = '4';
-killerCombos[5][2] = '5';
-killerCombos[6][2] = '6';
-killerCombos[7][2] = '7';
-killerCombos[8][2] = '8';
-killerCombos[9][2] = '9';
+killerCombos[1][1] = '1';
+killerCombos[2][1] = '2';
+killerCombos[3][1] = '3';
+killerCombos[4][1] = '4';
+killerCombos[5][1] = '5';
+killerCombos[6][1] = '6';
+killerCombos[7][1] = '7';
+killerCombos[8][1] = '8';
+killerCombos[9][1] = '9';
 killerCombos[3][2] = '12';
 killerCombos[4][2] = '13';
 killerCombos[5][2] = '14 23';
