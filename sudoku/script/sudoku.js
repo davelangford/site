@@ -57,10 +57,10 @@ class Cage {
         for (var i = 0; i < squares.length; i++) {
             this.total += parseInt(solution[squares[i]]);
         }
-        var combos = killerCombos.filter(c => c[0].toString().startsWith(this.total) && c[1].toString().length == squares.length);
-        for (var i = 0; i < combos.length; i++) {
-            this.possibleValues.push(combos[i][1]);
-        }
+        // var combos = killerCombos.filter(c => c[0].toString().startsWith(this.total) && c[1].toString().length == squares.length);
+        // for (var i = 0; i < combos.length; i++) {
+        //     this.possibleValues.push(combos[i][1]);
+        // }
     }
 }
 
@@ -130,10 +130,6 @@ function AddListeners() {
 
     hardButton.addEventListener("click", () => {
         NewGame("hard");
-    });
-
-    drawKiller.addEventListener("click", () => {
-        DrawKiller();
     });
 
     playButton.addEventListener("click", function () {
@@ -246,8 +242,6 @@ function HighlightSquares() {
 
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
-
-
             var x, y;
             var index =
                 grid[row][col].possibleValues.indexOf(selectedNumber);
@@ -1019,28 +1013,28 @@ function DrawTotalHighlighted() {
 }
 
 function DrawCageCombinations() {
-    var total = 0;
-    var row, col;
-    var cages = JSON.parse(localStorage.getItem("cages"));
-    var highlightedSquares = GridFlat().filter(square => square.selected);
-    var combos = [];
-    cages = eval(cages);
-    for (var i = 0; i < highlightedSquares.length; i++) {
-        row = highlightedSquares[i].row;
-        col = highlightedSquares[i].col;
+    // var total = 0;
+    // var row, col;
+    // var cages = JSON.parse(localStorage.getItem("cages"));
+    // var highlightedSquares = GridFlat().filter(square => square.selected);
+    // var combos = [];
+    // cages = eval(cages);
+    // for (var i = 0; i < highlightedSquares.length; i++) {
+    //     row = highlightedSquares[i].row;
+    //     col = highlightedSquares[i].col;
 
-        for (var j = 0; j < cages.length; j++) {
-            if (cages[j].includes(row * 9 + col)) {
-                total = GetCageTotal(cages[j]) * cages[j].length;
-                ctx.font = squareSize * 0.4 + "px Arial";
-                ctx.fillStyle = "black";
-                combos = GetKillerCombos(total, cages[j].length);
-                //drawTextArray(combos, 10 * squareSize, 7 * squareSize , 12 * squareSize, 8 * squareSize);
-                 ctx.fillText(combos, 11 * squareSize + (squareSize / 2), 7 * squareSize + (squareSize / 2));
-                return;
-            }
-        }
-    }
+    //     for (var j = 0; j < cages.length; j++) {
+    //         if (cages[j].includes(row * 9 + col)) {
+    //             total = GetCageTotal(cages[j]) * cages[j].length;
+    //             ctx.font = squareSize * 0.4 + "px Arial";
+    //             ctx.fillStyle = "black";
+    //             combos = GetKillerCombos(total, cages[j].length);
+    //             //drawTextArray(combos, 10 * squareSize, 7 * squareSize , 12 * squareSize, 8 * squareSize);
+    //              ctx.fillText(combos, 11 * squareSize + (squareSize / 2), 7 * squareSize + (squareSize / 2));
+    //             return;
+    //         }
+    //     }
+    // }
 }
 
 function GetKillerCombos(total, cageSize) {
