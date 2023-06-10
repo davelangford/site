@@ -243,7 +243,25 @@ function HighlightSquares() {
     for (var row = 0; row < 9; row++) {
         for (var col = 0; col < 9; col++) {
             var x, y;
-            var index =
+
+                ctx.fillStyle = "#FFF";;
+                if (grid[row][col].fixed) {
+                    ctx.fillStyle = "#DDD";
+                }
+                if (selectedNumber != 0 && grid[row][col].value == selectedNumber) {
+                    ctx.fillStyle = hintCellColor;
+                }
+                if (grid[row][col].selected == true) {
+                    ctx.fillStyle = "#BFB";
+                    anySelected = true;
+                }
+                ctx.fillRect(
+                    col * squareSize,
+                    row * squareSize,
+                    squareSize,
+                    squareSize
+                );
+                var index =
                 grid[row][col].possibleValues.indexOf(selectedNumber);
             if (index >= 0 && grid[row][col].value == 0) {
                 ctx.fillStyle = hintCellColor;
@@ -290,25 +308,8 @@ function HighlightSquares() {
                 ctx.beginPath();
                 ctx.roundRect(x, y, squareSize / 5, squareSize / 5, [5]);
                 ctx.fill();
-            } else {
-                ctx.fillStyle = "#FFF";;
-                if (grid[row][col].fixed) {
-                    ctx.fillStyle = "#DDD";
-                }
-                if (grid[row][col].selected == true) {
-                    ctx.fillStyle = "#BFB";
-                    anySelected = true;
-                }
-                if (selectedNumber != 0 && grid[row][col].value == selectedNumber) {
-                    ctx.fillStyle = hintCellColor;
-                }
-                ctx.fillRect(
-                    col * squareSize,
-                    row * squareSize,
-                    squareSize,
-                    squareSize
-                );
-            }
+            } 
+            
         }
     }
 }
