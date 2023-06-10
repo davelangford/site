@@ -440,33 +440,21 @@ function SelectSquare(x, y) {
         selectedNumber = (row - 1) * 3 + (col - 9);
         selectedNote = selectedNumber;
         notesMode ? ToggleNote() : ToggleNumber();
-    } else if (row == 5 && col == 10) {
+    } else if (row == 4 && col == 10) {
         // clear clicked
         ClearSquares();
-    } else if (row == 5 && col == 11) {
+    } else if (row == 6 && col == 10) {
         // undo clicked
         ShowHintSmall();
-    } else if (row == 5 && col == 12) {
+    } else if (row == 5 && col == 10) {
         // undo clicked
         undo();
-    } else if (row == 6 && col == 10) {
+    } else if (row == 0 && col == 10) {
         // toggle clicked
         ToggleNotesMode();
-    } else if (row == 6 && col == 11) {
+    } else if (row == 7 && col == 10) {
         // hintB clicked
         ShowHintBig();
-    } else if (row == 6 && col == 12) {
-        // redo clicked
-        // undo();
-    } else if (row == 7 && col == 10) {
-        // pink clicked
-        // ToggleColor(1);
-    } else if (row == 8 && col == 11) {
-        // green clicked
-        // ToggleColor(2);
-    } else if (row == 9 && col == 12) {
-        // yellow clicked
-        // ToggleColor(3);
     } else {
         DeselectCells();
         selectedNumber = 0;
@@ -1226,14 +1214,14 @@ function DrawToolboxExtras() {
     ctx.textBaseline = "middle";
 
     var x = startX + 0.5 * squareSize;
-    var y = startY + 0.5 * squareSize;
+    var y = startY -0.5 * squareSize;
     ctx.fillText('Clear', x, y);
 
-    x = startX + 1.5 * squareSize;
-    y = startY + 0.5 * squareSize;
+    x = startX + 0.5 * squareSize;
+    y = startY + 1.5 * squareSize;
     ctx.fillText('HintS', x, y);
 
-    x = startX + 2.5 * squareSize;
+    x = startX + 0.5 * squareSize;
     y = startY + 0.5 * squareSize;
     ctx.fillText('Undo', x, y);
 
@@ -1241,7 +1229,7 @@ function DrawToolboxExtras() {
         ctx.fillStyle = "#888";
         ctx.fillRect(
             startX,
-            startY + squareSize,
+            startY - squareSize*5,
             squareSize,
             squareSize
         );
@@ -1249,31 +1237,27 @@ function DrawToolboxExtras() {
     }
 
     x = startX + 0.5 * squareSize;
-    y = startY + 1.5 * squareSize;
+    y = startY - 4.5 * squareSize;
     ctx.fillText('Notes', x, y);
 
-    x = startX + 1.5 * squareSize;
-    y = startY + 1.5 * squareSize;
+    x = startX + 0.5 * squareSize;
+    y = startY + 2.5 * squareSize;
     ctx.fillText('HintB', x, y);
-
-    x = startX + 2.5 * squareSize;
-    y = startY + 1.5 * squareSize;
-    ctx.fillText('Redo', x, y);
 
     ctx.fillStyle = "#000";
 
-    for (var i = 0; i <= 3; i++) {
+    for (var i = 0; i < 2; i++) {
         ctx.lineWidth = 10;
         ctx.beginPath();
-        ctx.moveTo(startX + i * squareSize, startY);
-        ctx.lineTo(startX + i * squareSize, startY + squareSize * 2);
+        ctx.moveTo(startX + i * squareSize, startY- squareSize*5);
+        ctx.lineTo(startX + i * squareSize, startY + squareSize * 3);
         ctx.stroke();
     }
-    for (var i = 0; i <= 2; i++) {
+    for (var i = 0; i <= 9; i++) {
         ctx.lineWidth = 10;
         ctx.beginPath();
-        ctx.moveTo(startX, startY + squareSize * i);
-        ctx.lineTo(startX + 3 * squareSize, startY + squareSize * i);
+        ctx.moveTo(startX, startY - (squareSize*6) + squareSize * i);
+        ctx.lineTo(startX +  squareSize, startY - (squareSize*6)+ squareSize * i);
         ctx.stroke();
     }
 }
