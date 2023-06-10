@@ -557,7 +557,7 @@ function DrawStuff(drawnumbers = true) {
         DrawToolboxNumbers();
     }
     DrawTotalHighlighted();
-    DrawCageCombinations();
+    DrawKillerCombinations();
     DrawLines();
 
     if (drawnumbers) {
@@ -736,7 +736,7 @@ function PopulateGrid() {
     }
     if (localStorage.getItem("cages") != null) {
         cages = JSON.parse(localStorage.getItem("cages"));
-    } 
+    }
 
 
     if (localStorage.getItem("solution") != null) {
@@ -1006,11 +1006,11 @@ function DrawTotalHighlighted() {
     if (total > 0) {
         ctx.font = squareSize * 0.4 + "px Arial";
         ctx.fillStyle = "black";
-        ctx.fillText(total, 11 * squareSize + (squareSize / 2), 4 * squareSize + (squareSize / 2));
+        ctx.fillText(total, 12 * squareSize , (squareSize / 2));
     }
 }
 
-function DrawCageCombinations() {
+function DrawKillerCombinations() {
     var row, col;
     var highlightedSquares = GridFlat().filter(square => square.selected);
     for (var i = 0; i < highlightedSquares.length; i++) {
@@ -1019,9 +1019,14 @@ function DrawCageCombinations() {
 
         for (var j = 0; j < cages.length; j++) {
             if (cages[j].squares.includes(row * 9 + col)) {
-                ctx.font = squareSize * 0.4 + "px Arial";
+                ctx.font = squareSize * 0.3 + "px Arial";
                 ctx.fillStyle = "black";
-                ctx.fillText(cages[j].possibleValues, 11 * squareSize + (squareSize / 2), 7 * squareSize + (squareSize / 2));
+                for (var k = 0; k < cages[j].possibleValues.split(' ').length; k++) {
+                    var value = cages[j].possibleValues.split(' ')[k]; 
+                    var y = 4 * squareSize + (squareSize / 2) + (k * squareSize * 0.45);
+                    ctx.fillText(value, 12 * squareSize, y);
+                    
+                }
                 return;
             }
         }
