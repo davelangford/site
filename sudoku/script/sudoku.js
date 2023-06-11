@@ -450,6 +450,8 @@ function SelectSquare(x, y) {
     } else if (row == 7 && col == 10) {
         // hintB clicked
         ShowHintBig();
+    } else if (row >= 4 && col >= 11 && col <= 12) {
+        TogglePossibleCombo(x, y);
     } else {
         DeselectCells();
         selectedNumber = 0;
@@ -459,20 +461,32 @@ function SelectSquare(x, y) {
     DrawStuff();
 }
 
+function TogglePossibleCombo(x, y) {
+    var index = Math.floor((y - (3.75 * squareSize)) / squareSize / 0.45) - 1;
+    var highlightedSquares = GridFlat().filter(square => square.selected);
+    for (var i = 0; i < highlightedSquares.length; i++) {
+        row = highlightedSquares[i].row;
+        col = highlightedSquares[i].col;
+        var item;
 
-function ToggleColor(color) {
-    for (var row = 0; row < 9; row++) {
-        for (var col = 0; col < 9; col++) {
-            if (grid[row][col].selected) {
-                if (grid[row][col].color != color) {
-                    grid[row][col].color = color;
+        for (var j = 0; j < cages.length; j++) {
+            if (cages[j].squares.includes(row * 9 + col)) {
+                var possibleValues = cages[j].possibleValues.split(' ');
+                if (possibleValues[index].startsWith('*')) {
+                    possibleValues[index] = possibleValues[index].substring(1);
+                    item = possibleValues.splice(index, 1)[0];
+                    possibleValues.unshift(item);
                 } else {
-                    grid[row][col].color = 0;
+                    possibleValues[index] = '*' + possibleValues[index];
+                    item = possibleValues.splice(index, 1)[0];
+                    possibleValues.push(item);
                 }
+                cages[j].possibleValues = possibleValues.join(' ');
+                localStorage.setItem('cages', JSON.stringify(cages));
+                return;
             }
         }
     }
-
 }
 
 function DeselectCells() {
@@ -654,21 +668,32 @@ async function fetchSudokuBoard(difficulty) {
 $(document).ready(function () {
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('n')) {
-        numbers = numbersTo2DArray(urlParams.get('n'));
-        window.location.replace(window.location.pathname);
-        localStorage.setItem("numbers", JSON.stringify(numbers));
+        var paramNumbers = '';
+        var paramSolution = '';
+        var paramCages = '';
+
+        paramNumbers = urlParams.get('n');
         if (urlParams.has('s')) {
-            localStorage.setItem("solution", JSON.stringify(urlParams.get('s')));
+            paramSolution = urlParams.get('s');
         } else {
             localStorage.removeItem("solution");
         }
-        localStorage.removeItem("grid");
-        PopulateGrid();
         if (urlParams.has('c')) {
-            CreateCages(urlParams.get('c'));
+            paramCages = urlParams.get('c');
         } else {
             localStorage.removeItem("cages");
         }
+        window.location.replace(window.location.pathname);
+
+        numbers = numbersTo2DArray(paramNumbers);
+        localStorage.setItem("numbers", JSON.stringify(numbers));
+
+        localStorage.setItem("solution", JSON.stringify(paramSolution));
+
+        localStorage.removeItem("grid");
+        PopulateGrid();
+        CreateCages(paramCages);
+        RotatePuzzle();
         DrawStuff();
     }
     AddListeners();
@@ -677,6 +702,12 @@ $(document).ready(function () {
     LoadBoard("easy");
 });
 
+
+function RotatePuzzle() {
+    //need to rotate numbers, cages and solution
+    // using gridRotate array to map the rotation
+
+}
 
 
 function numbersTo2DArray(str) {
@@ -739,11 +770,12 @@ function PopulateGrid() {
     }
 
 
-    if (localStorage.getItem("solution") != null) {
+    if (localStorage.getItem("solution") != null && localStorage.getItem("solution") != '""') {
         solution = JSON.parse(localStorage.getItem("solution"));
         solution = solution.split(',');
     } else {
         solution = solveSudoku(GridFlat().map(obj => obj.value).join(''));
+        localStorage.setItem("solution", JSON.stringify(solution));
     }
     if (solution.includes('0')) {
         alert('Doesn\'t look like this puzzle is solvable using logic...is the puzzle broken?');
@@ -751,6 +783,9 @@ function PopulateGrid() {
 }
 
 function CreateCages(cagesString) {
+    if (cagesString == '') {
+        return;
+    }
     c = JSON.parse(cagesString);
     c = eval(c);
     cages = [];
@@ -1006,7 +1041,7 @@ function DrawTotalHighlighted() {
     if (total > 0) {
         ctx.font = squareSize * 0.4 + "px Arial";
         ctx.fillStyle = "black";
-        ctx.fillText(total, 12 * squareSize , (squareSize / 2));
+        ctx.fillText(total, 12 * squareSize, (squareSize / 2));
     }
 }
 
@@ -1022,10 +1057,16 @@ function DrawKillerCombinations() {
                 ctx.font = squareSize * 0.3 + "px Arial";
                 ctx.fillStyle = "black";
                 for (var k = 0; k < cages[j].possibleValues.split(' ').length; k++) {
-                    var value = cages[j].possibleValues.split(' ')[k]; 
+                    var value = cages[j].possibleValues.split(' ')[k];
                     var y = 4 * squareSize + (squareSize / 2) + (k * squareSize * 0.45);
+                    if (value.startsWith("*")) {
+                        ctx.fillStyle = "gainsboro";
+                        value = value.replace("*", "");
+                    } else {
+                        ctx.fillStyle = "black";
+                    }
                     ctx.fillText(value, 12 * squareSize, y);
-                    
+
                 }
                 return;
             }
@@ -1333,5 +1374,4 @@ function AnimateCurrentSquare() {
         }
         ctx.fillText(grid[row][col].value, x, y);
     }
-
 }

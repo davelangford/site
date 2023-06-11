@@ -133,6 +133,102 @@ killerCombos[43][8] = '13456789';
 killerCombos[44][8] = '23456789';
 killerCombos[45][9] = '123456789';
 
+var gridRotate = [];
+// draw a grid in comments, staring with 0 in top left, ending with 80 in bottom right
+// 0   1  2  3  4  5  6  7  8
+// 9  10 11 12 13 14 15 16 17
+// 18 19 20 21 22 23 24 25 26
+// 27 28 29 30 31 32 33 34 35
+// 36 37 38 39 40 41 42 43 44
+// 45 46 47 48 49 50 51 52 53
+// 54 55 56 57 58 59 60 61 62
+// 63 64 65 66 67 68 69 70 71
+// 72 73 74 75 76 77 78 79 80
+
+gridRotate[0] = 8;
+gridRotate[1] = 17;
+gridRotate[2] = 26;
+gridRotate[3] = 35;
+gridRotate[4] = 44;
+gridRotate[5] = 53;
+gridRotate[6] = 62;
+gridRotate[7] = 71;
+gridRotate[8] = 80;
+gridRotate[9] = 7;
+gridRotate[10] = 16;
+gridRotate[11] = 25;
+gridRotate[12] = 34;
+gridRotate[13] = 43;
+gridRotate[14] = 52;
+gridRotate[15] = 61;
+gridRotate[16] = 70;
+gridRotate[17] = 79;
+gridRotate[18] = 6;
+gridRotate[19] = 15;
+gridRotate[20] = 24;
+gridRotate[21] = 33;
+gridRotate[22] = 42;
+gridRotate[23] = 51;
+gridRotate[24] = 60;
+gridRotate[25] = 69;
+gridRotate[26] = 78;
+gridRotate[27] = 5;
+gridRotate[28] = 14;
+gridRotate[29] = 23;
+gridRotate[30] = 32;
+gridRotate[31] = 41;
+gridRotate[32] = 50;
+gridRotate[33] = 59;
+gridRotate[34] = 68;
+gridRotate[35] = 77;
+gridRotate[36] = 4;
+gridRotate[37] = 13;
+gridRotate[38] = 22;
+gridRotate[39] = 31;
+gridRotate[40] = 40;
+gridRotate[41] = 49;
+gridRotate[42] = 58;
+gridRotate[43] = 67;
+gridRotate[44] = 76;
+gridRotate[45] = 3;
+gridRotate[46] = 12;
+gridRotate[47] = 21;
+gridRotate[48] = 30;
+gridRotate[49] = 39;
+gridRotate[50] = 48;
+gridRotate[51] = 57;
+gridRotate[52] = 66;
+gridRotate[53] = 75;
+gridRotate[54] = 2;
+gridRotate[55] = 11;
+gridRotate[56] = 20;
+gridRotate[57] = 29;
+gridRotate[58] = 38;
+gridRotate[59] = 47;
+gridRotate[60] = 56;
+gridRotate[61] = 65;
+gridRotate[62] = 74;
+gridRotate[63] = 1;
+gridRotate[64] = 10;
+gridRotate[65] = 19;
+gridRotate[66] = 28;
+gridRotate[67] = 37;
+gridRotate[68] = 46;
+gridRotate[69] = 55;
+gridRotate[70] = 64;
+gridRotate[71] = 73;
+gridRotate[72] = 0;
+gridRotate[73] = 9;
+gridRotate[74] = 18;
+gridRotate[75] = 27;
+gridRotate[76] = 36;
+gridRotate[77] = 45;
+gridRotate[78] = 54;
+gridRotate[79] = 63;
+gridRotate[80] = 72;
+
+
+
 
 
 
