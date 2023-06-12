@@ -587,7 +587,7 @@ function DrawStuff(drawnumbers = true) {
     if (GridFlat().map(square => square.value).join('').includes(0)) {
         gameOver = false;
     }
-    if (!gameOver && solution != "" && GridFlat().map(square => square.value).join('') == solution.join('')) {
+    if (!gameOver && solution != "" && GridFlat().map(square => square.value).join('') == solution) {
         isDragging = false;
         gameOver = true;
         PlayAnimation();
@@ -792,7 +792,8 @@ function PopulateGrid() {
 
     if (localStorage.getItem("solution") != null && localStorage.getItem("solution") != '""') {
         solution = JSON.parse(localStorage.getItem("solution"));
-        solution = solution.split(',');
+        solution = solution.replaceAll(',','');
+        //solution = solution.split(',');
     } else {
         solution = solveSudoku(GridFlat().map(obj => obj.value).join(''));
         localStorage.setItem("solution", JSON.stringify(solution));
