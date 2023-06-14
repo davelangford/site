@@ -583,6 +583,7 @@ function DrawStuff(drawnumbers = true) {
         DrawKiller();
     }
     DrawProgress();
+    DrawDifficulty();
 
     if (GridFlat().map(square => square.value).join('').includes(0)) {
         gameOver = false;
@@ -596,6 +597,18 @@ function DrawStuff(drawnumbers = true) {
     }
 }
 
+function DrawDifficulty() {
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "#000000";
+    var difficulty = "";
+    if (localStorage.getItem("difficulty") != "null") {
+        difficulty = localStorage.getItem("difficulty");
+    ctx.textAlign = "left";
+
+        ctx.fillText("Difficulty: " + difficulty, squareSize * 9 + 20, squareSize * 9 - 20);
+    }
+}
+
 function PlayAnimation() {
     DeselectCells();
     selectedNumber = 1;
@@ -606,8 +619,8 @@ function PlayAnimation() {
 
         if (selectedNumber >= 10) {
             DeselectCells();
-        DrawStuff();
-        clearInterval(intervalId);
+            DrawStuff();
+            clearInterval(intervalId);
             if (confirm("Done! Do you want to clear the board and start again?")) {
                 ClearAllNotes();
                 DeselectCells();
@@ -703,12 +716,21 @@ $(document).ready(function () {
         } else {
             localStorage.removeItem("cages");
         }
+
+        if (urlParams.has('d')) {
+            paramDifficulty = urlParams.get('d');
+        } else {
+            localStorage.removeItem("difficulty");
+        }
+
         window.location.replace(window.location.pathname);
 
         numbers = numbersTo2DArray(paramNumbers);
         localStorage.setItem("numbers", JSON.stringify(numbers));
 
         localStorage.setItem("solution", JSON.stringify(paramSolution));
+
+        localStorage.setItem("difficulty", paramDifficulty);
 
         localStorage.removeItem("grid");
         PopulateGrid();
@@ -792,7 +814,7 @@ function PopulateGrid() {
 
     if (localStorage.getItem("solution") != null && localStorage.getItem("solution") != '""') {
         solution = JSON.parse(localStorage.getItem("solution"));
-        solution = solution.replaceAll(',','');
+        solution = solution.replaceAll(',', '');
         //solution = solution.split(',');
     } else {
         solution = solveSudoku(GridFlat().map(obj => obj.value).join(''));
