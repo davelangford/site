@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sudoku Board</title>
+    <style>
+        .cell {
+            width: 30px;
+            height: 30px;
+            border: 1px solid black;
+            text-align: center;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Sudoku Board</h1>
+    <div id="board">
+        <div class="row">
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+        </div>
+        <div class="row">
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+        </div>
+        <div class="row">
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+        </div>
+        <div class="row">
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+        </div>
+        <div class="row">
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+        </div>
+        <div class="row">
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+        </div>
+        <div class="row">
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+        </div>
+        <div class="row">
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+        </div>
+        <div class="row">
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+            <div class="cell" contenteditable="true" onkeyup="handleKeyPress(event)"></div>
+        </div>
+
+        <!-- Repeat the above row div 8 more times to create the full 9x9 grid -->
+    </div>
+    <button onclick="submitBoard()">Submit</button>
+
+    <script>
+        function handleKeyPress(event) {
+            var currentCell = event.target;
+            var currentRow = currentCell.parentNode;
+            var cells = currentRow.getElementsByClassName("cell");
+
+            var currentIndex = Array.prototype.indexOf.call(cells, currentCell);
+            var nextIndex = currentIndex + 1;
+
+            if (nextIndex >= cells.length) {
+                var nextRow = currentRow.nextElementSibling;
+                if (nextRow) {
+                    var nextCells = nextRow.getElementsByClassName("cell");
+                    nextCells[0].focus();
+                }
+            } else {
+                cells[nextIndex].focus();
+            }
+        }
+
+        function submitBoard() {
+            var cells = document.getElementsByClassName("cell");
+            var numbers = "";
+            for (var i = 0; i < cells.length; i++) {
+                var cellValue = cells[i].innerText.trim();
+                numbers += cellValue === "" ? "0" : cellValue;
+            }
+            var url = "index.html?n=" + numbers;
+            window.location.href = url;
+        }
+    </script>
+</body>
+
+</html>
