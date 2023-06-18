@@ -120,25 +120,6 @@ function NewGame(difficulty) {
     LoadBoard(difficulty);
 }
 function AddListeners() {
-    easyButton.addEventListener("click", () => {
-        NewGame("easy");
-    });
-
-    mediumButton.addEventListener("click", () => {
-        NewGame("medium");
-    });
-
-    hardButton.addEventListener("click", () => {
-        NewGame("hard");
-    });
-
-    playButton.addEventListener("click", function () {
-        // Stop the animation (if it's running)
-        pauseAnimation();
-
-        // Start the animation from scratch
-        startAnimation(true);
-    });
 
     clearNotesButton.addEventListener("click", function () {
         if (confirm("Are you sure you want to clear all notes?")) {
@@ -146,17 +127,8 @@ function AddListeners() {
         }
     });
 
-    pauseButton.addEventListener("click", function () {
-        // Pause or continue the animation
-        if (animationFrameId) {
-            pauseAnimation();
-        } else {
-            startAnimation(false);
-        }
-    });
-
-    stopButton.addEventListener("click", function () {
-        stopAnimation();
+    randomButton.addEventListener("click", function () {
+        RandomiseBoard();
     });
 
     canvas.addEventListener("touchstart", function (event) {
@@ -235,6 +207,38 @@ function MouseUpTouchEnd(event) {
         //DeselectCells();
         DrawStuff();
     }
+}
+
+function RandomiseBoard(){
+    if(cages.length != 0) return;
+
+    var numbers = [1,2,3,4,5,6,7,8,9];
+    var randomNumbers = [];
+    while(numbers.length > 0){
+        var index = Math.floor(Math.random() * numbers.length);
+        randomNumbers.push(numbers[index]);
+        numbers.splice(index, 1);
+    }
+
+    var n = GridFlat().map(square => square.value).join('');
+    
+    var n2 = '';
+    for(var i = 0; i < n.length; i++){
+        var value = parseInt(n[i]);
+        if(value != 0){
+            n2+= randomNumbers[value - 1];
+        } else {
+            n2+='0';
+        }
+    }
+
+    var n3 = '';
+    for(var i = 0; i < 81; i++){
+        n3 += n2[gridRotate[i]];
+    }
+
+
+    window.location.href = "index.html?n=" + n3;
 }
 
 function HighlightSquares() {
@@ -704,6 +708,7 @@ $(document).ready(function () {
         var paramNumbers = '';
         var paramSolution = '';
         var paramCages = '';
+        var paramDifficulty = '';
 
         paramNumbers = urlParams.get('n');
         if (urlParams.has('s')) {
@@ -723,7 +728,7 @@ $(document).ready(function () {
             localStorage.removeItem("difficulty");
         }
 
-        window.location.replace(window.location.pathname);
+        // window.location.replace(window.location.pathname);
 
         numbers = numbersTo2DArray(paramNumbers);
         localStorage.setItem("numbers", JSON.stringify(numbers));
