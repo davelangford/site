@@ -209,38 +209,36 @@ function MouseUpTouchEnd(event) {
     }
 }
 
-function RandomiseBoard(){
-    if(cages.length != 0) return;
+function RandomiseBoard() {
+    if (cages.length != 0) return;
 
-    var numbers = [1,2,3,4,5,6,7,8,9];
+    var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     var randomNumbers = [];
-    while(numbers.length > 0){
+    while (numbers.length > 0) {
         var index = Math.floor(Math.random() * numbers.length);
         randomNumbers.push(numbers[index]);
         numbers.splice(index, 1);
     }
 
     var n = GridFlat().map(square => square.value).join('');
-    
+
     var n2 = '';
-    for(var i = 0; i < n.length; i++){
+    for (var i = 0; i < n.length; i++) {
         var value = parseInt(n[i]);
-        if(value != 0){
-            n2+= randomNumbers[value - 1];
+        if (value != 0) {
+            n2 += randomNumbers[value - 1];
         } else {
-            n2+='0';
+            n2 += '0';
         }
     }
 
     var n3 = '';
-    for(var i = 0; i < 81; i++){
+    for (var i = 0; i < 81; i++) {
         n3 += n2[gridRotate[i]];
     }
 
 
     window.location.href = "index.html?n=" + n3;
-
-
 }
 
 function HighlightSquares() {
@@ -277,42 +275,42 @@ function HighlightSquares() {
                         y = (row + 0.2) * squareSize;
                         break;
                     case 2:
-                        x = (col + 0.42) * squareSize;
+                        x = (col + 0.4) * squareSize;
                         y = (row + 0.2) * squareSize;
                         break;
                     case 3:
-                        x = (col + 0.66) * squareSize;
+                        x = (col + 0.6) * squareSize;
                         y = (row + 0.2) * squareSize;
                         break;
                     case 4:
                         x = (col + 0.2) * squareSize;
-                        y = (row + 0.44) * squareSize;
+                        y = (row + 0.4) * squareSize;
                         break;
                     case 5:
-                        x = (col + 0.42) * squareSize;
-                        y = (row + 0.44) * squareSize;
+                        x = (col + 0.4) * squareSize;
+                        y = (row + 0.4) * squareSize;
                         break;
                     case 6:
-                        x = (col + 0.66) * squareSize;
-                        y = (row + 0.44) * squareSize;
+                        x = (col + 0.6) * squareSize;
+                        y = (row + 0.4) * squareSize;
                         break;
                     case 7:
                         x = (col + 0.2) * squareSize;
-                        y = (row + 0.67) * squareSize;
+                        y = (row + 0.6) * squareSize;
                         break;
                     case 8:
-                        x = (col + 0.42) * squareSize;
-                        y = (row + 0.67) * squareSize;
+                        x = (col + 0.4) * squareSize;
+                        y = (row + 0.6) * squareSize;
                         break;
                     case 9:
-                        x = (col + 0.66) * squareSize;
-                        y = (row + 0.67) * squareSize;
+                        x = (col + 0.6) * squareSize;
+                        y = (row + 0.6) * squareSize;
                         break;
                     default:
                         break;
                 }
                 ctx.beginPath();
-                ctx.roundRect(x, y, squareSize / 4, squareSize / 4, [5]);
+                ctx.roundRect(x, y, squareSize / 5, squareSize / 5, [5]);
                 ctx.fill();
             }
 
@@ -609,7 +607,7 @@ function DrawDifficulty() {
     var difficulty = "";
     if (localStorage.getItem("difficulty") != "null") {
         difficulty = localStorage.getItem("difficulty");
-    ctx.textAlign = "left";
+        ctx.textAlign = "left";
 
         ctx.fillText("Difficulty: " + difficulty, squareSize * 9 + 20, squareSize * 9 - 20);
     }
@@ -730,7 +728,7 @@ $(document).ready(function () {
             localStorage.removeItem("difficulty");
         }
 
-        // window.location.replace(window.location.pathname);
+        window.location.replace(window.location.pathname);
 
         numbers = numbersTo2DArray(paramNumbers);
         localStorage.setItem("numbers", JSON.stringify(numbers));
@@ -870,45 +868,45 @@ function DrawNumbers() {
 
                 ctx.fillText(value, x, y);
             } else {
-                ctx.font = squareSize * 0.3 + "px Arial";
-                ctx.fillStyle = "#66B";
+                ctx.font = squareSize * 0.2 + "px Arial";
+                ctx.fillStyle = "#006";
                 for (i = 0; i < grid[row][col].possibleValues.length; i++) {
                     switch (grid[row][col].possibleValues[i]) {
                         case 1:
-                            x = (col + 0.33) * squareSize;
-                            y = (row + 0.36) * squareSize;
+                            x = (col + 0.32) * squareSize;
+                            y = (row + 0.32) * squareSize;
                             break;
                         case 2:
-                            x = (col + 0.55) * squareSize;
-                            y = (row + 0.36) * squareSize;
+                            x = (col + 0.5) * squareSize;
+                            y = (row + 0.32) * squareSize;
                             break;
                         case 3:
-                            x = (col + 0.78) * squareSize;
-                            y = (row + 0.36) * squareSize;
+                            x = (col + 0.68) * squareSize;
+                            y = (row + 0.32) * squareSize;
                             break;
                         case 4:
-                            x = (col + 0.33) * squareSize;
-                            y = (row + 0.58) * squareSize;
+                            x = (col + 0.32) * squareSize;
+                            y = (row + 0.5) * squareSize;
                             break;
                         case 5:
-                            x = (col + 0.55) * squareSize;
-                            y = (row + 0.58) * squareSize;
+                            x = (col + 0.5) * squareSize;
+                            y = (row + 0.5) * squareSize;
                             break;
                         case 6:
-                            x = (col + 0.78) * squareSize;
-                            y = (row + 0.58) * squareSize;
+                            x = (col + 0.68) * squareSize;
+                            y = (row + 0.5) * squareSize;
                             break;
                         case 7:
                             x = (col + 0.32) * squareSize;
-                            y = (row + 0.82) * squareSize;
+                            y = (row + 0.68) * squareSize;
                             break;
                         case 8:
-                            x = (col + 0.55) * squareSize;
-                            y = (row + 0.82) * squareSize;
+                            x = (col + 0.5) * squareSize;
+                            y = (row + 0.68) * squareSize;
                             break;
                         case 9:
-                            x = (col + 0.78) * squareSize;
-                            y = (row + 0.82) * squareSize;
+                            x = (col + 0.68) * squareSize;
+                            y = (row + 0.68) * squareSize;
                             break;
                         default:
                             break;
