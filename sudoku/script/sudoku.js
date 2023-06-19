@@ -239,6 +239,8 @@ function RandomiseBoard(){
 
 
     window.location.href = "index.html?n=" + n3;
+
+
 }
 
 function HighlightSquares() {
@@ -275,42 +277,42 @@ function HighlightSquares() {
                         y = (row + 0.2) * squareSize;
                         break;
                     case 2:
-                        x = (col + 0.4) * squareSize;
+                        x = (col + 0.42) * squareSize;
                         y = (row + 0.2) * squareSize;
                         break;
                     case 3:
-                        x = (col + 0.6) * squareSize;
+                        x = (col + 0.66) * squareSize;
                         y = (row + 0.2) * squareSize;
                         break;
                     case 4:
                         x = (col + 0.2) * squareSize;
-                        y = (row + 0.4) * squareSize;
+                        y = (row + 0.44) * squareSize;
                         break;
                     case 5:
-                        x = (col + 0.4) * squareSize;
-                        y = (row + 0.4) * squareSize;
+                        x = (col + 0.42) * squareSize;
+                        y = (row + 0.44) * squareSize;
                         break;
                     case 6:
-                        x = (col + 0.6) * squareSize;
-                        y = (row + 0.4) * squareSize;
+                        x = (col + 0.66) * squareSize;
+                        y = (row + 0.44) * squareSize;
                         break;
                     case 7:
                         x = (col + 0.2) * squareSize;
-                        y = (row + 0.6) * squareSize;
+                        y = (row + 0.67) * squareSize;
                         break;
                     case 8:
-                        x = (col + 0.4) * squareSize;
-                        y = (row + 0.6) * squareSize;
+                        x = (col + 0.42) * squareSize;
+                        y = (row + 0.67) * squareSize;
                         break;
                     case 9:
-                        x = (col + 0.6) * squareSize;
-                        y = (row + 0.6) * squareSize;
+                        x = (col + 0.66) * squareSize;
+                        y = (row + 0.67) * squareSize;
                         break;
                     default:
                         break;
                 }
                 ctx.beginPath();
-                ctx.roundRect(x, y, squareSize / 5, squareSize / 5, [5]);
+                ctx.roundRect(x, y, squareSize / 4, squareSize / 4, [5]);
                 ctx.fill();
             }
 
@@ -868,45 +870,45 @@ function DrawNumbers() {
 
                 ctx.fillText(value, x, y);
             } else {
-                ctx.font = squareSize * 0.2 + "px Arial";
-                ctx.fillStyle = "#006";
+                ctx.font = squareSize * 0.3 + "px Arial";
+                ctx.fillStyle = "#66B";
                 for (i = 0; i < grid[row][col].possibleValues.length; i++) {
                     switch (grid[row][col].possibleValues[i]) {
                         case 1:
-                            x = (col + 0.32) * squareSize;
-                            y = (row + 0.32) * squareSize;
+                            x = (col + 0.33) * squareSize;
+                            y = (row + 0.36) * squareSize;
                             break;
                         case 2:
-                            x = (col + 0.5) * squareSize;
-                            y = (row + 0.32) * squareSize;
+                            x = (col + 0.55) * squareSize;
+                            y = (row + 0.36) * squareSize;
                             break;
                         case 3:
-                            x = (col + 0.68) * squareSize;
-                            y = (row + 0.32) * squareSize;
+                            x = (col + 0.78) * squareSize;
+                            y = (row + 0.36) * squareSize;
                             break;
                         case 4:
-                            x = (col + 0.32) * squareSize;
-                            y = (row + 0.5) * squareSize;
+                            x = (col + 0.33) * squareSize;
+                            y = (row + 0.58) * squareSize;
                             break;
                         case 5:
-                            x = (col + 0.5) * squareSize;
-                            y = (row + 0.5) * squareSize;
+                            x = (col + 0.55) * squareSize;
+                            y = (row + 0.58) * squareSize;
                             break;
                         case 6:
-                            x = (col + 0.68) * squareSize;
-                            y = (row + 0.5) * squareSize;
+                            x = (col + 0.78) * squareSize;
+                            y = (row + 0.58) * squareSize;
                             break;
                         case 7:
                             x = (col + 0.32) * squareSize;
-                            y = (row + 0.68) * squareSize;
+                            y = (row + 0.82) * squareSize;
                             break;
                         case 8:
-                            x = (col + 0.5) * squareSize;
-                            y = (row + 0.68) * squareSize;
+                            x = (col + 0.55) * squareSize;
+                            y = (row + 0.82) * squareSize;
                             break;
                         case 9:
-                            x = (col + 0.68) * squareSize;
-                            y = (row + 0.68) * squareSize;
+                            x = (col + 0.78) * squareSize;
+                            y = (row + 0.82) * squareSize;
                             break;
                         default:
                             break;
