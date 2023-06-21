@@ -128,7 +128,9 @@ function AddListeners() {
     });
 
     randomButton.addEventListener("click", function () {
-        RandomiseBoard();
+        if (confirm("Are you sure you want randomise the board?")) {
+            RandomiseBoard();
+        }
     });
 
     canvas.addEventListener("touchstart", function (event) {
