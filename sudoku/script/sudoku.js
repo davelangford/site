@@ -1195,12 +1195,20 @@ function DrawToolboxNumbers() {
                     squareSize
                 );
             } else {
+                HighlightToolboxSquare(value, x - squareSize / 2,
+                    y - squareSize / 2,
+                    squareSize,
+                    squareSize);
+
+
                 ctx.fillStyle = "#000";
             }
 
             ctx.fillStyle = "#000";
-            ctx.fillText(value++, x, y);
+            ctx.fillText(value, x, y);
 
+
+            value += 1;
         }
     }
 
@@ -1217,6 +1225,26 @@ function DrawToolboxNumbers() {
     }
 }
 
+function HighlightToolboxSquare(value, x, y, width, height) {
+    var count = GridFlat().filter(n => n.value == value).length;
+    const angle = (count / 9) * Math.PI * 2;
+
+    // Draw the highlighted sector (pie graph style)
+    ctx.fillStyle = '#DDD';
+    ctx.beginPath();
+    ctx.moveTo(x + width / 2, y + height / 2);
+    ctx.arc(
+        x + width / 2,
+        y + height / 2,
+        Math.min(width, height) / 2, // Use the minimum dimension as radius
+        -Math.PI / 2,
+        -Math.PI / 2 + angle
+    );
+    ctx.lineTo(x + width / 2, y + height / 2);
+    ctx.closePath();
+    ctx.fill();
+    
+}
 function CountOfNumber(number) {
     if (grid.length != 9) return 0;
     if (number == 0) return 0;
