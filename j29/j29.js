@@ -1,4 +1,12 @@
-
+fetch('pt.json')
+.then(response => response.json())
+.then(data => {
+    const elements = data.elements.reduce((acc, element) => {
+        acc[element.symbol] = element;
+        return acc;
+    }, {});
+    window.periodicTable = elements;
+});
 
 function j29Answer() {
   document.getElementById("main").style.display = "none";
@@ -22,3 +30,22 @@ document.getElementById("answerNumber").addEventListener("keyup", function(event
       j29Answer();
   }
 });
+
+function searchElement() {
+  const symbolInput = document.getElementById("element-symbol").value.toUpperCase();
+  const resultContainer = document.getElementById("result-container");
+  const elementInfo = periodicTable[symbolInput];
+
+  if (elementInfo) {
+      // Element found, display information
+      resultContainer.innerHTML = `
+      <h2>${elementInfo.name}</h2>
+      <p>Symbol: ${symbolInput}</p>
+      <p>Atomic Number: ${elementInfo.number}</p>
+      <p>Atomic Mass: ${elementInfo.atomic_mass}</p>
+      `;
+  } else {
+      // Element not found
+      resultContainer.innerHTML = "<p>Element not found</p>";
+  }
+}
