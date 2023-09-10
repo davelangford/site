@@ -1,3 +1,5 @@
+let inputValue = '';
+
 fetch('https://davelangford.github.io/site/j29/pt.json')
   .then(response => response.json())
   .then(data => {
@@ -51,4 +53,19 @@ function searchElement() {
     // Element not found
     resultContainer.innerHTML = "<p>Element not found</p>";
   }
+}
+
+function appendNumber(number) {
+  inputValue += number;
+  document.getElementById('answerNumber').value = inputValue;
+}
+
+function clearNumber() {
+  inputValue = '';
+  document.getElementById('answerNumber').value = inputValue;
+}
+
+function submitNumber() {
+  // You can replace this function with your desired action
+  j29Answer();
 }
