@@ -1,6 +1,7 @@
 
 
 function j29Answer() {
+  document.getElementById("main").style.display = "none";
   document.getElementById("overlay").style.display = "block";
   // Get the value entered in the textbox
   var value = document.getElementById("answerNumber").value;

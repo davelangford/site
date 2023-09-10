@@ -1,34 +1,48 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
 body {
     font-family: Arial, sans-serif;
-    color: gainsboro;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
     text-align: center;
-    background-color: #000000;
 }
 
-#overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(121, 121, 121, 0.5);
-    z-index: 1000;
+h1 {
+    font-size: 24px;
+    color: #333;
+    margin: 20px 0;
 }
 
-/* Style for the loading message */
-#loading-message {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
+input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+button,
+.button-link {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+button:hover,
+.button-link:hover {
+    background-color: #0056b3;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
+    transform: translateY(-3px);
+}
+
+.button-link {
+    display: inline-block;
+    margin: 10px;
+    text-decoration: none;
 }
