@@ -1,12 +1,15 @@
-fetch('pt.json')
-.then(response => response.json())
-.then(data => {
+fetch('https://davelangford.github.io/site/j29/pt.json')
+  .then(response => response.json())
+  .then(data => {
     const elements = data.elements.reduce((acc, element) => {
-        acc[element.symbol] = element;
-        return acc;
+      acc[element.symbol] = element;
+      return acc;
     }, {});
     window.periodicTable = elements;
-});
+
+    const elementSymbolInput = document.getElementById("element-symbol");
+    elementSymbolInput.addEventListener("input", searchElement);
+  });
 
 function j29Answer() {
   document.getElementById("main").style.display = "none";
@@ -21,13 +24,13 @@ function j29Answer() {
   window.location.href = url;
 }
 
-document.getElementById("answerNumber").addEventListener("keyup", function(event) {
+document.getElementById("answerNumber").addEventListener("keyup", function (event) {
   if (event.key === "Enter") {
-      // Prevent the default Enter key behavior (form submission)
-      event.preventDefault();
+    // Prevent the default Enter key behavior (form submission)
+    event.preventDefault();
 
-      // Call the navigateToURL function to navigate to the URL
-      j29Answer();
+    // Call the navigateToURL function to navigate to the URL
+    j29Answer();
   }
 });
 
@@ -37,15 +40,15 @@ function searchElement() {
   const elementInfo = periodicTable[symbolInput];
 
   if (elementInfo) {
-      // Element found, display information
-      resultContainer.innerHTML = `
+    // Element found, display information
+    resultContainer.innerHTML = `
       <h2>${elementInfo.name}</h2>
       <p>Symbol: ${symbolInput}</p>
       <p>Atomic Number: ${elementInfo.number}</p>
       <p>Atomic Mass: ${elementInfo.atomic_mass}</p>
       `;
   } else {
-      // Element not found
-      resultContainer.innerHTML = "<p>Element not found</p>";
+    // Element not found
+    resultContainer.innerHTML = "<p>Element not found</p>";
   }
 }
