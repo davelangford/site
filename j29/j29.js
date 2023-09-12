@@ -33,39 +33,46 @@ document.getElementById("answerNumber").addEventListener("keyup", function (even
 
     // Call the navigateToURL function to navigate to the URL
     j29Answer();
+    return;
   }
+
 });
 
 function searchElement() {
-  const symbolInput = document.getElementById("element-symbol").value.toUpperCase();
+  const input = document.getElementById("element-symbol").value.toUpperCase();
   const resultContainer = document.getElementById("result-container");
-  const elementInfo = periodicTable[symbolInput];
 
-  if (elementInfo) {
-    // Element found, display information
-    resultContainer.innerHTML = `
-      <h2>${elementInfo.name}</h2>
-      <p>Symbol: ${symbolInput}</p>
-      <p>Atomic Number: ${elementInfo.number}</p>
-      <p>Atomic Mass: ${elementInfo.atomic_mass}</p>
+  // Iterate through the periodicTable object
+  for (const symbol in periodicTable) {
+    const elementInfo = periodicTable[symbol];
+
+    // Check if the input matches the symbol or atomic number
+    if (symbol === input || elementInfo.number === parseInt(input)) {
+      // Element found, display information
+      resultContainer.innerHTML = `
+        <h2>${elementInfo.name}</h2>
+        <p>Symbol: ${elementInfo.symbol}</p>
+        <p>Atomic Number: ${elementInfo.number}</p>
+        <p>Atomic Mass: ${elementInfo.atomic_mass}</p>
       `;
-  } else {
-    // Element not found
-    resultContainer.innerHTML = "<p>Element not found</p>";
+      return; // Exit the function since we found the element
+    }
   }
+
+  // Element not found
+  resultContainer.innerHTML = "<p>Element not found</p>";
 }
 
 function appendNumber(number) {
   inputValue += number;
   document.getElementById('answerNumber').value = inputValue;
+  var value = document.getElementById("answerNumber").value;
+  if ((!value.startsWith(1) && value.length == 2) || (value.startsWith(1) && value.length == 3)) {
+      j29Answer();
+  } 
 }
 
 function clearNumber() {
   inputValue = '';
   document.getElementById('answerNumber').value = inputValue;
-}
-
-function submitNumber() {
-  // You can replace this function with your desired action
-  j29Answer();
 }
