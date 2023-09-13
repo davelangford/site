@@ -16,8 +16,10 @@ fetch('https://davelangford.github.io/site/j29/pt.json')
 function j29Answer() {
   document.getElementById("main").style.display = "none";
   document.getElementById("overlay").style.display = "block";
-  // Get the value entered in the textbox
+
   var value = document.getElementById("answerNumber").value;
+  
+  document.getElementById("loading-message").textContent = "Loading" + value; 
 
   // Construct the URL
   var url = "https://www.journal29.com/" + value;
