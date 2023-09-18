@@ -78,3 +78,32 @@ function clearNumber() {
   inputValue = '';
   document.getElementById('answerNumber').value = inputValue;
 }
+
+  // Step 1: Check if currentPage exists in localStorage, and initialize it to 0 if not.
+  let currentPage = localStorage.getItem('currentPage');
+  if (!currentPage) {
+      currentPage = 0;
+      localStorage.setItem('currentPage', currentPage);
+  }
+
+  // Step 2: Create a button to display the currentPage value and launch the URL.
+  const currentPageButton = document.getElementById('currentPageButton');
+  currentPageButton.textContent = `Page ${currentPage}`;
+  currentPageButton.addEventListener('click', () => {
+      const url = `https://www.journal29.com/${currentPage}`;
+      window.location.href = url;
+  });
+
+  // Step 3: Create a button to increment the currentPage value and update localStorage.
+  const incrementButton = document.getElementById('incrementButton');
+  incrementButton.addEventListener('click', () => {
+      currentPage++;
+      localStorage.setItem('currentPage', currentPage);
+      currentPageButton.textContent = `Page ${currentPage}`;
+  });
+  const decrementButton = document.getElementById('decrementButton');
+  decrementButton.addEventListener('click', () => {
+      currentPage--;
+      localStorage.setItem('currentPage', currentPage);
+      currentPageButton.textContent = `Page ${currentPage}`;
+  });
