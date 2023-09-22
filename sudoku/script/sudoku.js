@@ -436,7 +436,7 @@ function SelectSquare(x, y) {
         if (GridFlat().filter(square => square.selected == true).length == 1) {
             selectedNumber = GridFlat().filter(square => square.selected == true)[0].value;
         }
-    } else if (row > 0 && row <= 3 && col > 9) {
+    } else if (row > 0 && row <= 3 && col > 9 && col < 13) {
         // Number in toolboxnumbers clicked
         selectedNumber = (row - 1) * 3 + (col - 9);
         selectedNote = selectedNumber;
@@ -568,6 +568,7 @@ function ToggleNumber() {
 
 function DrawStuff(drawnumbers = true) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    DrawProgress();
     HighlightSquares();
     CalculateHoles();
     DrawToolboxExtras();
@@ -588,7 +589,6 @@ function DrawStuff(drawnumbers = true) {
     if (cages.length > 0) {
         DrawKiller();
     }
-    DrawProgress();
     DrawDifficulty();
 
     if (GridFlat().map(square => square.value).join('').includes(0)) {
@@ -1226,11 +1226,12 @@ function DrawToolboxNumbers() {
 }
 
 function HighlightToolboxSquare(value, x, y, width, height) {
+    return;
     var count = GridFlat().filter(n => n.value == value).length;
     const angle = (count / 9) * Math.PI * 2;
 
     // Draw the highlighted sector (pie graph style)
-    ctx.fillStyle = '#DDD';
+    ctx.fillStyle = '#EEE';
     ctx.beginPath();
     ctx.moveTo(x + width / 2, y + height / 2);
     ctx.arc(
@@ -1380,6 +1381,18 @@ function DrawProgress() {
     ctx.moveTo(0, canvas.height);
     ctx.lineTo(mapRange(percentComplete, 0, 100, 0, canvas.width), canvas.height);
     ctx.stroke();
+
+    var gradient = ctx.createLinearGradient(0, canvas.height, canvas.width,canvas.height );
+
+    // Define gradient colors at different positions
+    gradient.addColorStop(0, 'white');    // Starting color at 0%
+    gradient.addColorStop(1, '#b7bdff');   // Ending color at 100%
+
+    // Set the fill style to the gradient
+    ctx.fillStyle = gradient;
+
+    // Draw a rectangle filled with the gradient
+    ctx.fillRect(0, 0, mapRange(percentComplete, 0, 100, 0, canvas.width), canvas.height);
 }
 
 function mapRange(value, sourceMin, sourceMax, targetMin, targetMax) {
