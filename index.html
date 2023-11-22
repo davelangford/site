@@ -1,66 +1,95 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <style>
-        body {
-            background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);
-        }
+      body {
+        background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+      }
 
+      .button {
+        display: inline-block;
+        position: relative;
+        margin: 10px;
+        text-align: center;
+        text-decoration: none;
+        text-shadow: 1px 1px 1px rgb(255 255 255 / 22%);
+        border-radius: 30px;
+        box-shadow: 1px 1px 1px rgb(0 0 0 / 29%),
+          inset 1px 1px 1px rgb(255 255 255 / 44%);
+        padding: 0 40px;
+        padding-top: 10px;
+        height: 45px;
+        text-transform: uppercase;
+        font: bold 20px/22px Arial, sans-serif;
+        color: #19667d;
+        background: -webkit-gradient(
+          linear,
+          left top,
+          left bottom,
+          color-stop(0%, #70c9e3),
+          color-stop(100%, #39a0be)
+        );
+        background: -o-linear-gradient(top, #70c9e3 0%, #39a0be 100%);
+        background: linear-gradient(top, #70c9e3 0%, #39a0be 100%);
+        padding: 3vw 9vh;
+      }
 
+      .button span {
+        display: block;
+        text-transform: none;
+        font: italic normal 12px/18px Georgia, sans-serif;
+        text-shadow: 1px 1px 1px rgb(255 255 255 / 12%);
+      }
 
-        .button {
-            display: inline-block;
-            position: relative;
-            margin: 10px;
-            text-align: center;
-            text-decoration: none;
-            text-shadow: 1px 1px 1px rgb(255 255 255 / 22%);
-            border-radius: 30px;
-            box-shadow: 1px 1px 1px rgb(0 0 0 / 29%), inset 1px 1px 1px rgb(255 255 255 / 44%);
-            padding: 0 40px;
-            padding-top: 10px;
-            height: 45px;
-            text-transform: uppercase;
-            font: bold 20px/22px Arial, sans-serif;
-            color: #19667d;
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #70c9e3), color-stop(100%, #39a0be));
-            background: -o-linear-gradient(top, #70c9e3 0%, #39a0be 100%);
-            background: linear-gradient(top, #70c9e3 0%, #39a0be 100%);
-            padding: 3vw 9vh;
-        }
-
-        .button span {
-            display: block;
-            text-transform: none;
-            font: italic normal 12px/18px Georgia, sans-serif;
-            text-shadow: 1px 1px 1px rgb(255 255 255 / 12%);
-        }
-
-        .button:hover {
-            background-color: #3e8e41;
-        }
+      .button:hover {
+        background-color: #3e8e41;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-    <div style=" width: 100vw; text-align: center; height: 100vh; position: absolute; top: 0px; padding-top: 45vh;">
-        <a href="mountains/mountains.html" class="button">Mountains<span>HTML+JS+CSS generated mountains</span></a>
-        <a href="test/cloud.html" class="button">Cloud<span>HTML+JS+CSS cloud example</span></a>
-        <a href="frank6_mobile/frank6_mobile.html" class="button">frank6_mobile<span>frank6_mobile</span></a>
-
-        <a href="dkjr/dkjr.html" class="button">DKJR<span>Only on IOS</span></a>
-        <a href="dkjr23/dkjr23.html" class="button">DKJR23</a>
-        <a href="colorSnap/index.html" class="button">ColorSnap<span>Awesome</span></a>
-        <a href="sudoku/index.html" class="button">Sudoku<span>Awesome</span></a>
-
-        <a href="gravity/index.html" class="button">Gravity<span>Awesomer</span></a>
+  <body>
+    <div
+      style="
+        width: 100vw;
+        text-align: center;
+        height: 100vh;
+        position: absolute;
+        top: 0px;
+        padding-top: 45vh;
+      "
+    >
+      <a href="mountains/mountains.html" class="button"
+        >Mountains<span>HTML+JS+CSS generated mountains</span></a
+      >
+      <a href="test/cloud.html" class="button"
+        >Cloud<span>HTML+JS+CSS cloud example</span></a
+      >
+      <a href="dkjr/dkjr.html" class="button">DKJR<span>Only on IOS</span></a>
+      <a href="dkjr23/dkjr23.html" class="button">DKJR23</a>
+      <a href="colorSnap/index.html" class="button"
+        >ColorSnap<span>Awesome</span></a
+      >
+      <a href="sudoku/index.html" class="button">Sudoku<span>Awesome</span></a>
+      <a href="gravity/index.html" class="button"
+        >Gravity<span>Awesomer</span></a
+      >
     </div>
 
-    <video autoplay muted id="vid"
-        style=" width: 100%; bottom: 0px; position: absolute; left: 0px; height: 100%; object-fit: cover; z-index: -1;">
-        <source src="images/video.webm" type="video/webm">
+    <video
+      autoplay
+      muted
+      id="vid"
+      style="
+        width: 100%;
+        bottom: 0px;
+        position: absolute;
+        left: 0px;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+      "
+    >
+      <source src="images/video.webm" type="video/webm" />
     </video>
-</body>
-
+  </body>
 </html>
