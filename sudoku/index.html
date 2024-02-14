@@ -1,35 +1,38 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>Sudoku IIII</title>
     <link rel="stylesheet" type="text/css" href="sudoku.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
+  </head>
 
-<body>
-    <div id="buttonsToolbar" style="position: absolute; right: 10px; z-index: 1">
-        <button id="clearNotesButton" style="height: 25px; width: 100px">
-            Clear All Notes
-        </button><br>
-        <button id="randomButton" style="height: 25px; width: 100px">
-            Randomise
-        </button>
+  <body>
+    <div
+      id="buttonsToolbar"
+      style="position: absolute; right: 10px; z-index: 1"
+    >
+      <button id="clearNotesButton" style="height: 25px; width: 100px">
+        Clear All Notes</button
+      ><br />
+      <button id="randomButton" style="height: 25px; width: 100px">
+        Randomise
+      </button>
     </div>
 
-    <div id="buttonsNewGame" style="
-                position: absolute;
-                right: 10px;
-                bottom: 10px;
-                z-index: 1;
-                text-align: center;
-                
-            ">
-        <button id="easyButton" style="display: none;">Easy</button>
-        <button id="mediumButton" style="display: none;">Medium</button>
-        <button id="hardButton" style="display: none;">Hard</button>
-        <div><a href="../sudoku.html">Sudoku Links</a></div>
+    <div
+      id="buttonsNewGame"
+      style="
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        z-index: 1;
+        text-align: center;
+      "
+    >
+      <button id="easyButton" style="display: none">Easy</button>
+      <button id="mediumButton" style="display: none">Medium</button>
+      <button id="hardButton" style="display: none">Hard</button>
+      <div><a href="../sudoku.html">Sudoku Links</a></div>
     </div>
 
     <div id="divMissingNumbers"></div>
@@ -39,6 +42,5 @@
     <script src="script/solver.js"></script>
     <script src="script/sudoku.js"></script>
     <script src="script/animate 2.js"></script>
-</body>
-
+  </body>
 </html>

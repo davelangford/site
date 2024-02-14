@@ -704,7 +704,7 @@ async function fetchSudokuBoard(difficulty) {
     return data.board;
 }
 
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('n')) {
         var paramNumbers = '';
@@ -1199,8 +1199,6 @@ function DrawToolboxNumbers() {
                     y - squareSize / 2,
                     squareSize,
                     squareSize);
-
-
                 ctx.fillStyle = "#000";
             }
 
